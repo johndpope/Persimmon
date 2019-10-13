@@ -21,7 +21,6 @@ class LaunchPassCodeView: UIView {
   
   let launchView = LaunchScreenView()
   
-  
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
     addSubviews()

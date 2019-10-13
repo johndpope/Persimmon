@@ -9,7 +9,14 @@
 import UIKit
 import SnapKit
 
+protocol PassCodeViewDelegate: class {
+  func didTapButton(sender: UIButton)
+}
+
 class PassCodeView: UIView {
+  
+  weak var delegate: PassCodeViewDelegate?
+  
   private var imageStackView = UIStackView()
   private var firstStackView = UIStackView()
   private var secondStackView = UIStackView()
@@ -173,17 +180,18 @@ class PassCodeView: UIView {
     setupStackView()
     addSubviews()
     setupSNP()
-   
+    
   }
   
-  @objc private func checkingPasscode(_ sender: UIButton) {
+  @objc func checkingPasscode(_ sender: UIButton) {
     
     guard let input = sender.currentTitle else { return }
     print("input: ", input)
+    delegate?.didTapButton(sender: sender)
     
   }
   
-  @objc private func deleteBtnDidTap(_ sender: UIButton) {
+  @objc func deleteBtnDidTap(_ sender: UIButton) {
     
   }
   

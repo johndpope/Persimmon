@@ -19,6 +19,14 @@
 		BE2EB11FFDB65390A2741BE2 /* Pods_Persimmon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BB6C34114F54D1E909A5A9B /* Pods_Persimmon.framework */; };
 		C10C9BA5235289ED00FA56A3 /* LaunchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9BA4235289ED00FA56A3 /* LaunchScreenView.swift */; };
 		C10C9BA7235293DF00FA56A3 /* LaunchPassCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9BA6235293DF00FA56A3 /* LaunchPassCodeView.swift */; };
+		C10C9BAA235378CC00FA56A3 /* AlbumListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9BA9235378CC00FA56A3 /* AlbumListVC.swift */; };
+		C10C9BB02353790D00FA56A3 /* AlbumListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9BAF2353790D00FA56A3 /* AlbumListView.swift */; };
+		C10C9BB72353798E00FA56A3 /* PhotoListViewEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9BB62353798E00FA56A3 /* PhotoListViewEmpty.swift */; };
+		C10C9BB92353799E00FA56A3 /* PhotoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9BB82353799E00FA56A3 /* PhotoListView.swift */; };
+		C10C9BBF235379D900FA56A3 /* SelectAlbumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9BBE235379D900FA56A3 /* SelectAlbumView.swift */; };
+		C10C9BC223537A8000FA56A3 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9BC123537A8000FA56A3 /* MainTabBarController.swift */; };
+		C10C9BC823537C8F00FA56A3 /* SettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9BC723537C8F00FA56A3 /* SettingVC.swift */; };
+		C10C9BCA23537EEE00FA56A3 /* PhotoListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9BC923537EEE00FA56A3 /* PhotoListVC.swift */; };
 		C1618910235270B300C49B57 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161890F235270B300C49B57 /* ColorExtension.swift */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +47,14 @@
 		7C2736417BA302DF8EE103DF /* Pods-Persimmon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Persimmon.release.xcconfig"; path = "Target Support Files/Pods-Persimmon/Pods-Persimmon.release.xcconfig"; sourceTree = "<group>"; };
 		C10C9BA4235289ED00FA56A3 /* LaunchScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenView.swift; sourceTree = "<group>"; };
 		C10C9BA6235293DF00FA56A3 /* LaunchPassCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchPassCodeView.swift; sourceTree = "<group>"; };
+		C10C9BA9235378CC00FA56A3 /* AlbumListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumListVC.swift; sourceTree = "<group>"; };
+		C10C9BAF2353790D00FA56A3 /* AlbumListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumListView.swift; sourceTree = "<group>"; };
+		C10C9BB62353798E00FA56A3 /* PhotoListViewEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListViewEmpty.swift; sourceTree = "<group>"; };
+		C10C9BB82353799E00FA56A3 /* PhotoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListView.swift; sourceTree = "<group>"; };
+		C10C9BBE235379D900FA56A3 /* SelectAlbumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAlbumView.swift; sourceTree = "<group>"; };
+		C10C9BC123537A8000FA56A3 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		C10C9BC723537C8F00FA56A3 /* SettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingVC.swift; sourceTree = "<group>"; };
+		C10C9BC923537EEE00FA56A3 /* PhotoListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListVC.swift; sourceTree = "<group>"; };
 		C161890F235270B300C49B57 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -100,10 +116,15 @@
 		523705B82351024200869F57 /* Persimmon */ = {
 			isa = PBXGroup;
 			children = (
+				C10C9BC023537A5100FA56A3 /* MainTabBar */,
 				C161890E2352706200C49B57 /* Extensions */,
 				523705D0235106C600869F57 /* Source */,
 				523705CF235106BA00869F57 /* PassCode */,
 				C10C9BA3235289CE00FA56A3 /* LaunchScreen */,
+				C10C9BA82353789C00FA56A3 /* AlbumList */,
+				C10C9BB22353793300FA56A3 /* PhotoList */,
+				C10C9BC323537B5400FA56A3 /* Setting */,
+				C10C9BBA235379AC00FA56A3 /* SelectAlbum */,
 				523705C12351024400869F57 /* Preview Content */,
 				521F9DAA23520E2E00506B9C /* Data */,
 				521F9DA723520BF500506B9C /* TestCode */,
@@ -122,9 +143,8 @@
 		523705CF235106BA00869F57 /* PassCode */ = {
 			isa = PBXGroup;
 			children = (
-				523705CD235105C700869F57 /* PassCodeVC.swift */,
-				C10C9BA6235293DF00FA56A3 /* LaunchPassCodeView.swift */,
-				523705D12351070900869F57 /* PassCodeView.swift */,
+				C10C9BAC235378E600FA56A3 /* View */,
+				C10C9BAB235378DB00FA56A3 /* Controller */,
 			);
 			path = PassCode;
 			sourceTree = "<group>";
@@ -147,6 +167,162 @@
 				C10C9BA4235289ED00FA56A3 /* LaunchScreenView.swift */,
 			);
 			path = LaunchScreen;
+			sourceTree = "<group>";
+		};
+		C10C9BA82353789C00FA56A3 /* AlbumList */ = {
+			isa = PBXGroup;
+			children = (
+				C10C9BAD235378F300FA56A3 /* Controller */,
+				C10C9BB12353791F00FA56A3 /* Cell */,
+				C10C9BAE235378FA00FA56A3 /* View */,
+			);
+			path = AlbumList;
+			sourceTree = "<group>";
+		};
+		C10C9BAB235378DB00FA56A3 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				523705CD235105C700869F57 /* PassCodeVC.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		C10C9BAC235378E600FA56A3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C10C9BA6235293DF00FA56A3 /* LaunchPassCodeView.swift */,
+				523705D12351070900869F57 /* PassCodeView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C10C9BAD235378F300FA56A3 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C10C9BA9235378CC00FA56A3 /* AlbumListVC.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		C10C9BAE235378FA00FA56A3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C10C9BAF2353790D00FA56A3 /* AlbumListView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C10C9BB12353791F00FA56A3 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		C10C9BB22353793300FA56A3 /* PhotoList */ = {
+			isa = PBXGroup;
+			children = (
+				C10C9BB32353794500FA56A3 /* Controller */,
+				C10C9BB42353794C00FA56A3 /* Cell */,
+				C10C9BB52353795000FA56A3 /* View */,
+			);
+			path = PhotoList;
+			sourceTree = "<group>";
+		};
+		C10C9BB32353794500FA56A3 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C10C9BC923537EEE00FA56A3 /* PhotoListVC.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		C10C9BB42353794C00FA56A3 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		C10C9BB52353795000FA56A3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C10C9BB62353798E00FA56A3 /* PhotoListViewEmpty.swift */,
+				C10C9BB82353799E00FA56A3 /* PhotoListView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C10C9BBA235379AC00FA56A3 /* SelectAlbum */ = {
+			isa = PBXGroup;
+			children = (
+				C10C9BBD235379C800FA56A3 /* Controller */,
+				C10C9BBC235379C300FA56A3 /* Cell */,
+				C10C9BBB235379BE00FA56A3 /* View */,
+			);
+			path = SelectAlbum;
+			sourceTree = "<group>";
+		};
+		C10C9BBB235379BE00FA56A3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C10C9BBE235379D900FA56A3 /* SelectAlbumView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C10C9BBC235379C300FA56A3 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		C10C9BBD235379C800FA56A3 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		C10C9BC023537A5100FA56A3 /* MainTabBar */ = {
+			isa = PBXGroup;
+			children = (
+				C10C9BC123537A8000FA56A3 /* MainTabBarController.swift */,
+			);
+			path = MainTabBar;
+			sourceTree = "<group>";
+		};
+		C10C9BC323537B5400FA56A3 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				C10C9BC623537C7C00FA56A3 /* Controller */,
+				C10C9BC523537C7800FA56A3 /* Cell */,
+				C10C9BC423537C7200FA56A3 /* View */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		C10C9BC423537C7200FA56A3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C10C9BC523537C7800FA56A3 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		C10C9BC623537C7C00FA56A3 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C10C9BC723537C8F00FA56A3 /* SettingVC.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		C161890E2352706200C49B57 /* Extensions */ = {
@@ -280,12 +456,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C10C9BB92353799E00FA56A3 /* PhotoListView.swift in Sources */,
+				C10C9BC823537C8F00FA56A3 /* SettingVC.swift in Sources */,
 				523705CE235105C700869F57 /* PassCodeVC.swift in Sources */,
+				C10C9BC223537A8000FA56A3 /* MainTabBarController.swift in Sources */,
 				521F9DAC23520E4D00506B9C /* RealmData.swift in Sources */,
 				C10C9BA7235293DF00FA56A3 /* LaunchPassCodeView.swift in Sources */,
+				C10C9BB72353798E00FA56A3 /* PhotoListViewEmpty.swift in Sources */,
 				523705BA2351024200869F57 /* AppDelegate.swift in Sources */,
 				C10C9BA5235289ED00FA56A3 /* LaunchScreenView.swift in Sources */,
 				523705D22351070900869F57 /* PassCodeView.swift in Sources */,
+				C10C9BBF235379D900FA56A3 /* SelectAlbumView.swift in Sources */,
+				C10C9BAA235378CC00FA56A3 /* AlbumListVC.swift in Sources */,
+				C10C9BB02353790D00FA56A3 /* AlbumListView.swift in Sources */,
+				C10C9BCA23537EEE00FA56A3 /* PhotoListVC.swift in Sources */,
 				523705BC2351024200869F57 /* SceneDelegate.swift in Sources */,
 				C1618910235270B300C49B57 /* ColorExtension.swift in Sources */,
 				521F9DA923520C4100506B9C /* TestRealm.swift in Sources */,
