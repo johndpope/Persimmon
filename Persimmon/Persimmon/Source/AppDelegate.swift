@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
     let vc = PassCodeVC()
   //  let vc = TestRealm()
+//  let vc = AlbumListVC()
   
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     
@@ -40,11 +41,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       window?.rootViewController = vc
       window?.makeKeyAndVisible()
       
+      
       return true }
     
     return true
   }
   
+  func checkPassCodeState() {
+     let passCodeVC = PassCodeVC()
+     let passCodeNavi = UINavigationController(rootViewController: passCodeVC)
+
+     self.window = UIWindow(frame: UIScreen.main.bounds)
+     window?.backgroundColor = .white
+     window?.rootViewController = passCodeNavi
+     window?.makeKeyAndVisible()
+   }
+  
+
   
   
   //  // realm configuration

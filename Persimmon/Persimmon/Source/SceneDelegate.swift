@@ -14,7 +14,7 @@ import RealmSwift
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
   var window: UIWindow?
-  
+//  let vc = AlbumListVC()
   let vc = PassCodeVC()
 //  let vc = TestRealm()
   
@@ -33,6 +33,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       window.rootViewController = vc
       self.window = window
       window.makeKeyAndVisible()
+      
       
     }
   }
