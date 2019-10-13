@@ -45,10 +45,10 @@ extension PassCodeVC: PassCodeViewDelegate {
     
     navi.modalPresentationStyle = .fullScreen
     navi.modalTransitionStyle = .crossDissolve
-    
-    navi.navigationBar.prefersLargeTitles = true
+    navi.navigationBar.isHidden = true
+//    navi.navigationBar.prefersLargeTitles = true
 //    navi.navigationBar.titleTextAttributes = attirbute
-    vc.title = "사진첩"
+//    vc.title = "사진첩"
     self.present(navi, animated: true)
   
     

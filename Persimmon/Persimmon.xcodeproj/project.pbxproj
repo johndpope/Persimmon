@@ -184,7 +184,6 @@
 			isa = PBXGroup;
 			children = (
 				C10C9BAD235378F300FA56A3 /* Controller */,
-				C10C9BB12353791F00FA56A3 /* Cell */,
 				C10C9BAE235378FA00FA56A3 /* View */,
 			);
 			path = AlbumList;
@@ -221,13 +220,6 @@
 				C10C9BAF2353790D00FA56A3 /* AlbumListView.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		C10C9BB12353791F00FA56A3 /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Cell;
 			sourceTree = "<group>";
 		};
 		C10C9BB22353793300FA56A3 /* PhotoList */ = {

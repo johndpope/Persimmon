@@ -11,23 +11,33 @@ import UIKit
 
 class AlbumListVC: UIViewController {
   
-
+  
   let albumListView = AlbumListView()
   
   override func loadView() {
     self.view = albumListView
   }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-      view.backgroundColor = .white
-//      AppDelegate.instance.albumListState()
-      
-    }
-  private func setupNavi() {
-    navigationController?.title = "사진첩"
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    view.backgroundColor = .white
+    albumListView.delegate = self
     
   }
+  
+  
+  private func setupNavi() {
     
+    
+  }
+  
+}
 
+extension AlbumListVC: AlbumListViewDelegate {
+  func didSelectCell(indexPath: AlbumListView) {
+    let photoListVC = PhotoListVC()
+    navigationController?.pushViewController(photoListVC, animated: true)
+  }
+  
+  
 }
