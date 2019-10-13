@@ -34,15 +34,5 @@ public class Photo: Object {
 }
 
 
-// realm configuration
-public let config = Realm.Configuration(schemaVersion: 1, migrationBlock: { (migration, oldVersion) in
-  print("start Migration")
-  migration.enumerateObjects(ofType: Album.className()) { (old, new) in
-    if oldVersion < 1 {
-      // need to migration
-      new?["uuid"] = UUID().uuidString
-    }
-  }
-  print("Migration complete.")
-})
+
 

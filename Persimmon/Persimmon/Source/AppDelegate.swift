@@ -13,25 +13,51 @@ import RealmSwift
 class AppDelegate: UIResponder, UIApplicationDelegate {
   
   var window: UIWindow?
-
   
     let vc = PassCodeVC()
   //  let vc = TestRealm()
   
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     
+    // realm configuration
+    let configBlock: MigrationBlock = { (migration, oldVersion) in
+      print("start Migration")
+      if oldVersion < 2 {
+        migration.enumerateObjects(ofType: Album.className()) { (old, new) in
+          // need to migration
+          new?["uuid"] = UUID().uuidString
+          new?["title"] = "test"
+        }
+      }
+      print("Migration complete.")
+    }
+    
+    Realm.Configuration.defaultConfiguration = Realm.Configuration(schemaVersion: 2, migrationBlock: configBlock)
+    
     guard #available(iOS 13.0, *) else {
-      Realm.Configuration.defaultConfiguration = config
+      
       window = UIWindow(frame: UIScreen.main.bounds)
       window?.rootViewController = vc
       window?.makeKeyAndVisible()
       
       return true }
-     
+    
     return true
   }
   
   
+  
+  //  // realm configuration
+  //  let config = Realm.Configuration(schemaVersion: 1, migrationBlock: { (migration, oldVersion) in
+  //    print("start Migration")
+  //    migration.enumerateObjects(ofType: Album.className()) { (old, new) in
+  //      if oldVersion < 1 {
+  //        // need to migration
+  //        new?["uuid"] = UUID().uuidString
+  //      }
+  //    }
+  //    print("Migration complete.")
+  //  })
   
   
   // MARK: UISceneSession Lifecycle

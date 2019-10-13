@@ -28,7 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     // Use a UIHostingController as window root view controller.
     if let windowScene = scene as? UIWindowScene {
-      Realm.Configuration.defaultConfiguration = config
+      
       let window = UIWindow(windowScene: windowScene)
       window.rootViewController = vc
       self.window = window
@@ -36,6 +36,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       
     }
   }
+  
+  
+  
   
   func sceneDidDisconnect(_ scene: UIScene) {
     // Called as the scene is being released by the system.
