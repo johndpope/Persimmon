@@ -18,6 +18,9 @@
 		523705CE235105C700869F57 /* PassCodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523705CD235105C700869F57 /* PassCodeVC.swift */; };
 		523705D22351070900869F57 /* PassCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523705D12351070900869F57 /* PassCodeView.swift */; };
 		BE2EB11FFDB65390A2741BE2 /* Pods_Persimmon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BB6C34114F54D1E909A5A9B /* Pods_Persimmon.framework */; };
+		C10C9BA5235289ED00FA56A3 /* LaunchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9BA4235289ED00FA56A3 /* LaunchScreenView.swift */; };
+		C10C9BA7235293DF00FA56A3 /* LaunchPassCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9BA6235293DF00FA56A3 /* LaunchPassCodeView.swift */; };
+		C1618910235270B300C49B57 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161890F235270B300C49B57 /* ColorExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +39,9 @@
 		523705D12351070900869F57 /* PassCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassCodeView.swift; sourceTree = "<group>"; };
 		5BB6C34114F54D1E909A5A9B /* Pods_Persimmon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Persimmon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C2736417BA302DF8EE103DF /* Pods-Persimmon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Persimmon.release.xcconfig"; path = "Target Support Files/Pods-Persimmon/Pods-Persimmon.release.xcconfig"; sourceTree = "<group>"; };
+		C10C9BA4235289ED00FA56A3 /* LaunchScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenView.swift; sourceTree = "<group>"; };
+		C10C9BA6235293DF00FA56A3 /* LaunchPassCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchPassCodeView.swift; sourceTree = "<group>"; };
+		C161890F235270B300C49B57 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,8 +110,10 @@
 		523705B82351024200869F57 /* Persimmon */ = {
 			isa = PBXGroup;
 			children = (
+				C161890E2352706200C49B57 /* Extensions */,
 				523705D0235106C600869F57 /* Source */,
 				523705CF235106BA00869F57 /* PassCode */,
+				C10C9BA3235289CE00FA56A3 /* LaunchScreen */,
 				523705C12351024400869F57 /* Preview Content */,
 				521F9DAA23520E2E00506B9C /* Data */,
 				521F9DAD23527C8300506B9C /* PhotosPicker */,
@@ -126,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				523705CD235105C700869F57 /* PassCodeVC.swift */,
+				C10C9BA6235293DF00FA56A3 /* LaunchPassCodeView.swift */,
 				523705D12351070900869F57 /* PassCodeView.swift */,
 			);
 			path = PassCode;
@@ -141,6 +150,22 @@
 				523705C72351024400869F57 /* Info.plist */,
 			);
 			path = Source;
+			sourceTree = "<group>";
+		};
+		C10C9BA3235289CE00FA56A3 /* LaunchScreen */ = {
+			isa = PBXGroup;
+			children = (
+				C10C9BA4235289ED00FA56A3 /* LaunchScreenView.swift */,
+			);
+			path = LaunchScreen;
+			sourceTree = "<group>";
+		};
+		C161890E2352706200C49B57 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C161890F235270B300C49B57 /* ColorExtension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		C340F1C97513DDEE4CBF986B /* Frameworks */ = {
@@ -269,9 +294,12 @@
 				521F9DAF23527CA500506B9C /* CustomPhotoPicker.swift in Sources */,
 				523705CE235105C700869F57 /* PassCodeVC.swift in Sources */,
 				521F9DAC23520E4D00506B9C /* RealmData.swift in Sources */,
+				C10C9BA7235293DF00FA56A3 /* LaunchPassCodeView.swift in Sources */,
 				523705BA2351024200869F57 /* AppDelegate.swift in Sources */,
+				C10C9BA5235289ED00FA56A3 /* LaunchScreenView.swift in Sources */,
 				523705D22351070900869F57 /* PassCodeView.swift in Sources */,
 				523705BC2351024200869F57 /* SceneDelegate.swift in Sources */,
+				C1618910235270B300C49B57 /* ColorExtension.swift in Sources */,
 				521F9DA923520C4100506B9C /* TestRealm.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -422,7 +450,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = hyeoktae.com.Persimmon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -444,7 +472,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = hyeoktae.com.Persimmon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
