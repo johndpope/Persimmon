@@ -37,7 +37,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       window.rootViewController = vc
       self.window = window
       window.makeKeyAndVisible()
-      
+      tabBar.setupTabBar()
       
     }
   }

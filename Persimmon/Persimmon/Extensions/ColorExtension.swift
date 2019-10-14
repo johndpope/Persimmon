@@ -30,7 +30,7 @@ extension UIColor {
     case .appGreenColor:
       return #colorLiteral(red: 0.3548052609, green: 0.284040451, blue: 0.116188474, alpha: 1)
     case .appLayerBorderColor:
-      return #colorLiteral(red: 0.9876281619, green: 0.8609501123, blue: 0.6880975366, alpha: 1)
+      return #colorLiteral(red: 0.9876281619, green: 0.9296954157, blue: 0.7327052616, alpha: 1)
 
     }
   }
