@@ -36,6 +36,7 @@ class AlbumListVC: UIViewController {
 extension AlbumListVC: AlbumListViewDelegate {
   func didSelectCell(indexPath: AlbumListView) {
     let photoListVC = PhotoListVC()
+    print("push")
     navigationController?.pushViewController(photoListVC, animated: true)
   }
   

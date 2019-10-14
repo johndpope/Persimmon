@@ -16,11 +16,12 @@ class MainTabBarController: UITabBarController {
   private let albumListVC = AlbumListVC()
 
   private let settingVC = SettingVC()
+  
 
-//  private lazy var navi: UINavigationController = {
-//     let navi = UINavigationController(rootViewController: albumListVC)
-//     return navi
-//   }()
+  private lazy var navi: UINavigationController = {
+     let navi = UINavigationController(rootViewController: settingVC)
+     return navi
+   }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,14 +29,15 @@ class MainTabBarController: UITabBarController {
 
     }
 
-  private func setupTabBar() {
+   func setupTabBar() {
 
     installTabBarItems()
 
 
     tabBar.tintColor = .appColor(.appFontColor)
-    tabBar.backgroundColor = .white
-    self.viewControllers = [albumListVC, photoListVC, settingVC]
+    tabBar.backgroundColor = .appColor(.appGreenColor)
+    self.setViewControllers([albumListVC, photoListVC, settingVC], animated: true)
+//    self.viewControllers = [albumListVC, photoListVC, settingVC]
   }
 
   private func installTabBarItems() {

@@ -9,13 +9,32 @@
 import UIKit
 
 class SelectAlbumView: UIView {
+  lazy var backBtn: UIButton = {
+    let button = UIButton(type: .custom)
+    button.setTitleColor(.appColor(.appFontColor), for: .normal)
+    button.setTitle("⟨", for: .normal)
+    button.titleLabel?.font = UIFont.systemFont(ofSize: 40, weight: .semibold)
+    return button
+  }()
+  
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+  override func didMoveToSuperview() {
+    super.didMoveToSuperview()
+    self.backgroundColor = .white
+    addSubViews()
+    setupSNP()
+  }
+  
+  private func addSubViews() {
+    [backBtn]
+      .forEach { self.addSubview($0) }
+  
+  }
+  private func setupSNP() {
+    
+    backBtn.snp.makeConstraints {
+      $0.top.equalToSuperview().offset(UIScreen.main.bounds.height * 0.07)
+      $0.leading.equalToSuperview().inset(30)
     }
-    */
-
+  }
 }
