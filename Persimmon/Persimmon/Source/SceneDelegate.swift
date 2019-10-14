@@ -17,6 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //  let vc = AlbumListVC()
   let vc = PassCodeVC()
 //  let vc = TestRealm()
+  let tabBar = MainTabBarController()
   
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -33,7 +34,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       window.rootViewController = vc
       self.window = window
       window.makeKeyAndVisible()
-      
+      tabBar.setupTabBar()
       
     }
   }

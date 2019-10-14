@@ -33,7 +33,7 @@ class AlbumListView: UIView {
   }()
   
   let persimmonBtn: UIButton = {
-    let button = UIButton()
+    let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "persimmonicon1"), for: .normal)
     return button
   }()
@@ -126,17 +126,22 @@ extension AlbumListView: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //    tableView.separatorStyle = .none
-    switch indexPath.row {
-    case 0:
-      let cell = tableView.dequeueReusableCell(withIdentifier: "TLCollectionTableViewCell", for: indexPath) as! TLCollectionTableViewCell
+//    switch indexPath.row {
+//    case 0:
+//      let cell = tableView.dequeueReusableCell(withIdentifier: "TLCollectionTableViewCell", for: indexPath) as! TLCollectionTableViewCell
+//      cell.titleLabel.text = "123"
+//      cell.selectionStyle = .none
+//      return cell
+//    default:
+//      let cell = UITableViewCell()
+//      cell.selectionStyle = .none
+//      return cell
+//    }
+//
+    let cell = tableView.dequeueReusableCell(withIdentifier: "TLCollectionTableViewCell", for: indexPath) as! TLCollectionTableViewCell
       cell.titleLabel.text = "123"
       cell.selectionStyle = .none
       return cell
-    default:
-      let cell = UITableViewCell()
-      cell.selectionStyle = .none
-      return cell
-    }
   }
   
   

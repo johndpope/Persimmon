@@ -33,7 +33,7 @@ class PassCodeVC: UIViewController {
 
 extension PassCodeVC: PassCodeViewDelegate {
   func didTapButton(sender: UIButton) {
-    let vc = AlbumListVC()
+    let vc = MainTabBarController()
     let navi = UINavigationController(rootViewController: vc)
     
 //    let attirbute = [NSAttributedString.Key.foregroundColor: UIColor.appColor(.appFontColor),
