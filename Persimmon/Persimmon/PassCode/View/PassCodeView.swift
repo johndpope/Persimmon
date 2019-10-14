@@ -25,50 +25,50 @@ class PassCodeView: UIView {
 
   let imageView: UIImageView = {
     let img = UIImageView()
-    img.image = UIImage(named: "persimmon")
+    img.image = UIImage(named: "persimmonPassCodeBig")
     img.contentMode = .scaleToFill
     img.clipsToBounds = true
     return img
   }()
   
-  let logoImageView: UIImageView = {
-    let img = UIImageView()
-    img.image = UIImage(named: "persimmonLogo")
-    img.contentMode = .scaleAspectFit
-    img.clipsToBounds = true
-    return img
-  }()
-  
+//  let logoImageView: UIImageView = {
+//    let img = UIImageView()
+//    img.image = UIImage(named: "persimmonLogo")
+//    img.contentMode = .scaleAspectFit
+//    img.clipsToBounds = true
+//    return img
+//  }()
+//
   
   lazy var passcode1: UIButton = {
     let button = UIButton()
-    button.setImage(UIImage(named: "icon"), for: .normal)
-    button.setImage(UIImage(named: "icon"), for: .highlighted)
-    button.alpha = 0.9
+    button.setImage(UIImage(named: "passCodeIcon"), for: .normal)
+//    button.setImage(UIImage(named: "icon"), for: .highlighted)
+//    button.alpha = 0.9
     return button
   }()
   
   lazy var passcode2: UIButton = {
     let button = UIButton()
-    button.setImage(UIImage(named: "icon"), for: .normal)
-    button.setImage(UIImage(named: "icon"), for: .highlighted)
-    button.alpha = 0.9
+    button.setImage(UIImage(named: "passCodeIcon"), for: .normal)
+//    button.setImage(UIImage(named: "icon"), for: .highlighted)
+//    button.alpha = 0.9
     return button
   }()
   
   lazy var passcode3: UIButton = {
     let button = UIButton()
-    button.setImage(UIImage(named: "icon"), for: .normal)
-    button.setImage(UIImage(named: "icon"), for: .highlighted)
-    button.alpha = 0.2
+    button.setImage(UIImage(named: "passCodeIcon"), for: .normal)
+//    button.setImage(UIImage(named: "icon"), for: .highlighted)
+//    button.alpha = 0.2
     return button
   }()
   
   lazy var passcode4: UIButton = {
     let button = UIButton()
-    button.setImage(UIImage(named: "icon"), for: .normal)
-    button.setImage(UIImage(named: "icon"), for: .highlighted)
-    button.alpha = 0.2
+    button.setImage(UIImage(named: "passCodeIcon"), for: .normal)
+//    button.setImage(UIImage(named: "icon"), for: .highlighted)
+//    button.alpha = 0.2
     return button
   }()
   
@@ -76,7 +76,7 @@ class PassCodeView: UIView {
     let button = UIButton(type: .system)
     button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("1", for: .normal)
-    button.titleLabel?.font = UIFont(name: "Palatino", size: 30)
+    button.titleLabel?.font = UIFont(name: "Apple Color Emoji", size: 30)
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
     
     return button
@@ -85,7 +85,7 @@ class PassCodeView: UIView {
     let button = UIButton(type: .system)
     button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("2", for: .normal)
-    button.titleLabel?.font = UIFont(name: "Palatino", size: 30)
+    button.titleLabel?.font = UIFont(name: "Apple Color Emoji", size: 30)
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
     
     return button
@@ -95,7 +95,7 @@ class PassCodeView: UIView {
     button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("3", for: .normal)
     
-    button.titleLabel?.font = UIFont(name: "Palatino", size: 30)
+    button.titleLabel?.font = UIFont(name: "Apple Color Emoji", size: 30)
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
     return button
   }()
@@ -103,7 +103,7 @@ class PassCodeView: UIView {
     let button = UIButton(type: .system)
     button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("4", for: .normal)
-    button.titleLabel?.font = UIFont(name: "Palatino", size: 30)
+    button.titleLabel?.font = UIFont(name: "Apple Color Emoji", size: 30)
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
     
     return button
@@ -112,7 +112,7 @@ class PassCodeView: UIView {
     let button = UIButton(type: .system)
     button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("5", for: .normal)
-    button.titleLabel?.font = UIFont(name: "Palatino", size: 30)
+    button.titleLabel?.font = UIFont(name: "Apple Color Emoji", size: 30)
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
     return button
   }()
@@ -120,7 +120,7 @@ class PassCodeView: UIView {
     let button = UIButton(type: .system)
     button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("6", for: .normal)
-    button.titleLabel?.font = UIFont(name: "Palatino", size: 30)
+    button.titleLabel?.font = UIFont(name: "Apple Color Emoji", size: 30)
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
     return button
   }()
@@ -128,7 +128,7 @@ class PassCodeView: UIView {
     let button = UIButton(type: .system)
     button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("7", for: .normal)
-    button.titleLabel?.font = UIFont(name: "Palatino", size: 30)
+    button.titleLabel?.font = UIFont(name: "Apple Color Emoji", size: 30)
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
     
     return button
@@ -137,7 +137,7 @@ class PassCodeView: UIView {
     let button = UIButton(type: .system)
     button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("8", for: .normal)
-    button.titleLabel?.font = UIFont(name: "Palatino", size: 30)
+    button.titleLabel?.font = UIFont(name: "Apple Color Emoji", size: 30)
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
     
     return button
@@ -146,7 +146,7 @@ class PassCodeView: UIView {
     let button = UIButton(type: .system)
     button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("9", for: .normal)
-    button.titleLabel?.font = UIFont(name: "Palatino", size: 30)
+    button.titleLabel?.font = UIFont(name: "Apple Color Emoji", size: 30)
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
     
     return button
@@ -155,7 +155,7 @@ class PassCodeView: UIView {
     let button = UIButton(type: .system)
     button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("0", for: .normal)
-    button.titleLabel?.font = UIFont(name: "Palatino", size: 30)
+    button.titleLabel?.font = UIFont(name: "Apple Color Emoji", size: 30)
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
     
     return button
@@ -164,7 +164,7 @@ class PassCodeView: UIView {
     let button = UIButton(type: .system)
     button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("⟵", for: .normal)
-    button.titleLabel?.font = UIFont(name: "Palatino", size: 30)
+    button.titleLabel?.font = UIFont(name: "Apple Color Emoji", size: 30)
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
     return button
   }()
@@ -240,8 +240,8 @@ class PassCodeView: UIView {
 //    }
 
     imageStackView.snp.makeConstraints {
-      $0.top.equalTo(UIScreen.main.bounds.height * 0.13)
-      
+      $0.centerY.equalToSuperview()
+//      $0.top.equalTo(UIScreen.main.bounds.height * 0.13)
       $0.centerX.equalToSuperview()
     }
     firstStackView.snp.makeConstraints {
