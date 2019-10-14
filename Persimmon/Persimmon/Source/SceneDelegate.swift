@@ -9,15 +9,17 @@
 import UIKit
 import SwiftUI
 import RealmSwift
+import Photos
+import TLPhotoPicker
 
 @available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
   var window: UIWindow?
 //  let vc = AlbumListVC()
-  let vc = PassCodeVC()
+//  let vc = PassCodeVC()
 //  let vc = TestRealm()
-  let tabBar = MainTabBarController()
+  let vc = TLPhotosPickerViewController()
   
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -29,8 +31,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     // Use a UIHostingController as window root view controller.
     if let windowScene = scene as? UIWindowScene {
-      
+      setupConfigure()
       let window = UIWindow(windowScene: windowScene)
+      window.backgroundColor = .white
       window.rootViewController = vc
       self.window = window
       window.makeKeyAndVisible()
@@ -39,7 +42,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
   }
   
-  
+  private func setupConfigure() {
+    vc.configure.cancelTitle = "취소"
+    vc.configure.doneTitle = "완료"
+    vc.configure.tapHereToChange = "탭해서 바꾸기"
+    vc.configure.emptyMessage = "앨범 없음"
+    vc.configure.recordingVideoQuality = .typeHigh
+    vc.configure.selectedColor = .appColor(.appPersimmonColor)
+//    vc.configure.customLocalizedTitle = ["카메라 롤": "카메라 롤"]
+//    vc.configure.cameraBgColor = .appColor(.appPersimmonColor)
+    let test = TLPHAsset(asset: PHAsset())
+  }
   
   
   func sceneDidDisconnect(_ scene: UIScene) {
