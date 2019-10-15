@@ -12,7 +12,8 @@ class LaunchScreenView: UIView {
   
   let launchImageView: UIImageView = {
     let img = UIImageView()
-    img.image = UIImage(named: "persimmonbackBig")
+    img.image = UIDevice.current.hasNotch ?
+    UIImage(named: "persimmonbackBig") : UIImage(named: "persimmonBackSmall")
     img.contentMode = .scaleToFill
     img.clipsToBounds = true
     return img

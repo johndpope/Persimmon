@@ -8,15 +8,18 @@
 
 import UIKit
 import SnapKit
+import RealmSwift
 import TLPhotoPicker
 
 protocol AlbumListViewDelegate {
-  func didSelectCell(indexPath: AlbumListView)
+  func didSelectCell(indexPath: AlbumListView, uuid: String)
 }
 
 class AlbumListView: UIView {
   
   var delegate: AlbumListViewDelegate?
+  
+  var albums = RealmSingleton.shared.realm.objects(Album.self)
   
   let topView: UIView = {
     let topView = UIView()
@@ -28,16 +31,16 @@ class AlbumListView: UIView {
     label.text = "수정"
     label.textColor = .appColor(.appFontColor)
     label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
-//    label.font = UIFont(name: "Palatino", size: 17)
+    //    label.font = UIFont(name: "Palatino", size: 17)
     return label
   }()
   
   let persimmonBtn: UIButton = {
     let button = UIButton(type: .custom)
-    button.setImage(UIImage(named: "persimmonicon1"), for: .normal)
+    button.setImage(UIImage(named: "persimmonIcon"), for: .normal)
     return button
   }()
-
+  
   lazy var albumLabel: UILabel = {
     let label = UILabel()
     label.text = "사진첩"
@@ -46,7 +49,7 @@ class AlbumListView: UIView {
     label.font = UIFont(name: "Optima", size: 35)
     return label
   }()
-
+  
   
   lazy var tableView: UITableView = {
     let tableView = UITableView()
@@ -54,6 +57,38 @@ class AlbumListView: UIView {
     tableView.delegate = self
     return tableView
   }()
+  
+  lazy var selectToken = RealmSingleton.shared.selectAlbum?.observe { (change) in
+//    guard let `self` = self else { return }
+    switch change {
+    case .change(_):
+      print("changed")
+      self.tableView.reloadData()
+    case .deleted:
+      print("deleted")
+      self.tableView.reloadData()
+    case .error(let err):
+      print("err: ", err)
+    }
+  }
+  
+  lazy var token = RealmSingleton.shared.selectAlbum?.observe { (change) in
+  //    guard let `self` = self else { return }
+      switch change {
+      case .change(_):
+        print("initial")
+        self.tableView.reloadData()
+      case .deleted:
+        print("update")
+        self.tableView.reloadData()
+      case .error(let err):
+        print("err: ", err)
+      }
+    }
+  
+//  deinit {
+//    selectToken?.invalidate()
+//  }
   
   
   override func didMoveToSuperview() {
@@ -65,19 +100,10 @@ class AlbumListView: UIView {
     
   }
   
-  func bundle() -> Bundle {
-      let podBundle = Bundle(for: TLBundle.self)
-      if let url = podBundle.url(forResource: "TLPhotoPicker", withExtension: "bundle") {
-          let bundle = Bundle(url: url)
-          return bundle ?? podBundle
-      }
-      return podBundle
-  }
-  
   private func setupTableView() {
     
-    tableView.register(UINib(nibName: "TLCollectionTableViewCell", bundle: bundle()), forCellReuseIdentifier: "TLCollectionTableViewCell")
-//    tableView.register(TLCollectionTableViewCell.self, forCellReuseIdentifier: "TLCollectionTableViewCell")
+    tableView.register(UINib(nibName: "TLCollectionTableViewCell", bundle: Bundle().bundle()), forCellReuseIdentifier: "TLCollectionTableViewCell")
+    //    tableView.register(TLCollectionTableViewCell.self, forCellReuseIdentifier: "TLCollectionTableViewCell")
   }
   
   private func addSubViews() {
@@ -115,33 +141,36 @@ class AlbumListView: UIView {
     }
     
   }
-
+  
   
 }
 
 extension AlbumListView: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 3
+    return albums.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//    tableView.separatorStyle = .none
-//    switch indexPath.row {
-//    case 0:
-//      let cell = tableView.dequeueReusableCell(withIdentifier: "TLCollectionTableViewCell", for: indexPath) as! TLCollectionTableViewCell
-//      cell.titleLabel.text = "123"
-//      cell.selectionStyle = .none
-//      return cell
-//    default:
-//      let cell = UITableViewCell()
-//      cell.selectionStyle = .none
-//      return cell
-//    }
-//
+    //    tableView.separatorStyle = .none
+    //    switch indexPath.row {
+    //    case 0:
+    //      let cell = tableView.dequeueReusableCell(withIdentifier: "TLCollectionTableViewCell", for: indexPath) as! TLCollectionTableViewCell
+    //      cell.titleLabel.text = "123"
+    //      cell.selectionStyle = .none
+    //      return cell
+    //    default:
+    //      let cell = UITableViewCell()
+    //      cell.selectionStyle = .none
+    //      return cell
+    //    }
+    //
     let cell = tableView.dequeueReusableCell(withIdentifier: "TLCollectionTableViewCell", for: indexPath) as! TLCollectionTableViewCell
-      cell.titleLabel.text = "123"
-      cell.selectionStyle = .none
-      return cell
+    cell.titleLabel.text = albums[indexPath.row].title
+    cell.subTitleLabel.text = albums[indexPath.row].photos.count.description
+    cell.imageView?.contentMode = .scaleAspectFill
+    cell.imageView?.image = UIImage(data: albums[indexPath.row].photos.last?.photoData ?? Data())
+    cell.selectionStyle = .none
+    return cell
   }
   
   
@@ -153,7 +182,8 @@ extension AlbumListView: UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    delegate?.didSelectCell(indexPath: self)
+    let uuid = albums[indexPath.row].uuid
+    delegate?.didSelectCell(indexPath: self, uuid: uuid)
   }
 }
 

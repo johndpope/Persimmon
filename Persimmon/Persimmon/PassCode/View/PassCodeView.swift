@@ -25,7 +25,8 @@ class PassCodeView: UIView {
 
   let imageView: UIImageView = {
     let img = UIImageView()
-    img.image = UIImage(named: "persimmonPassCodeBig")
+    img.image = UIDevice.current.hasNotch ?
+      UIImage(named: "persimmonPassCodeBig") : UIImage(named: "persimmonPassCodeSmall")
     img.contentMode = .scaleToFill
     img.clipsToBounds = true
     return img
