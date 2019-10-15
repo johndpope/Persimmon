@@ -26,27 +26,31 @@ class AlbumListView: UIView {
     return topView
   }()
   
-  let editLabel: UILabel = {
-    let label = UILabel()
-    label.text = "수정"
-    label.textColor = .appColor(.appFontColor)
-    label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
-    //    label.font = UIFont(name: "Palatino", size: 17)
-    return label
+  let editBtn: UIButton = {
+    let button = UIButton(type: .custom)
+    button.titleLabel?.font = UIFont(name: "NanumPen", size: 17)
+    button.setTitle("수정", for: .normal)
+    button.setTitleColor(.appColor(.appFontColor), for: .normal)
+    
+//    label.font = UIFont(name: "Palatino", size: 17)
+    return button
   }()
   
-  let persimmonBtn: UIButton = {
+  let addBtn: UIButton = {
     let button = UIButton(type: .custom)
-    button.setImage(UIImage(named: "persimmonIcon"), for: .normal)
+//    button.setImage(UIImage(named: "persimmonIPassCodeIcon"), for: .normal)
+    button.titleLabel?.font = UIFont(name: "NanumPen", size: 17)
+    button.setTitle("추가", for: .normal)
+    button.setTitleColor(.appColor(.appFontColor), for: .normal)
     return button
   }()
   
   lazy var albumLabel: UILabel = {
     let label = UILabel()
-    label.text = "사진첩"
+    label.font = UIFont(name: "NanumPen", size: 30)
     label.textColor = .appColor(.appFontColor)
-    label.adjustsFontForContentSizeCategory = true
-    label.font = UIFont(name: "Optima", size: 35)
+//    label.adjustsFontForContentSizeCategory = true
+    label.text = "사진첩"
     return label
   }()
   
@@ -109,7 +113,7 @@ class AlbumListView: UIView {
   private func addSubViews() {
     [topView, tableView]
       .forEach { self.addSubview($0) }
-    [editLabel, persimmonBtn, albumLabel]
+    [editBtn, addBtn, albumLabel]
       .forEach { topView.addSubview($0) }
   }
   
@@ -117,21 +121,21 @@ class AlbumListView: UIView {
     
     topView.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
-      $0.height.equalTo(UIScreen.main.bounds.height / 5)
+      $0.height.equalToSuperview().multipliedBy(0.3)
     }
     
-    editLabel.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(UIScreen.main.bounds.height * 0.07)
-      $0.leading.equalToSuperview().inset(30)
+    editBtn.snp.makeConstraints {
+      $0.top.equalTo(self.snp.topMargin).offset(10)
+      $0.leading.equalToSuperview().offset(30)
     }
     
-    persimmonBtn.snp.makeConstraints {
-      $0.top.equalTo(UIScreen.main.bounds.height * 0.07)
-      $0.trailing.equalToSuperview().inset(30)
+    addBtn.snp.makeConstraints {
+      $0.top.equalTo(self.snp.topMargin).offset(10)
+      $0.trailing.equalToSuperview().offset(-30)
     }
     
     albumLabel.snp.makeConstraints {
-      $0.top.equalTo(editLabel.snp.bottom).offset(40)
+      $0.top.equalTo(editBtn.snp.bottom).offset(40)
       $0.leading.equalToSuperview().inset(30)
     }
     
@@ -186,5 +190,3 @@ extension AlbumListView: UITableViewDelegate {
     delegate?.didSelectCell(indexPath: self, uuid: uuid)
   }
 }
-
-

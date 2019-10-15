@@ -14,10 +14,7 @@ class PassCodeVC: UIViewController {
   var isFirst: Bool = false
   let launchPassCodeView = LaunchPassCodeView()
   
-  let attributes = [NSAttributedString.Key.font : UIFont(name: "Palatino", size: 20)!, NSAttributedString.Key.foregroundColor : UIColor.appColor(.appFontColor)]
-  
-  
-  let code = "1234"
+  let attributes = [NSAttributedString.Key.font : UIFont(name: "NanumPen", size: 20)!, NSAttributedString.Key.foregroundColor : UIColor.appColor(.appFontColor)]
   
   override func loadView() {
     self.view = launchPassCodeView
@@ -35,23 +32,13 @@ extension PassCodeVC: PassCodeViewDelegate {
   func didTapButton(sender: UIButton) {
     let vc = MainTabBarController()
     let navi = UINavigationController(rootViewController: vc)
-    
-//    let attirbute = [NSAttributedString.Key.foregroundColor: UIColor.appColor(.appFontColor),
-//    NSAttributedString.Key.font: UIFont(name: "Palatino", size: 21)!]
-//
-//    let textAttributes:[NSAttributedString.Key: Any] = [NSAttributedString.Key(rawValue: NSAttributedString.Key.foregroundColor.rawValue):UIColor.blue, NSAttributedStringKey(rawValue: NSAttributedStringKey.font.rawValue):UIFont(name:"Palatino", size: 17)!]
-//       navigationController?.navigationBar.titleTextAttributes = textAttributes
 
     
     navi.modalPresentationStyle = .fullScreen
     navi.modalTransitionStyle = .crossDissolve
     navi.navigationBar.isHidden = true
-//    navi.navigationBar.prefersLargeTitles = true
-//    navi.navigationBar.titleTextAttributes = attirbute
-//    vc.title = "사진첩"
     self.present(navi, animated: true)
   
-    
   }
   
 }

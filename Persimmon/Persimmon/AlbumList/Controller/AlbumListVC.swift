@@ -30,7 +30,6 @@ class AlbumListVC: UIViewController {
     albumListView.tableView.reloadData()
   }
   
-  
   private func setupNavi() {
     
     

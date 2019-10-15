@@ -60,9 +60,5 @@ class LaunchPassCodeView: UIView {
 
   }
   
-  
-    
-
-
 
 }

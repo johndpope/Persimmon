@@ -32,6 +32,9 @@
 		C10C9BCA23537EEE00FA56A3 /* PhotoListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9BC923537EEE00FA56A3 /* PhotoListVC.swift */; };
 		C10C9BD62354786B00FA56A3 /* SelectAlbumVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9BD52354786B00FA56A3 /* SelectAlbumVC.swift */; };
 		C10C9BD8235482C800FA56A3 /* CustomAlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9BD7235482C800FA56A3 /* CustomAlertVC.swift */; };
+		C10C9C0023564AE200FA56A3 /* GamjaFlower-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C10C9BFF23564ADA00FA56A3 /* GamjaFlower-Regular.ttf */; };
+		C10C9C0823564EFB00FA56A3 /* NanumPen.otf in Resources */ = {isa = PBXBuildFile; fileRef = C10C9C0723564EFB00FA56A3 /* NanumPen.otf */; };
+		C10C9C0A2356516400FA56A3 /* NanumPenScript-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C10C9C092356516400FA56A3 /* NanumPenScript-Regular.ttf */; };
 		C1618910235270B300C49B57 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161890F235270B300C49B57 /* ColorExtension.swift */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +68,9 @@
 		C10C9BC923537EEE00FA56A3 /* PhotoListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListVC.swift; sourceTree = "<group>"; };
 		C10C9BD52354786B00FA56A3 /* SelectAlbumVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAlbumVC.swift; sourceTree = "<group>"; };
 		C10C9BD7235482C800FA56A3 /* CustomAlertVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertVC.swift; sourceTree = "<group>"; };
+		C10C9BFF23564ADA00FA56A3 /* GamjaFlower-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GamjaFlower-Regular.ttf"; sourceTree = "<group>"; };
+		C10C9C0723564EFB00FA56A3 /* NanumPen.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NanumPen.otf; sourceTree = "<group>"; };
+		C10C9C092356516400FA56A3 /* NanumPenScript-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NanumPenScript-Regular.ttf"; sourceTree = "<group>"; };
 		C161890F235270B300C49B57 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -145,6 +151,7 @@
 				C10C9BBA235379AC00FA56A3 /* SelectAlbum */,
 				523705C12351024400869F57 /* Preview Content */,
 				521F9DAA23520E2E00506B9C /* Data */,
+				C10C9BD92356277300FA56A3 /* Font */,
 				521F9DAD23527C8300506B9C /* PhotosPicker */,
 				521F9DA723520BF500506B9C /* TestCode */,
 			);
@@ -338,6 +345,16 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		C10C9BD92356277300FA56A3 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				C10C9BFF23564ADA00FA56A3 /* GamjaFlower-Regular.ttf */,
+				C10C9C092356516400FA56A3 /* NanumPenScript-Regular.ttf */,
+				C10C9C0723564EFB00FA56A3 /* NanumPen.otf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
 		C161890E2352706200C49B57 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -416,6 +433,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C10C9C0023564AE200FA56A3 /* GamjaFlower-Regular.ttf in Resources */,
+				C10C9C0823564EFB00FA56A3 /* NanumPen.otf in Resources */,
+				C10C9C0A2356516400FA56A3 /* NanumPenScript-Regular.ttf in Resources */,
 				523705C62351024400869F57 /* LaunchScreen.storyboard in Resources */,
 				523705C32351024400869F57 /* Preview Assets.xcassets in Resources */,
 				523705C02351024400869F57 /* Assets.xcassets in Resources */,
