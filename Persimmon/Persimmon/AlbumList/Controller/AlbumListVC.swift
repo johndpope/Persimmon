@@ -25,7 +25,6 @@ class AlbumListVC: UIViewController {
     
   }
   
-  
   private func setupNavi() {
     
     

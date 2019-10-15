@@ -11,11 +11,17 @@ import SnapKit
 
 class PhotoListView: UIView {
   
+  let topView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .gray
+    return view
+  }()
+  
   lazy var backBtn: UIButton = {
     let button = UIButton(type: .custom)
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
     button.setTitle("⟨", for: .normal)
-    button.titleLabel?.font = UIFont.systemFont(ofSize: 40, weight: .semibold)
+    button.titleLabel?.font = UIFont.systemFont(ofSize: 40, weight: .medium)
     return button
   }()
 
@@ -23,7 +29,8 @@ class PhotoListView: UIView {
   // 프로필이미지
   lazy var profileImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.layer.cornerRadius = 75
+//    imageView.layer.cornerRadius = imageView.frame.width / 2
+    
     imageView.clipsToBounds = true
     imageView.contentMode = .scaleAspectFill
 //    imageView.contentMode = .redraw
@@ -107,7 +114,13 @@ class PhotoListView: UIView {
     return button
   }()
   
+  // 레이아웃이 시작이 될때마다 불리고
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    profileImageView.layer.cornerRadius = topView.frame.height * 0.55 / 2
+  }
   
+  // 한번만 불리고
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
     addSubViews()
@@ -149,14 +162,15 @@ class PhotoListView: UIView {
   
 
   private func addSubViews() {
-    [profileImageView, backBtn, albumTitle, listNumberLabel, addBtn]
+    [topView, addBtn]
       .forEach { self.addSubview($0) }
+    [profileImageView, backBtn, albumTitle, listNumberLabel]
+      .forEach { topView.addSubview($0) }
 //    [label, cameraBtn, cameraLabel, photoLibraryBtn, photoLibraryLabel]
 //      .forEach { containerView.addSubview($0) }
   }
   
   func createAlert() {
-    
     [containerView]
          .forEach { self.addSubview($0) }
     
@@ -200,26 +214,29 @@ class PhotoListView: UIView {
   
   private func setupSNP() {
     
+    topView.snp.makeConstraints {
+      $0.top.leading.trailing.equalToSuperview()
+      $0.height.equalToSuperview().multipliedBy(0.35)
+    }
+    
     backBtn.snp.makeConstraints { 
-      $0.top.equalToSuperview().offset(UIScreen.main.bounds.height * 0.07)
-      $0.leading.equalToSuperview().inset(30)
+      $0.top.equalTo(self.snp.topMargin).offset(10)
+      $0.leading.equalToSuperview().offset(20)
     }
     
     profileImageView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(UIScreen.main.bounds.height * 0.10)
+      $0.top.equalTo(self.snp.topMargin).offset(10)
       $0.centerX.equalToSuperview()
-      $0.width.height.equalTo(150)
+      $0.width.height.equalTo(topView.snp.height).multipliedBy(0.55)
     }
     
     albumTitle.snp.makeConstraints {
-      $0.top.equalTo(profileImageView.snp.bottom).offset(20)
+      $0.bottom.equalTo(listNumberLabel.snp.top).offset(-10)
       $0.centerX.equalToSuperview()
     }
-     
-     
     
     listNumberLabel.snp.makeConstraints {
-      $0.top.equalTo(albumTitle.snp.bottom).offset(20)
+      $0.bottom.equalToSuperview().offset(-5)
       $0.centerX.equalToSuperview()
     }
     
