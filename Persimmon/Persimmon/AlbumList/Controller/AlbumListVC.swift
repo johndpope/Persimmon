@@ -22,7 +22,12 @@ class AlbumListVC: UIViewController {
     super.viewDidLoad()
     view.backgroundColor = .white
     albumListView.delegate = self
-    
+//    RealmSingleton.shared.addAlbum(title: "좀 나와라")
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    albumListView.tableView.reloadData()
   }
   
   private func setupNavi() {
@@ -33,8 +38,9 @@ class AlbumListVC: UIViewController {
 }
 
 extension AlbumListVC: AlbumListViewDelegate {
-  func didSelectCell(indexPath: AlbumListView) {
+  func didSelectCell(indexPath: AlbumListView, uuid: String) {
     let photoListVC = PhotoListVC()
+    photoListVC.uuid = uuid
     print("push")
     navigationController?.pushViewController(photoListVC, animated: true)
   }
