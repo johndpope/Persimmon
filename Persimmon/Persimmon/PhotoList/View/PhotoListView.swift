@@ -163,8 +163,42 @@ class PhotoListView: UIView {
       .forEach { self.addSubview($0) }
     [profileImageView, backBtn, albumTitle, listNumberLabel]
       .forEach { topView.addSubview($0) }
-//    [label, cameraBtn, cameraLabel, photoLibraryBtn, photoLibraryLabel]
-//      .forEach { containerView.addSubview($0) }
+  }
+  
+  private func setupSNP() {
+    
+    topView.snp.makeConstraints {
+      $0.top.leading.trailing.equalToSuperview()
+      $0.height.equalToSuperview().multipliedBy(0.35)
+    }
+    
+    backBtn.snp.makeConstraints { 
+      $0.top.equalTo(self.snp.topMargin).offset(10)
+      $0.leading.equalToSuperview().offset(20)
+    }
+    
+    profileImageView.snp.makeConstraints {
+      $0.top.equalTo(self.snp.topMargin).offset(10)
+      $0.centerX.equalToSuperview()
+      $0.width.height.equalTo(topView.snp.height).multipliedBy(0.55)
+    }
+    
+    albumTitle.snp.makeConstraints {
+      $0.bottom.equalTo(listNumberLabel.snp.top).offset(-10)
+      $0.centerX.equalToSuperview()
+//      $0.width.height.equalTo(topView.snp.height).multipliedBy(0.3)
+    }
+    
+    listNumberLabel.snp.makeConstraints {
+      $0.bottom.equalToSuperview().offset(-5)
+      $0.centerX.equalToSuperview()
+    }
+    
+    addBtn.snp.makeConstraints {
+      $0.bottom.equalTo(-UIScreen.main.bounds.height / 6)
+      $0.trailing.equalToSuperview().offset(-30)
+      $0.width.height.equalTo(50)
+    }
   }
   
   func createAlert() {
@@ -206,43 +240,6 @@ class PhotoListView: UIView {
       $0.centerX.equalTo(cameraBtn)
     }
     
-  }
-
-  
-  private func setupSNP() {
-    
-    topView.snp.makeConstraints {
-      $0.top.leading.trailing.equalToSuperview()
-      $0.height.equalToSuperview().multipliedBy(0.35)
-    }
-    
-    backBtn.snp.makeConstraints { 
-      $0.top.equalTo(self.snp.topMargin).offset(10)
-      $0.leading.equalToSuperview().offset(20)
-    }
-    
-    profileImageView.snp.makeConstraints {
-      $0.top.equalTo(self.snp.topMargin).offset(10)
-      $0.centerX.equalToSuperview()
-      $0.width.height.equalTo(topView.snp.height).multipliedBy(0.55)
-    }
-    
-    albumTitle.snp.makeConstraints {
-      $0.bottom.equalTo(listNumberLabel.snp.top).offset(-10)
-      $0.centerX.equalToSuperview()
-//      $0.width.height.equalTo(topView.snp.height).multipliedBy(0.3)
-    }
-    
-    listNumberLabel.snp.makeConstraints {
-      $0.bottom.equalToSuperview().offset(-5)
-      $0.centerX.equalToSuperview()
-    }
-    
-    addBtn.snp.makeConstraints {
-      $0.bottom.equalTo(-UIScreen.main.bounds.height / 6)
-      $0.trailing.equalToSuperview().offset(-30)
-      $0.width.height.equalTo(50)
-    }
   }
   
 }

@@ -32,7 +32,6 @@ class AlbumListView: UIView {
     button.titleLabel?.font = UIFont(name: "NanumPen", size: 20)
     button.setTitle("수정", for: .normal)
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
-    button.addTarget(self, action: #selector(editBtndidTap(_:)), for: .touchUpInside)
     return button
   }()
   
@@ -41,7 +40,6 @@ class AlbumListView: UIView {
     button.titleLabel?.font = UIFont(name: "NanumPen", size: 20)
     button.setTitle("추가", for: .normal)
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
-    button.addTarget(self, action: #selector(addBtndidTap(_:)), for: .touchUpInside)
     return button
   }()
   
@@ -69,20 +67,12 @@ class AlbumListView: UIView {
     setupTableView()
     
   }
-  
-
-  // MARK: - 수정, 추가 버튼 연결 - VC
-  @objc func editBtndidTap(_ sender: UIButton) {
-     print("수정버튼")
-   }
-  
-  @objc func addBtndidTap(_ sender: UIButton) {
-    print("추가버튼")
-  }
-  
+ 
   private func setupTableView() {
     
-    tableView.register(UINib(nibName: "TLCollectionTableViewCell", bundle: Bundle().bundle()), forCellReuseIdentifier: "TLCollectionTableViewCell")
+//    tableView.register(UINib(nibName: "TLCollectionTableViewCell", bundle: Bundle().bundle()), forCellReuseIdentifier: "TLCollectionTableViewCell")
+    
+    tableView.register(AlbumListTableCell.self, forCellReuseIdentifier: AlbumListTableCell.identifier)
 
   }
   
@@ -97,7 +87,7 @@ class AlbumListView: UIView {
     
     topView.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
-      $0.height.equalToSuperview().multipliedBy(0.23)
+      $0.height.equalToSuperview().multipliedBy(0.22)
     }
     
     editBtn.snp.makeConstraints {
@@ -122,7 +112,6 @@ class AlbumListView: UIView {
     
   }
   
-  
 }
 
 extension AlbumListView: UITableViewDataSource {
@@ -131,11 +120,12 @@ extension AlbumListView: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: "TLCollectionTableViewCell", for: indexPath) as! TLCollectionTableViewCell
+//    let cell = tableView.dequeueReusableCell(withIdentifier: "TLCollectionTableViewCell", for: indexPath) as! TLCollectionTableViewCell
+    let cell = tableView.dequeueReusableCell(withIdentifier: AlbumListTableCell.identifier, for: indexPath) as! AlbumListTableCell
     cell.titleLabel.text = albums[indexPath.row].title
-    cell.subTitleLabel.text = albums[indexPath.row].photos.count.description
-    cell.imageView?.contentMode = .scaleAspectFill
-    cell.imageView?.image = UIImage(data: albums[indexPath.row].photos.last?.photoData ?? Data())
+    cell.subTitleLabel.text = "[ \(albums[indexPath.row].photos.count.description) ]"
+    cell.albumImageView.contentMode = .scaleAspectFill
+    cell.albumImageView.image = UIImage(data: albums[indexPath.row].photos.last?.photoData ?? Data())
     cell.selectionStyle = .none
     return cell
   }
@@ -145,7 +135,7 @@ extension AlbumListView: UITableViewDataSource {
 
 extension AlbumListView: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return UIScreen.main.bounds.height * 0.15
+    return UIScreen.main.bounds.height * 0.13
   }
   
   func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -156,4 +146,29 @@ extension AlbumListView: UITableViewDelegate {
     let uuid = albums[indexPath.row].uuid
     delegate?.didSelectCell(indexPath: self, uuid: uuid)
   }
+  
+  func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { (UIContextualAction, UIView,  success: (Bool) -> Void) in
+      success(true)
+    }
+    deleteAction.image = UIImage(named: "minus")
+    deleteAction.backgroundColor = UIColor.appColor(.appFontColor)
+
+    let editAction = UIContextualAction(style: .normal, title: "수정") { (UIContextualAction, UIView, success: (Bool) -> Void) in
+      success(true)
+    }
+    editAction.image = UIImage(named: "pencil")
+
+    editAction.backgroundColor = UIColor.appColor(.appYellowColor)
+    editAction.accessibilityFrame.offsetBy(dx: 10, dy: 10)
+
+    return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+  }
+//  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//    if editingStyle == .delete {
+//      print("editing")
+//    }
+//  }
+  
+
 }

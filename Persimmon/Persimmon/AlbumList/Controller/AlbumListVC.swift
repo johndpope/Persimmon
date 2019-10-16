@@ -31,9 +31,14 @@ class AlbumListVC: UIViewController {
         self.albumListView.tableView.reloadData()
       }
     })
-    
+    albumListView.editBtn.addTarget(self, action: #selector(editBtnDidTap(_:)), for: .touchUpInside)
+    navigationItem.leftBarButtonItem = editButtonItem
 
   }
+  @objc func editBtnDidTap(_ sender: UIButton) {
+    
+   }
+   
   
   deinit {
     notificationToken?.invalidate()
