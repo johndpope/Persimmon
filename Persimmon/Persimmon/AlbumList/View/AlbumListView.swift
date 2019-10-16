@@ -23,36 +23,35 @@ class AlbumListView: UIView {
   
   let topView: UIView = {
     let topView = UIView()
+    topView.backgroundColor = UIColor.appColor(.appLayerBorderColor)
     return topView
   }()
   
-  let editBtn: UIButton = {
+  lazy var editBtn: UIButton = {
     let button = UIButton(type: .custom)
-    button.titleLabel?.font = UIFont(name: "NanumPen", size: 17)
+    button.titleLabel?.font = UIFont(name: "NanumPen", size: 20)
     button.setTitle("수정", for: .normal)
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
-    
-//    label.font = UIFont(name: "Palatino", size: 17)
+    button.addTarget(self, action: #selector(editBtndidTap(_:)), for: .touchUpInside)
     return button
   }()
   
-  let addBtn: UIButton = {
+  lazy var addBtn: UIButton = {
     let button = UIButton(type: .custom)
-//    button.setImage(UIImage(named: "persimmonIPassCodeIcon"), for: .normal)
-    button.titleLabel?.font = UIFont(name: "NanumPen", size: 17)
+    button.titleLabel?.font = UIFont(name: "NanumPen", size: 20)
     button.setTitle("추가", for: .normal)
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
+    button.addTarget(self, action: #selector(addBtndidTap(_:)), for: .touchUpInside)
     return button
   }()
   
   lazy var albumLabel: UILabel = {
     let label = UILabel()
-    label.font = UIFont(name: "NanumPen", size: 30)
+    label.font = UIFont(name: "NanumPen", size: 40)
     label.textColor = .appColor(.appFontColor)
     label.text = "사진첩"
     return label
   }()
-  
   
   lazy var tableView: UITableView = {
     let tableView = UITableView()
@@ -71,9 +70,20 @@ class AlbumListView: UIView {
     
   }
   
+
+  // MARK: - 수정, 추가 버튼 연결 - VC
+  @objc func editBtndidTap(_ sender: UIButton) {
+     print("수정버튼")
+   }
+  
+  @objc func addBtndidTap(_ sender: UIButton) {
+    print("추가버튼")
+  }
+  
   private func setupTableView() {
     
     tableView.register(UINib(nibName: "TLCollectionTableViewCell", bundle: Bundle().bundle()), forCellReuseIdentifier: "TLCollectionTableViewCell")
+
   }
   
   private func addSubViews() {
@@ -87,7 +97,7 @@ class AlbumListView: UIView {
     
     topView.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
-      $0.height.equalToSuperview().multipliedBy(0.3)
+      $0.height.equalToSuperview().multipliedBy(0.23)
     }
     
     editBtn.snp.makeConstraints {
@@ -101,8 +111,8 @@ class AlbumListView: UIView {
     }
     
     albumLabel.snp.makeConstraints {
-      $0.top.equalTo(editBtn.snp.bottom).offset(40)
-      $0.leading.equalToSuperview().inset(30)
+      $0.bottom.equalToSuperview().offset(-5)
+      $0.leading.equalToSuperview().offset(30)
     }
     
     tableView.snp.makeConstraints {
@@ -135,7 +145,7 @@ extension AlbumListView: UITableViewDataSource {
 
 extension AlbumListView: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return UIScreen.main.bounds.height * 0.10
+    return UIScreen.main.bounds.height * 0.15
   }
   
   func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
