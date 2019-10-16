@@ -12,6 +12,8 @@
 		521F9DAF23527CA500506B9C /* CustomPhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521F9DAE23527CA500506B9C /* CustomPhotoPicker.swift */; };
 		521F9DB1235516A400506B9C /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521F9DB0235516A400506B9C /* UIDeviceExtension.swift */; };
 		521F9DB32355725F00506B9C /* BundleExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521F9DB22355725F00506B9C /* BundleExtention.swift */; };
+		521F9DB52357997700506B9C /* TopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521F9DB42357997700506B9C /* TopView.swift */; };
+		521F9DB92357AF3A00506B9C /* PhotoCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521F9DB82357AF3A00506B9C /* PhotoCollectionView.swift */; };
 		523705BA2351024200869F57 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523705B92351024200869F57 /* AppDelegate.swift */; };
 		523705BC2351024200869F57 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523705BB2351024200869F57 /* SceneDelegate.swift */; };
 		523705C02351024400869F57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 523705BF2351024400869F57 /* Assets.xcassets */; };
@@ -48,6 +50,8 @@
 		521F9DAE23527CA500506B9C /* CustomPhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPhotoPicker.swift; sourceTree = "<group>"; };
 		521F9DB0235516A400506B9C /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
 		521F9DB22355725F00506B9C /* BundleExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtention.swift; sourceTree = "<group>"; };
+		521F9DB42357997700506B9C /* TopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopView.swift; sourceTree = "<group>"; };
+		521F9DB82357AF3A00506B9C /* PhotoCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionView.swift; sourceTree = "<group>"; };
 		523705B62351024200869F57 /* Persimmon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Persimmon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		523705B92351024200869F57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		523705BB2351024200869F57 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -274,6 +278,8 @@
 			children = (
 				C10C9BB62353798E00FA56A3 /* PhotoListViewEmpty.swift */,
 				C10C9BB82353799E00FA56A3 /* PhotoListView.swift */,
+				521F9DB82357AF3A00506B9C /* PhotoCollectionView.swift */,
+				521F9DB42357997700506B9C /* TopView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -500,10 +506,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				521F9DB52357997700506B9C /* TopView.swift in Sources */,
 				C10C9C1223574DE800FA56A3 /* PassCodeSetView.swift in Sources */,
 				C10C9BB92353799E00FA56A3 /* PhotoListView.swift in Sources */,
 				C10C9BC823537C8F00FA56A3 /* SettingVC.swift in Sources */,
 				521F9DAF23527CA500506B9C /* CustomPhotoPicker.swift in Sources */,
+				521F9DB92357AF3A00506B9C /* PhotoCollectionView.swift in Sources */,
 				C10C9C0E2356CD7500FA56A3 /* SettingView.swift in Sources */,
 				523705CE235105C700869F57 /* PassCodeVC.swift in Sources */,
 				C10C9BC223537A8000FA56A3 /* MainTabBarController.swift in Sources */,
@@ -661,6 +669,7 @@
 			baseConfigurationReference = 2F6B9E09EE131E037B59850A /* Pods-Persimmon.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Persimmon/Source/\"";
 				DEVELOPMENT_TEAM = "";
@@ -673,6 +682,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = hyeoktae.com.Persimmon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -683,6 +693,7 @@
 			baseConfigurationReference = 7C2736417BA302DF8EE103DF /* Pods-Persimmon.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Persimmon/Source/\"";
 				DEVELOPMENT_TEAM = "";
@@ -695,6 +706,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = hyeoktae.com.Persimmon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
