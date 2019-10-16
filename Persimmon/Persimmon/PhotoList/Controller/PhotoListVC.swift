@@ -44,13 +44,13 @@ class PhotoListVC: UIViewController {
 
     //1. 알림창을 경고 형식으로 정의 한다.
 
-    let alert = UIAlertController(title: nil, message: "가져오기",preferredStyle: .actionSheet)
+    let alert = UIAlertController(title: "", message: "가져오기",preferredStyle: .actionSheet)
 
     //2. 버튼을 정의 한다.
 
     let libraryAction = UIAlertAction(title: "앨범", style: .default) {
       [unowned self] (alert) -> Void in
-      
+    
       let vc = TLPhotosPickerViewController()
       vc.configure.cancelTitle = "취소"
       vc.configure.doneTitle = "완료"

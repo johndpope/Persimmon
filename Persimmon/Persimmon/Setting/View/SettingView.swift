@@ -101,7 +101,7 @@ class SettingView: UIView {
     
     topView.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
-      $0.height.equalToSuperview().multipliedBy(0.23)
+      $0.height.equalToSuperview().multipliedBy(0.22)
     }
     
     infoBtn.snp.makeConstraints {
