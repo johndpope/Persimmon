@@ -40,6 +40,7 @@
 		C10C9C0E2356CD7500FA56A3 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9C0D2356CD7500FA56A3 /* SettingView.swift */; };
 		C10C9C1223574DE800FA56A3 /* PassCodeSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9C1123574DE700FA56A3 /* PassCodeSetView.swift */; };
 		C10C9C1423574E1700FA56A3 /* ChangePassCodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9C1323574E1700FA56A3 /* ChangePassCodeVC.swift */; };
+		C10C9C1723577D6D00FA56A3 /* AlbumListTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9C1623577D6D00FA56A3 /* AlbumListTableCell.swift */; };
 		C1618910235270B300C49B57 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161890F235270B300C49B57 /* ColorExtension.swift */; };
 /* End PBXBuildFile section */
 
@@ -81,6 +82,7 @@
 		C10C9C0D2356CD7500FA56A3 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		C10C9C1123574DE700FA56A3 /* PassCodeSetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassCodeSetView.swift; sourceTree = "<group>"; };
 		C10C9C1323574E1700FA56A3 /* ChangePassCodeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePassCodeVC.swift; sourceTree = "<group>"; };
+		C10C9C1623577D6D00FA56A3 /* AlbumListTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumListTableCell.swift; sourceTree = "<group>"; };
 		C161890F235270B300C49B57 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -208,6 +210,7 @@
 		C10C9BA82353789C00FA56A3 /* AlbumList */ = {
 			isa = PBXGroup;
 			children = (
+				C10C9C1523577D4000FA56A3 /* Cell */,
 				C10C9BAD235378F300FA56A3 /* Controller */,
 				C10C9BAE235378FA00FA56A3 /* View */,
 			);
@@ -370,6 +373,14 @@
 			path = Font;
 			sourceTree = "<group>";
 		};
+		C10C9C1523577D4000FA56A3 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				C10C9C1623577D6D00FA56A3 /* AlbumListTableCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		C161890E2352706200C49B57 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -520,6 +531,7 @@
 				C10C9BB72353798E00FA56A3 /* PhotoListViewEmpty.swift in Sources */,
 				523705BA2351024200869F57 /* AppDelegate.swift in Sources */,
 				C10C9BA5235289ED00FA56A3 /* LaunchScreenView.swift in Sources */,
+				C10C9C1723577D6D00FA56A3 /* AlbumListTableCell.swift in Sources */,
 				523705D22351070900869F57 /* PassCodeView.swift in Sources */,
 				521F9DB1235516A400506B9C /* UIDeviceExtension.swift in Sources */,
 				521F9DB32355725F00506B9C /* BundleExtention.swift in Sources */,
@@ -672,7 +684,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Persimmon/Source/\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = KNHX5B578D;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Persimmon/Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -696,7 +708,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Persimmon/Source/\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = KNHX5B578D;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Persimmon/Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
