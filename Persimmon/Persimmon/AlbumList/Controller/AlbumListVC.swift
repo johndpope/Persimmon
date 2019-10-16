@@ -13,8 +13,6 @@ class AlbumListVC: UIViewController {
   
   var notificationToken: NotificationToken? = nil
   
-  let realm = try! Realm()
-  
   let albumListView = AlbumListView()
   
   override func loadView() {
@@ -27,7 +25,7 @@ class AlbumListVC: UIViewController {
     albumListView.delegate = self
     albumListView.addBtn.addTarget(self, action: #selector(didTapAddBtn(_:)), for: .touchUpInside)
     
-    notificationToken = realm.observe({ (noti, realm) in
+    notificationToken = RealmSingleton.shared.realm.observe({ (noti, realm) in
       print("here reload")
       DispatchQueue.main.async {
         self.albumListView.tableView.reloadData()
@@ -37,25 +35,12 @@ class AlbumListVC: UIViewController {
 
   }
   
-//  override func viewDidAppear(_ animated: Bool) {
-//    super.viewDidAppear(animated)
-//    albumListView.tableView.reloadData()
-//  }
-  
   deinit {
     notificationToken?.invalidate()
   }
   
   private func setupNavi() {
     
-  }
-  
-  func addAlbum(title: String?) {
-    try! realm.write {
-      let newAlbum = Album()
-      newAlbum.title = title == "" ? "새 앨범" : title ?? "새 앨범"
-      realm.add(newAlbum, update: .modified)
-    }
   }
   
   @objc func didTapAddBtn(_ sender: UIButton) {
@@ -70,7 +55,7 @@ class AlbumListVC: UIViewController {
     
     let cameraAction = UIAlertAction(title: "만들기", style: .default) { (_) -> Void in
       let text = alert.textFields?.first?.text
-      self.addAlbum(title: text)
+      RealmSingleton.shared.addAlbum(title: text)
     }
     
     let cancelAction = UIAlertAction(title: "취소", style: .cancel)
@@ -91,15 +76,12 @@ class AlbumListVC: UIViewController {
     
   }
   
-  
-  
 }
 
 extension AlbumListVC: AlbumListViewDelegate {
   func didSelectCell(indexPath: AlbumListView, uuid: String) {
     let photoListVC = PhotoListVC()
     photoListVC.uuid = uuid
-    print("push")
     navigationController?.pushViewController(photoListVC, animated: true)
   }
   
