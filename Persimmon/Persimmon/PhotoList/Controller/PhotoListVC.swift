@@ -27,8 +27,11 @@ class PhotoListVC: UIViewController {
         super.viewDidLoad()
       
       view.backgroundColor = .white
-      photoListView.backBtn.addTarget(self, action: #selector(backButtonDidTap(_:)), for: .touchUpInside)
+      photoListView.topView.backBtn.addTarget(self, action: #selector(backButtonDidTap(_:)), for: .touchUpInside)
       photoListView.addBtn.addTarget(self, action: #selector(addButtonDidTap(_:)), for: .touchUpInside)
+      
+      photoListView.photoView.collectionView.delegate = self
+      photoListView.photoView.collectionView.dataSource = self
      
     }
   
@@ -212,3 +215,20 @@ extension PhotoListVC: TLPhotosPickerViewControllerDelegate {
   }
 }
 
+
+extension PhotoListVC: UICollectionViewDataSource {
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return 5
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    let cell = UICollectionViewCell()
+    return cell
+  }
+  
+  
+}
+
+extension PhotoListVC: UICollectionViewDelegate {
+  
+}

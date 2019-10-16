@@ -11,47 +11,14 @@ import SnapKit
 
 class PhotoListView: UIView {
   
-  let topView: UIView = {
-    let view = UIView()
+  let topView: TopView = {
+    let view = TopView()
     return view
   }()
   
-  lazy var backBtn: UIButton = {
-    let button = UIButton(type: .custom)
-    button.setTitleColor(.appColor(.appFontColor), for: .normal)
-    button.setTitle("⇠", for: .normal)
-    button.titleLabel?.font = UIFont(name: "NanumPen", size: 40)
-    return button
-  }()
-
-  
-  // 프로필이미지
-  lazy var profileImageView: UIImageView = {
-    let imageView = UIImageView()
-    imageView.clipsToBounds = true
-    imageView.contentMode = .scaleAspectFill
-//    imageView.contentMode = .redraw
-//    imageView.image = UIImage(named: "devy")
-    imageView.image = UIImage(named: "tass")
-    return imageView
-  }()
-  
-  // 사진 밑에 들어갈 앨범이름
-  let albumTitle: UILabel = {
-    let label = UILabel()
-    label.text = "Tass Devy"
-    label.font = UIFont(name: "NanumPen", size: 28)
-    label.textColor = .appColor(.appGreenColor)
-    return label
-  }()
-  
-  // 사진, 비디오 갯수
-  let listNumberLabel: UILabel = {
-    let label = UILabel()
-    label.text = " 10 Photos, 2 Videos"
-    label.font = UIFont(name: "NanumPen", size: 20)
-    label.textColor = .appColor(.appGreenColor)
-    return label
+  let photoView: PhotoCollectionView = {
+    let view = PhotoCollectionView()
+    return view
   }()
   
   // 더하기 버튼
@@ -111,12 +78,6 @@ class PhotoListView: UIView {
     return button
   }()
   
-  // 레이아웃이 시작이 될때마다 불리고
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    profileImageView.layer.cornerRadius = topView.frame.height * 0.55 / 2
-  }
-  
   // 한번만 불리고
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
@@ -152,7 +113,7 @@ class PhotoListView: UIView {
     let newImage = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
     
-    profileImageView.image = newImage
+//    profileImageView.image = newImage
     
     return newImage ?? UIImage()
   }
@@ -161,44 +122,6 @@ class PhotoListView: UIView {
   private func addSubViews() {
     [topView, addBtn]
       .forEach { self.addSubview($0) }
-    [profileImageView, backBtn, albumTitle, listNumberLabel]
-      .forEach { topView.addSubview($0) }
-  }
-  
-  private func setupSNP() {
-    
-    topView.snp.makeConstraints {
-      $0.top.leading.trailing.equalToSuperview()
-      $0.height.equalToSuperview().multipliedBy(0.35)
-    }
-    
-    backBtn.snp.makeConstraints { 
-      $0.top.equalTo(self.snp.topMargin).offset(10)
-      $0.leading.equalToSuperview().offset(20)
-    }
-    
-    profileImageView.snp.makeConstraints {
-      $0.top.equalTo(self.snp.topMargin).offset(10)
-      $0.centerX.equalToSuperview()
-      $0.width.height.equalTo(topView.snp.height).multipliedBy(0.55)
-    }
-    
-    albumTitle.snp.makeConstraints {
-      $0.bottom.equalTo(listNumberLabel.snp.top).offset(-10)
-      $0.centerX.equalToSuperview()
-//      $0.width.height.equalTo(topView.snp.height).multipliedBy(0.3)
-    }
-    
-    listNumberLabel.snp.makeConstraints {
-      $0.bottom.equalToSuperview().offset(-5)
-      $0.centerX.equalToSuperview()
-    }
-    
-    addBtn.snp.makeConstraints {
-      $0.bottom.equalTo(-UIScreen.main.bounds.height / 6)
-      $0.trailing.equalToSuperview().offset(-30)
-      $0.width.height.equalTo(50)
-    }
   }
   
   func createAlert() {
@@ -240,6 +163,21 @@ class PhotoListView: UIView {
       $0.centerX.equalTo(cameraBtn)
     }
     
+  }
+
+  
+  private func setupSNP() {
+    
+    topView.snp.makeConstraints {
+      $0.top.leading.trailing.equalToSuperview()
+      $0.height.equalToSuperview().multipliedBy(0.35)
+    }
+    
+    addBtn.snp.makeConstraints {
+      $0.bottom.equalTo(-UIScreen.main.bounds.height / 6)
+      $0.trailing.equalToSuperview().offset(-30)
+      $0.width.height.equalTo(50)
+    }
   }
   
 }
