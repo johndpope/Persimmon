@@ -20,6 +20,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     
+    // realm configuration
+    let configBlock: MigrationBlock = { (migration, oldVersion) in
+      print("start Migration")
+      if oldVersion < 1 {
+        migration.enumerateObjects(ofType: Photo.className()) { (old, new) in
+          
+        }
+      }
+      print("Migration complete.")
+    }
+    
+    Realm.Configuration.defaultConfiguration = Realm.Configuration(schemaVersion: 1, migrationBlock: configBlock)
+    //    print("here URL:  ", Realm.Configuration.defaultConfiguration.fileURL)
+    
     guard #available(iOS 13.0, *) else {
       
       window = UIWindow(frame: UIScreen.main.bounds)

@@ -49,7 +49,6 @@ class AlbumListView: UIView {
     let label = UILabel()
     label.font = UIFont(name: "NanumPen", size: 30)
     label.textColor = .appColor(.appFontColor)
-//    label.adjustsFontForContentSizeCategory = true
     label.text = "사진첩"
     return label
   }()
@@ -61,38 +60,6 @@ class AlbumListView: UIView {
     tableView.delegate = self
     return tableView
   }()
-  
-  lazy var selectToken = RealmSingleton.shared.selectAlbum?.observe { (change) in
-//    guard let `self` = self else { return }
-    switch change {
-    case .change(_):
-      print("changed")
-      self.tableView.reloadData()
-    case .deleted:
-      print("deleted")
-      self.tableView.reloadData()
-    case .error(let err):
-      print("err: ", err)
-    }
-  }
-  
-  lazy var token = RealmSingleton.shared.selectAlbum?.observe { (change) in
-  //    guard let `self` = self else { return }
-      switch change {
-      case .change(_):
-        print("initial")
-        self.tableView.reloadData()
-      case .deleted:
-        print("update")
-        self.tableView.reloadData()
-      case .error(let err):
-        print("err: ", err)
-      }
-    }
-  
-//  deinit {
-//    selectToken?.invalidate()
-//  }
   
   
   override func didMoveToSuperview() {
@@ -107,7 +74,6 @@ class AlbumListView: UIView {
   private func setupTableView() {
     
     tableView.register(UINib(nibName: "TLCollectionTableViewCell", bundle: Bundle().bundle()), forCellReuseIdentifier: "TLCollectionTableViewCell")
-    //    tableView.register(TLCollectionTableViewCell.self, forCellReuseIdentifier: "TLCollectionTableViewCell")
   }
   
   private func addSubViews() {
@@ -155,19 +121,6 @@ extension AlbumListView: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    //    tableView.separatorStyle = .none
-    //    switch indexPath.row {
-    //    case 0:
-    //      let cell = tableView.dequeueReusableCell(withIdentifier: "TLCollectionTableViewCell", for: indexPath) as! TLCollectionTableViewCell
-    //      cell.titleLabel.text = "123"
-    //      cell.selectionStyle = .none
-    //      return cell
-    //    default:
-    //      let cell = UITableViewCell()
-    //      cell.selectionStyle = .none
-    //      return cell
-    //    }
-    //
     let cell = tableView.dequeueReusableCell(withIdentifier: "TLCollectionTableViewCell", for: indexPath) as! TLCollectionTableViewCell
     cell.titleLabel.text = albums[indexPath.row].title
     cell.subTitleLabel.text = albums[indexPath.row].photos.count.description
@@ -182,6 +135,10 @@ extension AlbumListView: UITableViewDataSource {
 
 extension AlbumListView: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return UIScreen.main.bounds.height * 0.10
+  }
+  
+  func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
     return UIScreen.main.bounds.height * 0.10
   }
   
