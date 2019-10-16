@@ -9,22 +9,36 @@
 import UIKit
 
 class SettingVC: UIViewController {
+  
+  let settingView = SettingView()
+  
+  override func loadView() {
+    self.view = settingView
+  }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+      settingView.delegate = self
+      
 
-        // Do any additional setup after loading the view.
     }
     
+}
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+extension SettingVC: SettingViewDelegate {
+  func tableCellDidTap(indexPath: IndexPath) {
+    switch indexPath {
+    case IndexPath(row: 0, section: 0):
+      print("계정")
+    case IndexPath(row: 0, section: 1):
+      let passCodeSetVC = ChangePassCodeVC()
+      navigationController?.pushViewController(passCodeSetVC, animated: true)
+    case IndexPath(row: 0, section: 2):
+      print("기부하기")
+    default:
+      break
     }
-    */
-
+  }
+  
+  
 }

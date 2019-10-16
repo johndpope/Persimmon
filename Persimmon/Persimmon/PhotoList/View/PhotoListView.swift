@@ -13,15 +13,14 @@ class PhotoListView: UIView {
   
   let topView: UIView = {
     let view = UIView()
-    view.backgroundColor = .gray
     return view
   }()
   
   lazy var backBtn: UIButton = {
     let button = UIButton(type: .custom)
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
-    button.setTitle("⟨", for: .normal)
-    button.titleLabel?.font = UIFont.systemFont(ofSize: 40, weight: .medium)
+    button.setTitle("⇠", for: .normal)
+    button.titleLabel?.font = UIFont(name: "NanumPen", size: 40)
     return button
   }()
 
@@ -29,8 +28,6 @@ class PhotoListView: UIView {
   // 프로필이미지
   lazy var profileImageView: UIImageView = {
     let imageView = UIImageView()
-//    imageView.layer.cornerRadius = imageView.frame.width / 2
-    
     imageView.clipsToBounds = true
     imageView.contentMode = .scaleAspectFill
 //    imageView.contentMode = .redraw
@@ -43,7 +40,7 @@ class PhotoListView: UIView {
   let albumTitle: UILabel = {
     let label = UILabel()
     label.text = "Tass Devy"
-    label.font = UIFont(name: "Palatino", size: 20)
+    label.font = UIFont(name: "NanumPen", size: 28)
     label.textColor = .appColor(.appGreenColor)
     return label
   }()
@@ -52,7 +49,7 @@ class PhotoListView: UIView {
   let listNumberLabel: UILabel = {
     let label = UILabel()
     label.text = " 10 Photos, 2 Videos"
-    label.font = UIFont(name: "Palatino", size: 14)
+    label.font = UIFont(name: "NanumPen", size: 20)
     label.textColor = .appColor(.appGreenColor)
     return label
   }()
@@ -65,7 +62,7 @@ class PhotoListView: UIView {
     return button
   }()
   
-  // alert만들기위한 뷰
+  // MARK: -  alert만들기위한 뷰
   let containerView: UIView = {
     let view = UIView()
     view.backgroundColor = .white
@@ -77,7 +74,7 @@ class PhotoListView: UIView {
   
   let getLabel: UILabel = {
     let label = UILabel()
-    label.font = UIFont(name: "Didot", size: 20)
+    label.font = UIFont(name: "NanumPen", size: 20)
     label.text = "가져오기"
     label.textColor = .appColor(.appGreenColor)
     return label
@@ -233,6 +230,7 @@ class PhotoListView: UIView {
     albumTitle.snp.makeConstraints {
       $0.bottom.equalTo(listNumberLabel.snp.top).offset(-10)
       $0.centerX.equalToSuperview()
+//      $0.width.height.equalTo(topView.snp.height).multipliedBy(0.3)
     }
     
     listNumberLabel.snp.makeConstraints {
@@ -246,15 +244,7 @@ class PhotoListView: UIView {
       $0.width.height.equalTo(50)
       
     }
-    
-    
-    
-    
-    
   }
-  
-
-  
   
 }
 

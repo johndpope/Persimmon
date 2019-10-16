@@ -13,6 +13,7 @@ class PhotoListViewEmpty: UIView {
   
   let titleLabel: UILabel = {
     let label = UILabel()
+    label.font = UIFont(name: "NanumPen", size: 30)
     label.text = "타이틀"
     return label
   }()
@@ -26,11 +27,10 @@ class PhotoListViewEmpty: UIView {
   let imageLabel: UILabel = {
     let label = UILabel()
     label.numberOfLines = 0
+    label.font = UIFont(name: "NanumPen", size: 20)
     label.text = " 이미지 없음\n Tap the + button to add photos. "
     return label
   }()
-  
-  
   
   
   override func didMoveToSuperview() {

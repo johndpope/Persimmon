@@ -49,6 +49,7 @@ class PhotoListVC: UIViewController {
 //         imagePicker.delegate = self
 //         imagePicker.sourceType = .photoLibrary
 //         self.present(imagePicker, animated: true)
+      
        let selecAlbumVC = SelectAlbumVC()
       self.present(selecAlbumVC, animated: true)
     }
