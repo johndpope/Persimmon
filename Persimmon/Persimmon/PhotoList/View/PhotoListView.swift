@@ -242,7 +242,6 @@ class PhotoListView: UIView {
       $0.bottom.equalTo(-UIScreen.main.bounds.height / 6)
       $0.trailing.equalToSuperview().offset(-30)
       $0.width.height.equalTo(50)
-      
     }
   }
   

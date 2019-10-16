@@ -23,17 +23,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // realm configuration
     let configBlock: MigrationBlock = { (migration, oldVersion) in
       print("start Migration")
-      if oldVersion < 2 {
-        migration.enumerateObjects(ofType: Album.className()) { (old, new) in
-          // need to migration
-          new?["uuid"] = UUID().uuidString
-          new?["title"] = "test"
+      if oldVersion < 1 {
+        migration.enumerateObjects(ofType: Photo.className()) { (old, new) in
+          
         }
       }
       print("Migration complete.")
     }
     
-    Realm.Configuration.defaultConfiguration = Realm.Configuration(schemaVersion: 2, migrationBlock: configBlock)
+    Realm.Configuration.defaultConfiguration = Realm.Configuration(schemaVersion: 1, migrationBlock: configBlock)
+    //    print("here URL:  ", Realm.Configuration.defaultConfiguration.fileURL)
     
     guard #available(iOS 13.0, *) else {
       

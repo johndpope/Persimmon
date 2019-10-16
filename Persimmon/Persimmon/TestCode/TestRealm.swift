@@ -17,7 +17,7 @@ class TestRealm: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    print("albums Count: ", albums.count, "title: ", albums.first?.title)
+//    print("albums Count: ", albums.count, "title: ", albums.first?.title)
     
     try! realm.write {
       let album = Album()
@@ -25,7 +25,7 @@ class TestRealm: UIViewController {
       realm.add(album)
     }
     
-    print("albums Count: ", albums.count, "title: ", albums.first?.title)
+//    print("albums Count: ", albums.count, "title: ", albums.first?.title)
     // Do any additional setup after loading the view.
   }
   

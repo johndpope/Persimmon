@@ -10,6 +10,8 @@
 		521F9DA923520C4100506B9C /* TestRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521F9DA823520C4100506B9C /* TestRealm.swift */; };
 		521F9DAC23520E4D00506B9C /* RealmData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521F9DAB23520E4D00506B9C /* RealmData.swift */; };
 		521F9DAF23527CA500506B9C /* CustomPhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521F9DAE23527CA500506B9C /* CustomPhotoPicker.swift */; };
+		521F9DB1235516A400506B9C /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521F9DB0235516A400506B9C /* UIDeviceExtension.swift */; };
+		521F9DB32355725F00506B9C /* BundleExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521F9DB22355725F00506B9C /* BundleExtention.swift */; };
 		523705BA2351024200869F57 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523705B92351024200869F57 /* AppDelegate.swift */; };
 		523705BC2351024200869F57 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523705BB2351024200869F57 /* SceneDelegate.swift */; };
 		523705C02351024400869F57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 523705BF2351024400869F57 /* Assets.xcassets */; };
@@ -44,6 +46,8 @@
 		521F9DA823520C4100506B9C /* TestRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRealm.swift; sourceTree = "<group>"; };
 		521F9DAB23520E4D00506B9C /* RealmData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmData.swift; sourceTree = "<group>"; };
 		521F9DAE23527CA500506B9C /* CustomPhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPhotoPicker.swift; sourceTree = "<group>"; };
+		521F9DB0235516A400506B9C /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
+		521F9DB22355725F00506B9C /* BundleExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtention.swift; sourceTree = "<group>"; };
 		523705B62351024200869F57 /* Persimmon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Persimmon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		523705B92351024200869F57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		523705BB2351024200869F57 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -364,6 +368,8 @@
 			isa = PBXGroup;
 			children = (
 				C161890F235270B300C49B57 /* ColorExtension.swift */,
+				521F9DB0235516A400506B9C /* UIDeviceExtension.swift */,
+				521F9DB22355725F00506B9C /* BundleExtention.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -507,6 +513,8 @@
 				523705BA2351024200869F57 /* AppDelegate.swift in Sources */,
 				C10C9BA5235289ED00FA56A3 /* LaunchScreenView.swift in Sources */,
 				523705D22351070900869F57 /* PassCodeView.swift in Sources */,
+				521F9DB1235516A400506B9C /* UIDeviceExtension.swift in Sources */,
+				521F9DB32355725F00506B9C /* BundleExtention.swift in Sources */,
 				C10C9BBF235379D900FA56A3 /* SelectAlbumView.swift in Sources */,
 				C10C9BAA235378CC00FA56A3 /* AlbumListVC.swift in Sources */,
 				C10C9BD8235482C800FA56A3 /* CustomAlertVC.swift in Sources */,
@@ -655,7 +663,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Persimmon/Source/\"";
-				DEVELOPMENT_TEAM = KNHX5B578D;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Persimmon/Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -677,7 +685,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Persimmon/Source/\"";
-				DEVELOPMENT_TEAM = KNHX5B578D;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Persimmon/Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

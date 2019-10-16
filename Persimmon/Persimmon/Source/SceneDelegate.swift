@@ -9,6 +9,8 @@
 import UIKit
 import SwiftUI
 import RealmSwift
+import Photos
+import TLPhotoPicker
 
 @available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -17,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //  let vc = AlbumListVC()
   let vc = PassCodeVC()
 //  let vc = TestRealm()
-  let tabBar = MainTabBarController()
+
   
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -29,17 +31,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     // Use a UIHostingController as window root view controller.
     if let windowScene = scene as? UIWindowScene {
-      
       let window = UIWindow(windowScene: windowScene)
+      window.backgroundColor = .white
       window.rootViewController = vc
       self.window = window
       window.makeKeyAndVisible()
-      tabBar.setupTabBar()
       
     }
   }
-  
-  
   
   
   func sceneDidDisconnect(_ scene: UIScene) {

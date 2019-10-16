@@ -12,42 +12,42 @@ import TLPhotoPicker
 
 
 public struct PickerConfigure {
-    public var customLocalizedTitle: [String: String] = ["Camera Roll": "Camera Roll"]
-    public var tapHereToChange = "Tap here to change"
-    public var cancelTitle = "Cancel"
-    public var doneTitle = "Done"
-    public var emptyMessage = "No albums"
-    public var emptyImage: UIImage? = nil
-    public var usedCameraButton = true
-    public var usedPrefetch = false
-    public var allowedLivePhotos = true
-    public var allowedVideo = true
-    public var allowedAlbumCloudShared = false
-    public var allowedVideoRecording = true
-    public var recordingVideoQuality: UIImagePickerController.QualityType = .typeMedium
-    public var maxVideoDuration:TimeInterval? = nil
-    public var autoPlay = true
-    public var muteAudio = true
-    public var mediaType: PHAssetMediaType? = nil
-    public var numberOfColumn = 3
-    public var singleSelectedMode = false
-    public var maxSelectedAssets: Int? = nil
-    public var fetchOption: PHFetchOptions? = nil
-    public var fetchCollectionOption: [FetchCollectionType: PHFetchOptions] = [:]
-    public var selectedColor = UIColor(red: 88/255, green: 144/255, blue: 255/255, alpha: 1.0)
-    public var cameraBgColor = UIColor(red: 221/255, green: 223/255, blue: 226/255, alpha: 1)
-    public var cameraIcon = TLBundle.podBundleImage(named: "camera")
-    public var videoIcon = TLBundle.podBundleImage(named: "video")
-    public var placeholderIcon = TLBundle.podBundleImage(named: "insertPhotoMaterial")
-    public var nibSet: (nibName: String, bundle:Bundle)? = nil
-    public var cameraCellNibSet: (nibName: String, bundle:Bundle)? = nil
-    public var fetchCollectionTypes: [(PHAssetCollectionType,PHAssetCollectionSubtype)]? = nil
-    public var groupByFetch: PHFetchedResultGroupedBy? = nil
-    public var supportedInterfaceOrientations: UIInterfaceOrientationMask = .portrait
-    public var popup: [PopupConfigure] = []
-    public init() {
-        
-    }
+  public var customLocalizedTitle: [String: String] = ["Camera Roll": "Camera Roll"]
+  public var tapHereToChange = "탭해서 바꾸기"
+  public var cancelTitle = "취소"
+  public var doneTitle = "완료"
+  public var emptyMessage = "앨범 없음"
+  public var emptyImage: UIImage? = nil
+  public var usedCameraButton = true
+  public var usedPrefetch = false
+  public var allowedLivePhotos = true
+  public var allowedVideo = true
+  public var allowedAlbumCloudShared = false
+  public var allowedVideoRecording = true
+  public var recordingVideoQuality: UIImagePickerController.QualityType = .typeHigh
+  public var maxVideoDuration:TimeInterval? = nil
+  public var autoPlay = true
+  public var muteAudio = true
+  public var mediaType: PHAssetMediaType? = nil
+  public var numberOfColumn = 3
+  public var singleSelectedMode = false
+  public var maxSelectedAssets: Int? = nil
+  public var fetchOption: PHFetchOptions? = nil
+  public var fetchCollectionOption: [FetchCollectionType: PHFetchOptions] = [:]
+  public var selectedColor = UIColor.appColor(.appPersimmonColor)
+  public var cameraBgColor = UIColor.appColor(.appPersimmonColor)
+  public var cameraIcon = TLBundle.podBundleImage(named: "camera")
+  public var videoIcon = TLBundle.podBundleImage(named: "video")
+  public var placeholderIcon = TLBundle.podBundleImage(named: "insertPhotoMaterial")
+  public var nibSet: (nibName: String, bundle:Bundle)? = nil
+  public var cameraCellNibSet: (nibName: String, bundle:Bundle)? = nil
+  public var fetchCollectionTypes: [(PHAssetCollectionType,PHAssetCollectionSubtype)]? = nil
+  public var groupByFetch: PHFetchedResultGroupedBy? = nil
+  public var supportedInterfaceOrientations: UIInterfaceOrientationMask = .portrait
+  public var popup: [PopupConfigure] = []
+  public init() {
+    
+  }
 }
 
 //Related issue: https://github.com/tilltue/TLPhotoPicker/issues/201
@@ -58,28 +58,28 @@ public struct PickerConfigure {
 //configure.fetchCollectionOption[.topLevelUserCollections] = option
 
 public enum FetchCollectionType {
-    case assetCollections(PHAssetCollectionType)
-    case topLevelUserCollections
+  case assetCollections(PHAssetCollectionType)
+  case topLevelUserCollections
 }
 
 extension FetchCollectionType: Hashable {
-    private var identifier: String {
-        switch self {
-        case let .assetCollections(collectionType):
-            return "assetCollections\(collectionType.rawValue)"
-        case .topLevelUserCollections:
-            return "topLevelUserCollections"
-        }
+  private var identifier: String {
+    switch self {
+    case let .assetCollections(collectionType):
+      return "assetCollections\(collectionType.rawValue)"
+    case .topLevelUserCollections:
+      return "topLevelUserCollections"
     }
-    
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(self.identifier)
-    }
+  }
+  
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.identifier)
+  }
 }
 
 public enum PopupConfigure {
-    //Popup album view animation duration
-    case animation(TimeInterval)
+  //Popup album view animation duration
+  case animation(TimeInterval)
 }
 
 // PHFetchedResultGroupedBy

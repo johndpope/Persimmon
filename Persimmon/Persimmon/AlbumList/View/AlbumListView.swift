@@ -8,15 +8,18 @@
 
 import UIKit
 import SnapKit
+import RealmSwift
 import TLPhotoPicker
 
 protocol AlbumListViewDelegate {
-  func didSelectCell(indexPath: AlbumListView)
+  func didSelectCell(indexPath: AlbumListView, uuid: String)
 }
 
 class AlbumListView: UIView {
   
   var delegate: AlbumListViewDelegate?
+  
+  var albums = RealmSingleton.shared.realm.objects(Album.self)
   
   let topView: UIView = {
     let topView = UIView()
@@ -41,7 +44,7 @@ class AlbumListView: UIView {
     button.addTarget(self, action: #selector(addBtndidTap(_:)), for: .touchUpInside)
     return button
   }()
-
+  
   lazy var albumLabel: UILabel = {
     let label = UILabel()
     label.font = UIFont(name: "NanumPen", size: 40)
@@ -49,7 +52,7 @@ class AlbumListView: UIView {
     label.text = "사진첩"
     return label
   }()
-
+  
   lazy var tableView: UITableView = {
     let tableView = UITableView()
     tableView.dataSource = self
@@ -67,6 +70,7 @@ class AlbumListView: UIView {
     
   }
   
+
   // MARK: - 수정, 추가 버튼 연결 - VC
   @objc func editBtndidTap(_ sender: UIButton) {
      print("수정버튼")
@@ -76,19 +80,10 @@ class AlbumListView: UIView {
     print("추가버튼")
   }
   
-  func bundle() -> Bundle {
-      let podBundle = Bundle(for: TLBundle.self)
-      if let url = podBundle.url(forResource: "TLPhotoPicker", withExtension: "bundle") {
-          let bundle = Bundle(url: url)
-          return bundle ?? podBundle
-      }
-      return podBundle
-  }
-  
-  
   private func setupTableView() {
-    tableView.register(UINib(nibName: "TLCollectionTableViewCell", bundle: bundle()), forCellReuseIdentifier: "TLCollectionTableViewCell")
-//    tableView.register(TLCollectionTableViewCell.self, forCellReuseIdentifier: "TLCollectionTableViewCell")
+    
+    tableView.register(UINib(nibName: "TLCollectionTableViewCell", bundle: Bundle().bundle()), forCellReuseIdentifier: "TLCollectionTableViewCell")
+
   }
   
   private func addSubViews() {
@@ -126,33 +121,23 @@ class AlbumListView: UIView {
     }
     
   }
-
+  
   
 }
 
 extension AlbumListView: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 3
+    return albums.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//    tableView.separatorStyle = .none
-//    switch indexPath.row {
-//    case 0:
-//      let cell = tableView.dequeueReusableCell(withIdentifier: "TLCollectionTableViewCell", for: indexPath) as! TLCollectionTableViewCell
-//      cell.titleLabel.text = "123"
-//      cell.selectionStyle = .none
-//      return cell
-//    default:
-//      let cell = UITableViewCell()
-//      cell.selectionStyle = .none
-//      return cell
-//    }
-//
     let cell = tableView.dequeueReusableCell(withIdentifier: "TLCollectionTableViewCell", for: indexPath) as! TLCollectionTableViewCell
-      cell.titleLabel.text = "123"
-      cell.selectionStyle = .none
-      return cell
+    cell.titleLabel.text = albums[indexPath.row].title
+    cell.subTitleLabel.text = albums[indexPath.row].photos.count.description
+    cell.imageView?.contentMode = .scaleAspectFill
+    cell.imageView?.image = UIImage(data: albums[indexPath.row].photos.last?.photoData ?? Data())
+    cell.selectionStyle = .none
+    return cell
   }
   
   
@@ -163,7 +148,12 @@ extension AlbumListView: UITableViewDelegate {
     return UIScreen.main.bounds.height * 0.15
   }
   
+  func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+    return UIScreen.main.bounds.height * 0.10
+  }
+  
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    delegate?.didSelectCell(indexPath: self)
+    let uuid = albums[indexPath.row].uuid
+    delegate?.didSelectCell(indexPath: self, uuid: uuid)
   }
 }
