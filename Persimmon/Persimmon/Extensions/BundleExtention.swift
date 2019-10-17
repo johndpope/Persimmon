@@ -10,7 +10,7 @@ import Foundation
 import TLPhotoPicker
 
 extension Bundle {
-  func bundle() -> Bundle {
+  static func bundle() -> Bundle {
     let podBundle = Bundle(for: TLBundle.self)
     if let url = podBundle.url(forResource: "TLPhotoPicker", withExtension: "bundle") {
       let bundle = Bundle(url: url)

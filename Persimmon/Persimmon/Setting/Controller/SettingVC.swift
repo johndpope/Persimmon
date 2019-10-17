@@ -15,14 +15,20 @@ class SettingVC: UIViewController {
   override func loadView() {
     self.view = settingView
   }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-      settingView.delegate = self
-      
-
-    }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    settingView.delegate = self
+    settingView.scaleBtn.addTarget(self, action: #selector(didTapScaleBtn(_:)), for: .touchUpInside)
     
+  }
+  
+  @objc func didTapScaleBtn(_ sender: UIButton) {
+    sender.isSelected.toggle()
+    UserDefaults.standard.set(sender.isSelected, forKey: "scale")
+    print(UserDefaults.standard.bool(forKey: "scale"))
+  }
+  
 }
 
 extension SettingVC: SettingViewDelegate {
