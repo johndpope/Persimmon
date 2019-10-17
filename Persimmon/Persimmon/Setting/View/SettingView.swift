@@ -15,7 +15,7 @@ class SettingView: UIView {
   
   var delegate: SettingViewDelegate?
   
-  private let passCodeData = [" 비밀번호 설정"]
+  private let passCodeData = [" 비밀번호 설정", " 사진 크기"]
   private let donationData = [" 기부하기"]
   
   let topView: UIView = {
@@ -67,6 +67,17 @@ class SettingView: UIView {
     label.font = UIFont(name: "NanumPen", size: 20)
     label.textColor = .appColor(.appGreenColor)
     return label
+  }()
+  
+  let scaleBtn: UIButton = {
+    let button = UIButton(type: .custom)
+    button.setImage(UIImage(named: "persimmonIPasscodeIcon"), for: .normal)
+    button.setImage(UIImage(named: "persimmonIcon"), for: .selected)
+    let scale = UserDefaults.standard.bool(forKey: "scale")
+    button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+    button.isSelected = scale
+//    button.tintColor = UIColor.appColor(.appGreenColor)
+    return button
   }()
   
   
@@ -151,11 +162,11 @@ extension SettingView: UITableViewDataSource {
     
     switch section {
     case 0:
-      return passCodeData.count
-    case 1:
-      return donationData.count
-    case 2:
       return 1
+    case 1:
+      return passCodeData.count
+    case 2:
+      return donationData.count
 //    case 3:
 //      return 1
     default:
@@ -191,22 +202,44 @@ extension SettingView: UITableViewDataSource {
       }
     case 1:
       
-      if indexPath.row == 0 {
+      switch indexPath.row {
+      case 0:
         cell.imageView?.image = UIImage(named: "login")
         cell.imageView?.tintColor = UIColor.appColor(.appGreenColor)
         cell.accessoryType = .disclosureIndicator
         cell.textLabel?.font = UIFont(name: "NanumPen", size: 20)
-        cell.textLabel?.text = " 비밀번호 변경"
+        cell.textLabel?.text = passCodeData[indexPath.row]
         cell.textLabel?.textColor = UIColor.appColor(.appGreenColor)
         cell.selectionStyle = .none
+      case 1:
+        cell.imageView?.image = UIImage(named: "settings")
+        cell.imageView?.tintColor = UIColor.appColor(.appGreenColor)
+        cell.accessoryType = .disclosureIndicator
+        cell.textLabel?.font = UIFont(name: "NanumPen", size: 20)
+        cell.textLabel?.text = passCodeData[indexPath.row]
+        cell.textLabel?.textColor = UIColor.appColor(.appGreenColor)
+        cell.accessoryView = scaleBtn
+        cell.selectionStyle = .none
+      default:
+        break
       }
+      
+//      if indexPath.row == 0 {
+//        cell.imageView?.image = UIImage(named: "login")
+//        cell.imageView?.tintColor = UIColor.appColor(.appGreenColor)
+//        cell.accessoryType = .disclosureIndicator
+//        cell.textLabel?.font = UIFont(name: "NanumPen", size: 20)
+//        cell.textLabel?.text = " 비밀번호 변경"
+//        cell.textLabel?.textColor = UIColor.appColor(.appGreenColor)
+//        cell.selectionStyle = .none
+//      }
     case 2:
       
       if indexPath.row == 0 {
         cell.imageView?.image = UIImage(named: "donation")
         cell.imageView?.tintColor = UIColor.appColor(.appGreenColor)
         cell.accessoryType = .disclosureIndicator
-        cell.textLabel?.text = " 기부하기"
+        cell.textLabel?.text = donationData[indexPath.row]
         cell.textLabel?.font = UIFont(name: "NanumPen", size: 20)
         cell.textLabel?.textColor = UIColor.appColor(.appGreenColor)
         cell.selectionStyle = .none
@@ -229,6 +262,6 @@ extension SettingView: UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return UIScreen.main.bounds.height * 0.07
+    return UIScreen.main.bounds.height * 0.08
   }
 }

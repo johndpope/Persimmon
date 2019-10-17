@@ -8,9 +8,10 @@
 
 import UIKit
 import PhotosUI
+import AVKit
 
-open class TLPlayerView: UIView {
-    @objc open var player: AVPlayer? {
+class PlayerView: UIView {
+    @objc var player: AVPlayer? {
         get {
             return playerLayer.player
         }
@@ -18,51 +19,51 @@ open class TLPlayerView: UIView {
             playerLayer.player = newValue
         }
     }
-    
-    @objc open var playerLayer: AVPlayerLayer {
+
+    @objc var playerLayer: AVPlayerLayer {
         return layer as! AVPlayerLayer
     }
-    
+
     // Override UIView property
-    override open class var layerClass: AnyClass {
+    override class var layerClass: AnyClass {
         return AVPlayerLayer.self
     }
 }
 
-open class TLPhotoCollectionViewCell: UICollectionViewCell {
+class PhotoCollectionViewCell: UICollectionViewCell {
     private var observer: NSObjectProtocol?
-    @IBOutlet open var imageView: UIImageView?
-    @IBOutlet open var playerView: TLPlayerView?
-    @IBOutlet open var livePhotoView: PHLivePhotoView?
-    @IBOutlet open var liveBadgeImageView: UIImageView?
-    @IBOutlet open var durationView: UIView?
-    @IBOutlet open var videoIconImageView: UIImageView?
-    @IBOutlet open var durationLabel: UILabel?
-    @IBOutlet open var indicator: UIActivityIndicatorView?
-    @IBOutlet open var selectedView: UIView?
-    @IBOutlet open var selectedHeight: NSLayoutConstraint?
-    @IBOutlet open var orderLabel: UILabel?
-    @IBOutlet open var orderBgView: UIView?
-    
-    var configure = TLPhotosPickerConfigure() {
-        didSet {
-            self.selectedView?.layer.borderColor = self.configure.selectedColor.cgColor
-            self.orderBgView?.backgroundColor = self.configure.selectedColor
-            self.videoIconImageView?.image = self.configure.videoIcon
-        }
+  @IBOutlet var imageView: UIImageView?
+  @IBOutlet var playerView: PlayerView?
+  @IBOutlet var livePhotoView: PHLivePhotoView?
+  @IBOutlet var liveBadgeImageView: UIImageView?
+  @IBOutlet var durationView: UIView?
+  @IBOutlet var videoIconImageView: UIImageView?
+  @IBOutlet var durationLabel: UILabel?
+  @IBOutlet var indicator: UIActivityIndicatorView?
+  @IBOutlet var selectedView: UIView?
+  @IBOutlet var selectedHeight: NSLayoutConstraint?
+  @IBOutlet var orderLabel: UILabel?
+  @IBOutlet var orderBgView: UIView?
+  
+  var configure = PhotosPickerConfigure() {
+    didSet {
+      self.selectedView?.layer.borderColor = self.configure.selectedColor.cgColor
+      self.orderBgView?.backgroundColor = self.configure.selectedColor
+      self.videoIconImageView?.image = self.configure.videoIcon
     }
-    
-    @objc open var isCameraCell = false
-    
-    open var duration: TimeInterval? {
+    }
+
+    @objc var isCameraCell = false
+
+    var duration: TimeInterval? {
         didSet {
             guard let duration = self.duration else { return }
             self.selectedHeight?.constant = -10
             self.durationLabel?.text = timeFormatted(timeInterval: duration)
         }
     }
-    
-    @objc open var player: AVPlayer? = nil {
+
+    @objc var player: AVPlayer? = nil {
         didSet {
             if self.configure.autoPlay == false { return }
             if self.player == nil {
@@ -83,8 +84,8 @@ open class TLPhotoCollectionViewCell: UICollectionViewCell {
             }
         }
     }
-    
-    @objc open var selectedAsset: Bool = false {
+
+    @objc var selectedAsset: Bool = false {
         willSet(newValue) {
             self.selectedView?.isHidden = !newValue
             self.durationView?.backgroundColor = newValue ? self.configure.selectedColor : UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
@@ -93,8 +94,8 @@ open class TLPhotoCollectionViewCell: UICollectionViewCell {
             }
         }
     }
-    
-    @objc open func timeFormatted(timeInterval: TimeInterval) -> String {
+
+    @objc func timeFormatted(timeInterval: TimeInterval) -> String {
         let seconds: Int = lround(timeInterval)
         var hour: Int = 0
         var minute: Int = Int(seconds/60)
@@ -107,8 +108,8 @@ open class TLPhotoCollectionViewCell: UICollectionViewCell {
             return String(format: "%d:%02d", minute, second)
         }
     }
-    
-    @objc open func popScaleAnim() {
+
+    @objc func popScaleAnim() {
         UIView.animate(withDuration: 0.1, animations: {
             self.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
         }) { _ in
@@ -117,23 +118,23 @@ open class TLPhotoCollectionViewCell: UICollectionViewCell {
             })
         }
     }
-    
-    @objc open func update(with phAsset: PHAsset) {
-        
+
+    @objc func update(with phAsset: PHAsset) {
+
     }
-    
-    @objc open func selectedCell() {
-        
+
+    @objc func selectedCell() {
+
     }
-    
-    @objc open func willDisplayCell() {
-        
+
+    @objc func willDisplayCell() {
+
     }
-    
-    @objc open func endDisplayingCell() {
-        
+
+    @objc func endDisplayingCell() {
+
     }
-    
+
     @objc func stopPlay() {
         if let player = self.player {
             player.pause()
@@ -144,12 +145,12 @@ open class TLPhotoCollectionViewCell: UICollectionViewCell {
         self.livePhotoView?.stopPlayback()
         self.livePhotoView?.delegate = nil
     }
-    
+
     deinit {
 //        print("deinit TLPhotoCollectionViewCell")
     }
-    
-    override open func awakeFromNib() {
+
+    override func awakeFromNib() {
         super.awakeFromNib()
         self.playerView?.playerLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
         self.livePhotoView?.isHidden = true
@@ -166,8 +167,8 @@ open class TLPhotoCollectionViewCell: UICollectionViewCell {
             self.videoIconImageView?.accessibilityIgnoresInvertColors = true
         }
     }
-    
-    override open func prepareForReuse() {
+
+    override func prepareForReuse() {
         super.prepareForReuse()
         stopPlay()
         self.durationView?.isHidden = true

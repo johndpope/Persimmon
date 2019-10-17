@@ -120,8 +120,9 @@ class PhotoListView: UIView {
   
 
   private func addSubViews() {
-    [topView, addBtn]
+    [topView, photoView, addBtn]
       .forEach { self.addSubview($0) }
+    self.bringSubviewToFront(addBtn)
   }
   
   func createAlert() {
@@ -171,6 +172,11 @@ class PhotoListView: UIView {
     topView.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
       $0.height.equalToSuperview().multipliedBy(0.35)
+    }
+    
+    photoView.snp.makeConstraints {
+      $0.top.equalTo(topView.snp.bottom)
+      $0.leading.trailing.bottom.equalToSuperview()
     }
     
     addBtn.snp.makeConstraints {

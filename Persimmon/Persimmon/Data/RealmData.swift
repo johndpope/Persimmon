@@ -17,6 +17,8 @@ final class RealmSingleton {
   
   let realm: Realm = try! Realm()
   
+  var thumbnailSize: CGSize = CGSize(width: 160, height: 160)
+  
   private init() {}
   
   // realm init
@@ -41,10 +43,14 @@ final class RealmSingleton {
     }
   }
   
+  func takeSelectAlbum(uuid: String) -> Album? {
+    return realm.object(ofType: Album.self, forPrimaryKey: uuid)
+  }
+  
   // Data -> realm write
   func writeWithLivePhoto(albumUUID: String, asset: TLPHAsset, livePhoto: PHLivePhoto) {
     
-    selectAlbum = realm.object(ofType: Album.self, forPrimaryKey: albumUUID)
+    selectAlbum = takeSelectAlbum(uuid: albumUUID)
     let data = asset.fullResolutionImage?.jpegData(compressionQuality: 0.3)
     try! realm.write {
       guard let object = selectAlbum else { return }
@@ -56,6 +62,20 @@ final class RealmSingleton {
       realm.add(object, update: .modified)
     }
   }
+  
+  // Data -> realm write
+    func writeWithPhoto(albumUUID: String, asset: TLPHAsset) {
+      
+      selectAlbum = takeSelectAlbum(uuid: albumUUID)
+      let data = asset.fullResolutionImage?.jpegData(compressionQuality: 0.3)
+      try! realm.write {
+        guard let object = selectAlbum else { return }
+        let photo = Photo()
+        photo.photoData = data
+        object.photos.append(photo)
+        realm.add(object, update: .modified)
+      }
+    }
   
 }
 

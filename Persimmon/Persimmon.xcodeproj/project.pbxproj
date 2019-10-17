@@ -14,6 +14,8 @@
 		521F9DB32355725F00506B9C /* BundleExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521F9DB22355725F00506B9C /* BundleExtention.swift */; };
 		521F9DB52357997700506B9C /* TopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521F9DB42357997700506B9C /* TopView.swift */; };
 		521F9DB92357AF3A00506B9C /* PhotoCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521F9DB82357AF3A00506B9C /* PhotoCollectionView.swift */; };
+		521F9DBF2357E59300506B9C /* PhotoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 521F9DBE2357E59300506B9C /* PhotoCollectionViewCell.xib */; };
+		521F9DC32357E79000506B9C /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521F9DC22357E79000506B9C /* PhotoCollectionViewCell.swift */; };
 		523705BA2351024200869F57 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523705B92351024200869F57 /* AppDelegate.swift */; };
 		523705BC2351024200869F57 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523705BB2351024200869F57 /* SceneDelegate.swift */; };
 		523705C02351024400869F57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 523705BF2351024400869F57 /* Assets.xcassets */; };
@@ -53,6 +55,8 @@
 		521F9DB22355725F00506B9C /* BundleExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtention.swift; sourceTree = "<group>"; };
 		521F9DB42357997700506B9C /* TopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopView.swift; sourceTree = "<group>"; };
 		521F9DB82357AF3A00506B9C /* PhotoCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionView.swift; sourceTree = "<group>"; };
+		521F9DBE2357E59300506B9C /* PhotoCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoCollectionViewCell.xib; sourceTree = "<group>"; };
+		521F9DC22357E79000506B9C /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		523705B62351024200869F57 /* Persimmon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Persimmon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		523705B92351024200869F57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		523705BB2351024200869F57 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -272,6 +276,8 @@
 		C10C9BB42353794C00FA56A3 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				521F9DC22357E79000506B9C /* PhotoCollectionViewCell.swift */,
+				521F9DBE2357E59300506B9C /* PhotoCollectionViewCell.xib */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -464,6 +470,7 @@
 				C10C9C0A2356516400FA56A3 /* NanumPenScript-Regular.ttf in Resources */,
 				523705C62351024400869F57 /* LaunchScreen.storyboard in Resources */,
 				523705C32351024400869F57 /* Preview Assets.xcassets in Resources */,
+				521F9DBF2357E59300506B9C /* PhotoCollectionViewCell.xib in Resources */,
 				523705C02351024400869F57 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -527,6 +534,7 @@
 				523705CE235105C700869F57 /* PassCodeVC.swift in Sources */,
 				C10C9BC223537A8000FA56A3 /* MainTabBarController.swift in Sources */,
 				521F9DAC23520E4D00506B9C /* RealmData.swift in Sources */,
+				521F9DC32357E79000506B9C /* PhotoCollectionViewCell.swift in Sources */,
 				C10C9BA7235293DF00FA56A3 /* LaunchPassCodeView.swift in Sources */,
 				C10C9BB72353798E00FA56A3 /* PhotoListViewEmpty.swift in Sources */,
 				523705BA2351024200869F57 /* AppDelegate.swift in Sources */,
@@ -684,7 +692,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Persimmon/Source/\"";
-				DEVELOPMENT_TEAM = KNHX5B578D;
+				DEVELOPMENT_TEAM = 5W72YMDK56;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Persimmon/Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -708,7 +716,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Persimmon/Source/\"";
-				DEVELOPMENT_TEAM = KNHX5B578D;
+				DEVELOPMENT_TEAM = 5W72YMDK56;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Persimmon/Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
