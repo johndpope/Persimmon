@@ -17,11 +17,15 @@ class PhotoCollectionView: UIView {
     let scale = UserDefaults.standard.bool(forKey: "scale")
     let count = scale ? CGFloat(3) : CGFloat(4)
     let width = ((UIScreen.main.bounds.width-(5*(count-1)))/count)
-//    let width = (UIScreen.main.bounds.width / count).rounded(FloatingPointRoundingRule.towardZero)
+//    let width = (UIScreen.main.bounds.width / count) - 1
     print("width: ", width)
-    let itemSize = CGSize(width: width-4, height: width-4)
+    let itemSize = CGSize(width: width, height: width)
     RealmSingleton.shared.thumbnailSize = itemSize
+    layout.sectionInset = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
     layout.itemSize = itemSize
+    layout.minimumInteritemSpacing = 5
+    layout.minimumLineSpacing = 5
+    
     return layout
   }()
   
@@ -41,6 +45,7 @@ class PhotoCollectionView: UIView {
     view.isOpaque = true
     view.clearsContextBeforeDrawing = true
     view.autoresizesSubviews = true
+    
     
     
     if #available(iOS 13.0, *) {
