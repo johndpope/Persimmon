@@ -71,10 +71,10 @@ class SettingView: UIView {
   
   let scaleBtn: UIButton = {
     let button = UIButton(type: .custom)
-    button.setImage(UIImage(named: "persimmonIPasscodeIcon"), for: .normal)
-    button.setImage(UIImage(named: "persimmonIcon"), for: .selected)
+    button.setImage(UIImage(named: "persimmonIPassCodeIcon"), for: .selected)
+    button.setImage(UIImage(named: "persimmonIPasscodeIconsmall"), for: .normal)
     let scale = UserDefaults.standard.bool(forKey: "scale")
-    button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+    button.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
     button.isSelected = scale
 //    button.tintColor = UIColor.appColor(.appGreenColor)
     return button
@@ -212,7 +212,7 @@ extension SettingView: UITableViewDataSource {
         cell.textLabel?.textColor = UIColor.appColor(.appGreenColor)
         cell.selectionStyle = .none
       case 1:
-        cell.imageView?.image = UIImage(named: "settings")
+        cell.imageView?.image = UIImage(named: "photoSize")
         cell.imageView?.tintColor = UIColor.appColor(.appGreenColor)
         cell.accessoryType = .disclosureIndicator
         cell.textLabel?.font = UIFont(name: "NanumPen", size: 20)
