@@ -160,7 +160,7 @@ extension AlbumListView: UITableViewDelegate {
     editAction.image = UIImage(named: "pencil")
 
     editAction.backgroundColor = UIColor.appColor(.appYellowColor)
-    editAction.accessibilityFrame.offsetBy(dx: 10, dy: 10)
+//    editAction.accessibilityFrame.offsetBy(dx: 10, dy: 10) 
 
     return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
   }

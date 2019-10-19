@@ -8,7 +8,6 @@
 
 import UIKit
 import Photos
-import PhotosUI
 import TLPhotoPicker
 import RealmSwift
 
@@ -18,7 +17,7 @@ class PhotoListVC: UIViewController {
   
   var notificationToken: NotificationToken? = nil
   
-  lazy var object = RealmSingleton.shared.takeSelectAlbum(uuid: uuid)
+  lazy var object = RealmSingleton.shared.takeSelectAlbum(uuid: uuid, selectRealm: nil)
   
   let photoListView = PhotoListView()
   let photoEmptyView = PhotoListViewEmpty()
@@ -88,10 +87,13 @@ class PhotoListVC: UIViewController {
       imagePicker.sourceType = .camera
       self.present(imagePicker, animated: true)
     }
+    
+    let cancelAction = UIAlertAction(title: "취소", style: .destructive)
     //3. 정의된 버튼을 알림창 객체에 추가한다.
     
     alert.addAction(libraryAction)
     alert.addAction(cameraAction)
+    alert.addAction(cancelAction)
     let contentVC = CustomAlertVC()
     alert.view.tintColor = UIColor.appColor(.appGreenColor)
     // 뷰 컨트롤러 알림창의 콘텐츠 뷰 컨트롤러 속성에 등록한다.
@@ -119,20 +121,27 @@ extension PhotoListVC: UIImagePickerControllerDelegate, UINavigationControllerDe
 }
 
 extension PhotoListVC: TLPhotosPickerViewControllerDelegate {
+  func dismissPhotoPicker(withPHAssets: [PHAsset]) {
+    let uuid = UUID().uuidString
+    TassPhoto().saveMediaFile(asset: withPHAssets.first, uuid: uuid) { (localURL, mimeType) in
+      print("result: ", localURL, mimeType)
+    }
+  }
+  
   func dismissPhotoPicker(withTLPHAssets: [TLPHAsset]) {
     
 //    let manager = PHImageManager()
-    let option = PHLivePhotoRequestOptions()
-    option.deliveryMode = .highQualityFormat
-    option.isNetworkAccessAllowed = true
-    option.version = .original
-    option.progressHandler = { (per, err, state, info) in
-      print("here percent: \(per), useUnsafe: \(state)")
-    }
-    
-    withTLPHAssets.forEach { (asset) in
-        RealmSingleton.shared.writeWithPhoto(albumUUID: self.uuid, asset: asset)
-    }
+//    let option = PHLivePhotoRequestOptions()
+//    option.deliveryMode = .highQualityFormat
+//    option.isNetworkAccessAllowed = true
+//    option.version = .original
+//    option.progressHandler = { (per, err, state, info) in
+//      print("here percent: \(per), useUnsafe: \(state)")
+//    }
+//
+//    withTLPHAssets.forEach { (asset) in
+//        RealmSingleton.shared.writeWithPhoto(albumUUID: self.uuid, asset: asset)
+//    }
     
     
     
@@ -262,11 +271,6 @@ extension PhotoListVC: UICollectionViewDelegate {
 
 
 public struct PhotosPickerConfigure {
-  public var customLocalizedTitle: [String: String] = ["Camera Roll": "Camera Roll"]
-  public var tapHereToChange = "Tap here to change"
-  public var cancelTitle = "Cancel"
-  public var doneTitle = "Done"
-  public var emptyMessage = "No albums"
   public var emptyImage: UIImage? = nil
   public var usedCameraButton = false
   public var usedPrefetch = false
@@ -274,7 +278,7 @@ public struct PhotosPickerConfigure {
   public var allowedVideo = true
   public var allowedAlbumCloudShared = false
   public var allowedVideoRecording = false
-  public var recordingVideoQuality: UIImagePickerController.QualityType = .typeMedium
+  public var recordingVideoQuality: UIImagePickerController.QualityType = .typeHigh
   public var maxVideoDuration:TimeInterval? = nil
   public var autoPlay = false
   public var muteAudio = true
@@ -292,7 +296,10 @@ public struct PhotosPickerConfigure {
 //  public var cameraCellNibSet: (nibName: String, bundle:Bundle)? = nil
   public var fetchCollectionTypes: [(PHAssetCollectionType,PHAssetCollectionSubtype)]? = nil
   public var supportedInterfaceOrientations: UIInterfaceOrientationMask = .portrait
-  public init() {}
+  public init() {
+    
+  }
+  
 }
 
 
