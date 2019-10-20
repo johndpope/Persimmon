@@ -13,8 +13,93 @@ class PassCodeVC: UIViewController {
   
   var isFirst: Bool = false
   let launchPassCodeView = LaunchPassCodeView()
+  let passCodeViw = PassCodeView()
   
-  let attributes = [NSAttributedString.Key.font : UIFont(name: "NanumPen", size: 20)!, NSAttributedString.Key.foregroundColor : UIColor.appColor(.appFontColor)]
+  
+  let userDefaults = UserDefaults.standard
+  
+  var prePassCode: String = ""
+  
+ 
+  
+  
+  
+  var text: String = "" {
+    didSet {
+      print("현재 입력한 passcode: ", text)
+      if text.count == 4 {
+        if let saveCode = userDefaults.string(forKey: "pw") {
+          if text == saveCode {
+            // 넘어가기
+            let vc = MainTabBarController()
+            let navi = UINavigationController(rootViewController: vc)
+            navi.modalPresentationStyle = .fullScreen
+            navi.modalTransitionStyle = .crossDissolve
+            navi.navigationBar.isHidden = true
+            self.present(navi, animated: true)
+            
+            print("넘어가라")
+          } else {
+            let alert = UIAlertController(title: "", message: "비밀번호가 틀립니다.", preferredStyle: .alert)
+            
+            let reInput = UIAlertAction(title: "확인", style: .default) { (action) in
+              self.text = ""
+              self.prePassCode = ""
+            }
+            alert.addAction(reInput)
+            present(alert, animated: true)
+            
+          }
+          
+          
+        } else { // 초기
+          if prePassCode == "" {
+            let alert = UIAlertController(title: "", message: "현재 비밀번호: \(text)", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "저장", style: .default) { (action) in
+              self.prePassCode = self.text
+              self.text = ""
+            }
+            let reInput = UIAlertAction(title: "다시하기", style: .default) { (action) in
+              self.text = ""
+              self.prePassCode = ""
+            }
+            alert.addAction(okAction)
+            alert.addAction(reInput)
+            present(alert, animated: true)
+          } else {
+            if prePassCode == text {
+              // userdefaults 저장 -> 넘어가기
+              userDefaults.setValue(text, forKey: "pw")
+              let vc = MainTabBarController()
+              let navi = UINavigationController(rootViewController: vc)
+              navi.modalPresentationStyle = .fullScreen
+              navi.modalTransitionStyle = .crossDissolve
+              navi.navigationBar.isHidden = true
+              self.present(navi, animated: true)
+              
+              
+              print("이제 저장 후 넘어가기 해야함")
+            } else {
+              let alert = UIAlertController(title: "", message: "비밀번호가 틀립니다. 처음부터 다시하세요.", preferredStyle: .alert)
+              
+              let reInput = UIAlertAction(title: "확인", style: .default) { (action) in
+                self.text = ""
+                self.prePassCode = ""
+              }
+              alert.addAction(reInput)
+              present(alert, animated: true)
+            }
+          }
+        }
+        
+        
+      }
+      
+      
+    }
+    
+  }
+  
   
   override func loadView() {
     self.view = launchPassCodeView
@@ -26,19 +111,17 @@ class PassCodeVC: UIViewController {
     launchPassCodeView.passCodeView.delegate = self
   }
   
+  
 }
 
-extension PassCodeVC: PassCodeViewDelegate {
-  func didTapButton(sender: UIButton) {
-    let vc = MainTabBarController()
-    let navi = UINavigationController(rootViewController: vc)
 
+
+extension PassCodeVC: PassCodeViewDelegate {
+  func didTapButton(input: String) {
     
-    navi.modalPresentationStyle = .fullScreen
-    navi.modalTransitionStyle = .crossDissolve
-    navi.navigationBar.isHidden = true
-    self.present(navi, animated: true)
-  
+    text.append(input)
+    
   }
+  
   
 }
