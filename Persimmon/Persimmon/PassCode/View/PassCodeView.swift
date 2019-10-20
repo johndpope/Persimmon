@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 protocol PassCodeViewDelegate: class {
-  func didTapButton(sender: UIButton)
+  func didTapButton(input: String)
 }
 
 class PassCodeView: UIView {
@@ -183,7 +183,7 @@ class PassCodeView: UIView {
   @objc func checkingPasscode(_ sender: UIButton) {
     
     guard let input = sender.currentTitle else { return }
-    delegate?.didTapButton(sender: sender)
+    delegate?.didTapButton(input: input)
     
   }
   
