@@ -56,6 +56,7 @@ class AlbumListView: UIView {
     let tableView = UITableView()
     tableView.dataSource = self
     tableView.delegate = self
+    tableView.separatorStyle = .none
     return tableView
   }()
   
@@ -119,12 +120,21 @@ extension AlbumListView: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    tableView.separatorStyle = .singleLine
     let cell = tableView.dequeueReusableCell(withIdentifier: AlbumListTableCell.identifier, for: indexPath) as! AlbumListTableCell
+    cell.selectionStyle = .none
     cell.titleLabel.text = albums[indexPath.row].title
     cell.subTitleLabel.text = "[ \(albums[indexPath.row].photos.count.description) ]"
     cell.albumImageView.contentMode = .scaleAspectFill
-    cell.albumImageView.image = UIImage(data: albums[indexPath.row].photos.last?.photoData ?? Data())
-    cell.selectionStyle = .none
+    
+    
+    guard let lastPhoto = albums[indexPath.row].photos.last,
+      let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
+      let imageData = try? Data(contentsOf: url.appendingPathComponent("\(lastPhoto.uuid)/\(lastPhoto.imageName)")) else {
+      return cell
+    }
+    print("localURL: ", url) 
+    cell.albumImageView.image = UIImage(data: imageData, scale: 0.1)
     return cell
   }
   

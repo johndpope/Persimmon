@@ -26,7 +26,6 @@ class AlbumListVC: UIViewController {
     albumListView.addBtn.addTarget(self, action: #selector(didTapAddBtn(_:)), for: .touchUpInside)
     
     notificationToken = RealmSingleton.shared.realm.observe({ (noti, realm) in
-      print("here reload")
       DispatchQueue.main.async {
         self.albumListView.tableView.reloadData()
       }

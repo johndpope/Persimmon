@@ -18,7 +18,6 @@ class PhotoCollectionView: UIView {
     let count = scale ? CGFloat(3) : CGFloat(4)
     let width = ((UIScreen.main.bounds.width-(5*(count-1)))/count)
 //    let width = (UIScreen.main.bounds.width / count) - 1
-    print("width: ", width)
     let itemSize = CGSize(width: width, height: width)
     RealmSingleton.shared.thumbnailSize = itemSize
     layout.sectionInset = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
@@ -63,6 +62,10 @@ class PhotoCollectionView: UIView {
     collectionView.snp.makeConstraints {
       $0.leading.trailing.top.bottom.equalTo(self)
     }
+  }
+  
+  deinit {
+    print("deinit!!!")
   }
   
 }
