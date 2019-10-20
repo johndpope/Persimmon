@@ -25,6 +25,7 @@
 		523705C62351024400869F57 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 523705C42351024400869F57 /* LaunchScreen.storyboard */; };
 		523705CE235105C700869F57 /* PassCodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523705CD235105C700869F57 /* PassCodeVC.swift */; };
 		523705D22351070900869F57 /* PassCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523705D12351070900869F57 /* PassCodeView.swift */; };
+		52F27F29235BD93400066C99 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F27F28235BD93400066C99 /* Test.swift */; };
 		BE2EB11FFDB65390A2741BE2 /* Pods_Persimmon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BB6C34114F54D1E909A5A9B /* Pods_Persimmon.framework */; };
 		C10C9BA5235289ED00FA56A3 /* LaunchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9BA4235289ED00FA56A3 /* LaunchScreenView.swift */; };
 		C10C9BA7235293DF00FA56A3 /* LaunchPassCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9BA6235293DF00FA56A3 /* LaunchPassCodeView.swift */; };
@@ -71,6 +72,7 @@
 		523705C72351024400869F57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		523705CD235105C700869F57 /* PassCodeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassCodeVC.swift; sourceTree = "<group>"; };
 		523705D12351070900869F57 /* PassCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassCodeView.swift; sourceTree = "<group>"; };
+		52F27F28235BD93400066C99 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		5BB6C34114F54D1E909A5A9B /* Pods_Persimmon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Persimmon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C2736417BA302DF8EE103DF /* Pods-Persimmon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Persimmon.release.xcconfig"; path = "Target Support Files/Pods-Persimmon/Pods-Persimmon.release.xcconfig"; sourceTree = "<group>"; };
 		C10C9BA4235289ED00FA56A3 /* LaunchScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenView.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 			children = (
 				520BD60023593344003E6D6B /* TassPhoto.swift */,
 				520BD60423593B76003E6D6B /* TassRealm.swift */,
+				52F27F28235BD93400066C99 /* Test.swift */,
 			);
 			path = Function;
 			sourceTree = "<group>";
@@ -544,6 +547,7 @@
 				C10C9BB92353799E00FA56A3 /* PhotoListView.swift in Sources */,
 				C10C9BC823537C8F00FA56A3 /* SettingVC.swift in Sources */,
 				521F9DAF23527CA500506B9C /* CustomPhotoPicker.swift in Sources */,
+				52F27F29235BD93400066C99 /* Test.swift in Sources */,
 				521F9DB92357AF3A00506B9C /* PhotoCollectionView.swift in Sources */,
 				C10C9C0E2356CD7500FA56A3 /* SettingView.swift in Sources */,
 				523705CE235105C700869F57 /* PassCodeVC.swift in Sources */,
@@ -707,7 +711,7 @@
 			baseConfigurationReference = 2F6B9E09EE131E037B59850A /* Pods-Persimmon.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Persimmon/Persimmon.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Persimmon/Source/\"";
@@ -732,7 +736,7 @@
 			baseConfigurationReference = 7C2736417BA302DF8EE103DF /* Pods-Persimmon.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Persimmon/Persimmon.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Persimmon/Source/\"";

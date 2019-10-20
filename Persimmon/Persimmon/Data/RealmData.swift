@@ -33,13 +33,15 @@ public class Album: Object, PrimaryKeyAware {
 
 // Photo Model
 public class Photo: Object, PrimaryKeyAware {
-  // UUID for Primary-key and Migarion test
-  @objc dynamic var uuid: String = UUID().uuidString
+  // UUID for Primary-key
+  @objc dynamic var uuid: String = ""
   
   @objc dynamic var saveDate: Date = Date()
 //  dynamic var asset: TLPHAsset?
 //  dynamic var livePhoto: PHLivePhoto?
-  @objc dynamic var photoData: Data? = Data()
+  @objc dynamic var type: String = ""
+  @objc dynamic var imageName: String = ""
+  @objc dynamic var videoName: String = ""
   
   override public static func primaryKey() -> String? {
       return "uuid"

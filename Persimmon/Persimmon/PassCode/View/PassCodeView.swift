@@ -183,7 +183,6 @@ class PassCodeView: UIView {
   @objc func checkingPasscode(_ sender: UIButton) {
     
     guard let input = sender.currentTitle else { return }
-    print("input: ", input)
     delegate?.didTapButton(sender: sender)
     
   }

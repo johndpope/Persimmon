@@ -49,6 +49,7 @@ class PhotoListVC: UIViewController {
   
   @objc func backButtonDidTap(_ sender: UIButton) {
     print("눌림")
+//    navigationController?.viewControllers = (navigationController?.viewControllers.dropLast())!
     navigationController?.popViewController(animated: true)
     
   }
@@ -122,9 +123,17 @@ extension PhotoListVC: UIImagePickerControllerDelegate, UINavigationControllerDe
 
 extension PhotoListVC: TLPhotosPickerViewControllerDelegate {
   func dismissPhotoPicker(withPHAssets: [PHAsset]) {
-    let uuid = UUID().uuidString
-    TassPhoto().saveMediaFile(asset: withPHAssets.first, uuid: uuid) { (localURL, mimeType) in
-      print("result: ", localURL, mimeType)
+    
+    withPHAssets.forEach { (asset) in
+      let photoUUID = UUID().uuidString
+      TassPhoto().saveMediaFile(asset: asset, uuid: photoUUID, progressBlock: { (per) in
+        print(per)
+      }) { (imageName, videoName) in
+//        print("result: ", imageURL, videoURL, "\n", photoUUID)
+        RealmSingleton.shared.writeToRealm(albumUUID: self.uuid, photoUUID: photoUUID, localName: (imageName, videoName))
+        
+      }
+      
     }
   }
   
@@ -252,11 +261,15 @@ extension PhotoListVC: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCell", for: indexPath) as! PhotoCollectionViewCell
     
-    cell.configure = PhotosPickerConfigure()
-    cell.imageView?.image = UIImage(data: object?.photos[indexPath.row].photoData ?? Data())
     cell.liveBadgeImageView?.image = nil
     cell.isCameraCell = false
     
+    guard let photo = object?.photos[indexPath.row] else { return cell }
+    cell.configure = PhotosPickerConfigure()
+    cell.photoUUID = photo.uuid
+    cell.cellType = photo.type
+    cell.videoURL = photo.videoName
+    cell.imageURL = photo.imageName
     
     return cell
   }

@@ -50,6 +50,37 @@ final class RealmSingleton {
     return selectRealm.object(ofType: Album.self, forPrimaryKey: uuid)
   }
   
+  func writeToRealm(albumUUID: String, photoUUID: String, localName: (String?, String?)) {
+    selectAlbum = takeSelectAlbum(uuid: albumUUID, selectRealm: realm)
+    try! realm.write {
+      guard let object = selectAlbum else { return }
+      let photo = Photo()
+      var type: String
+      photo.uuid = photoUUID
+      
+      
+      
+      if localName.0 != nil, localName.1 == nil {
+        type = "image"
+        photo.imageName = localName.0!
+      } else if localName.0 == nil, localName.1 != nil {
+        type = "video"
+        photo.videoName = localName.1!
+      } else if localName.0 != nil, localName.1 != nil {
+        type = "live"
+        photo.videoName = localName.1!
+        photo.imageName = localName.0!
+      } else {
+        dump("Error to Save Photo")
+        return
+      }
+      
+      photo.type = type
+      object.photos.append(photo)
+      realm.add(object, update: .modified)
+    }
+  }
+  
   // Data -> realm write
   func writeWithLivePhoto(albumUUID: String, asset: TLPHAsset, livePhoto: PHLivePhoto) {
     
@@ -60,7 +91,7 @@ final class RealmSingleton {
       let photo = Photo()
 //      photo.livePhoto = livePhoto
 //      photo.asset = asset
-      photo.photoData = data
+//      photo.photoData = data
       object.photos.append(photo)
       realm.add(object, update: .modified)
     }
@@ -82,7 +113,7 @@ final class RealmSingleton {
           
             guard let object = selectAlbum else { return }
             let photo = Photo()
-            photo.photoData = data
+//            photo.photoData = data
             object.photos.append(photo)
             otherRealm.add(object, update: .modified)
           try! otherRealm.commitWrite()
