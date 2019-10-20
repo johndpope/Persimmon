@@ -26,7 +26,7 @@ extension UIColor {
     case .appPersimmonColor:
       return #colorLiteral(red: 0.903100431, green: 0.4804807901, blue: 0.2455147505, alpha: 1)
     case .appYellowColor:
-      return #colorLiteral(red: 0.9803054929, green: 0.9139667153, blue: 0.6076790094, alpha: 1)
+      return #colorLiteral(red: 1, green: 0.9326599673, blue: 0.624623731, alpha: 1)
     case .appGreenColor:
       return #colorLiteral(red: 0.3548052609, green: 0.284040451, blue: 0.116188474, alpha: 1)
     case .appLayerBorderColor:

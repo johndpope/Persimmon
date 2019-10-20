@@ -11,6 +11,7 @@ import SnapKit
 import RealmSwift
 import TLPhotoPicker
 
+
 protocol AlbumListViewDelegate {
   func didSelectCell(indexPath: AlbumListView, uuid: String)
 }
@@ -70,8 +71,6 @@ class AlbumListView: UIView {
  
   private func setupTableView() {
     
-//    tableView.register(UINib(nibName: "TLCollectionTableViewCell", bundle: Bundle().bundle()), forCellReuseIdentifier: "TLCollectionTableViewCell")
-    
     tableView.register(AlbumListTableCell.self, forCellReuseIdentifier: AlbumListTableCell.identifier)
 
   }
@@ -120,7 +119,6 @@ extension AlbumListView: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//    let cell = tableView.dequeueReusableCell(withIdentifier: "TLCollectionTableViewCell", for: indexPath) as! TLCollectionTableViewCell
     let cell = tableView.dequeueReusableCell(withIdentifier: AlbumListTableCell.identifier, for: indexPath) as! AlbumListTableCell
     cell.titleLabel.text = albums[indexPath.row].title
     cell.subTitleLabel.text = "[ \(albums[indexPath.row].photos.count.description) ]"
@@ -148,27 +146,35 @@ extension AlbumListView: UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { (UIContextualAction, UIView,  success: (Bool) -> Void) in
+  
+    
+    let deleteAction = UIContextualAction(style: .normal, title: nil) { (UIContextualAction, UIView,  success: (Bool) -> Void) in
+      // 삭제버튼
       success(true)
     }
-    deleteAction.image = UIImage(named: "minus")
-    deleteAction.backgroundColor = UIColor.appColor(.appFontColor)
+    
+    deleteAction.image = UIImage(named: "delete")
+    deleteAction.backgroundColor = .white
+    
+    
 
-    let editAction = UIContextualAction(style: .normal, title: "수정") { (UIContextualAction, UIView, success: (Bool) -> Void) in
+    let editAction = UIContextualAction(style: .normal, title: nil) { (UIContextualAction, UIView, success: (Bool) -> Void) in
+      // 수정버튼
       success(true)
     }
-    editAction.image = UIImage(named: "pencil")
-
-    editAction.backgroundColor = UIColor.appColor(.appYellowColor)
-    editAction.accessibilityFrame.offsetBy(dx: 10, dy: 10)
+    editAction.image = UIImage(named: "modification")
+    editAction.backgroundColor = .white
 
     return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
   }
-//  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//    if editingStyle == .delete {
-//      print("editing")
-//    }
-//  }
+  
+  
+  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    if editingStyle == .delete {
+      
+      print("editing")
+    }
+  }
   
 
 }

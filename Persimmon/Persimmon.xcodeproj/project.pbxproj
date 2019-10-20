@@ -44,6 +44,8 @@
 		C10C9C1423574E1700FA56A3 /* ChangePassCodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9C1323574E1700FA56A3 /* ChangePassCodeVC.swift */; };
 		C10C9C1723577D6D00FA56A3 /* AlbumListTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9C1623577D6D00FA56A3 /* AlbumListTableCell.swift */; };
 		C1618910235270B300C49B57 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161890F235270B300C49B57 /* ColorExtension.swift */; };
+		C1A9D643235B621100BFF2E6 /* DonationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A9D642235B621100BFF2E6 /* DonationView.swift */; };
+		C1A9D645235B629B00BFF2E6 /* DonationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A9D644235B629B00BFF2E6 /* DonationVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,6 +90,8 @@
 		C10C9C1323574E1700FA56A3 /* ChangePassCodeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePassCodeVC.swift; sourceTree = "<group>"; };
 		C10C9C1623577D6D00FA56A3 /* AlbumListTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumListTableCell.swift; sourceTree = "<group>"; };
 		C161890F235270B300C49B57 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
+		C1A9D642235B621100BFF2E6 /* DonationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationView.swift; sourceTree = "<group>"; };
+		C1A9D644235B629B00BFF2E6 /* DonationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +160,7 @@
 		523705B82351024200869F57 /* Persimmon */ = {
 			isa = PBXGroup;
 			children = (
+				C1A9D641235B282500BFF2E6 /* Player */,
 				C10C9BC023537A5100FA56A3 /* MainTabBar */,
 				C161890E2352706200C49B57 /* Extensions */,
 				523705D0235106C600869F57 /* Source */,
@@ -349,6 +354,7 @@
 			children = (
 				C10C9C0D2356CD7500FA56A3 /* SettingView.swift */,
 				C10C9C1123574DE700FA56A3 /* PassCodeSetView.swift */,
+				C1A9D642235B621100BFF2E6 /* DonationView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -365,6 +371,7 @@
 			children = (
 				C10C9BC723537C8F00FA56A3 /* SettingVC.swift */,
 				C10C9C1323574E1700FA56A3 /* ChangePassCodeVC.swift */,
+				C1A9D644235B629B00BFF2E6 /* DonationVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -395,6 +402,13 @@
 				521F9DB22355725F00506B9C /* BundleExtention.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		C1A9D641235B282500BFF2E6 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Player;
 			sourceTree = "<group>";
 		};
 		C340F1C97513DDEE4CBF986B /* Frameworks */ = {
@@ -526,10 +540,12 @@
 			files = (
 				521F9DB52357997700506B9C /* TopView.swift in Sources */,
 				C10C9C1223574DE800FA56A3 /* PassCodeSetView.swift in Sources */,
+				C1A9D645235B629B00BFF2E6 /* DonationVC.swift in Sources */,
 				C10C9BB92353799E00FA56A3 /* PhotoListView.swift in Sources */,
 				C10C9BC823537C8F00FA56A3 /* SettingVC.swift in Sources */,
 				521F9DAF23527CA500506B9C /* CustomPhotoPicker.swift in Sources */,
 				521F9DB92357AF3A00506B9C /* PhotoCollectionView.swift in Sources */,
+				C1A9D643235B621100BFF2E6 /* DonationView.swift in Sources */,
 				C10C9C0E2356CD7500FA56A3 /* SettingView.swift in Sources */,
 				523705CE235105C700869F57 /* PassCodeVC.swift in Sources */,
 				C10C9BC223537A8000FA56A3 /* MainTabBarController.swift in Sources */,

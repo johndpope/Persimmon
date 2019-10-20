@@ -40,7 +40,8 @@ extension SettingVC: SettingViewDelegate {
       let passCodeSetVC = ChangePassCodeVC()
       navigationController?.pushViewController(passCodeSetVC, animated: true)
     case IndexPath(row: 0, section: 2):
-      print("기부하기")
+      let donationVC = DonationVC()
+      navigationController?.pushViewController(donationVC, animated: true)
     default:
       break
     }
