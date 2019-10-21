@@ -47,6 +47,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     return true
   }
   
+// MARK: - 앱 다시 실행했을때 넘어오는 뷰 -> passCodeVC
+  func applicationDidBecomeActive(_ application: UIApplication) {
+    print("\n-------------[applicationDidBecomeActive]-------------\n")
+    let rootView = PassCodeVC()
+    window?.rootViewController = rootView
+    window?.makeKeyAndVisible()
+  }
+  
+  
   func checkPassCodeState() {
      let passCodeVC = PassCodeVC()
      let passCodeNavi = UINavigationController(rootViewController: passCodeVC)
@@ -81,6 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Use this method to select a configuration to create the new scene with.
     return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
   }
+  
   
   @available(iOS 13.0, *)
   func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
