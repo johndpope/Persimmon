@@ -10,9 +10,6 @@ import UIKit
 
 class CustomAlertVC: UIViewController {
   
-  let photoListView = PhotoListView()
-  
-  
   override func viewDidLoad() {
     super.viewDidLoad()
     

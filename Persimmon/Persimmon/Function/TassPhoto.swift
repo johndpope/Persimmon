@@ -33,7 +33,7 @@ class TassPhoto {
   
   
   
-  func saveMediaFile(asset: PHAsset?, uuid: String, progressBlock:((Double) -> Void)? = nil, completionBlock:@escaping ((String?, String?) -> Void)) {
+  func saveMediaFile(asset: PHAsset?, uuid: String, progressBlock:((Double) -> Void)? = nil, completionBlock:@escaping ((String?, String?, String) -> Void)) {
     guard let phAsset = asset else { return }
     
     let resource = PHAssetResource.assetResources(for: phAsset)
@@ -45,14 +45,16 @@ class TassPhoto {
     writeURL = url?.appendingPathComponent(uuid)
     
     try? fileManager.createDirectory(at: writeURL!, withIntermediateDirectories: true, attributes: nil)
-    
-    saveResource(resource: resource, saveURL: writeURL, progressBlock: progressBlock) { (imageURL, videoURL) in
-      completionBlock(imageURL, videoURL)
+    DispatchQueue(label: "realm", qos: .background).async {
+      self.saveResource(asset: phAsset, resource: resource, saveURL: writeURL, progressBlock: progressBlock) { (imageName, videoName, thumbnail) in
+        completionBlock(imageName, videoName, thumbnail)
+        
+      }
     }
     
   }
   
-  private func saveResource(resource: [PHAssetResource], saveURL: URL?, progressBlock:((Double) -> Void)? = nil, completion: @escaping ((String?, String?) -> Void) ) {
+  private func saveResource(asset: PHAsset, resource: [PHAssetResource], saveURL: URL?, progressBlock:((Double) -> Void)? = nil, completion: @escaping ((String?, String?, String) -> Void) ) {
     
     let option = PHAssetResourceRequestOptions()
     option.isNetworkAccessAllowed = true
@@ -63,8 +65,10 @@ class TassPhoto {
     let saveURL = saveURL
     var videoURL: URL?
     var imageURL: URL?
+    var thumbURL: URL?
     var videoName: String?
     var imageName: String?
+    var thumbnail: String = ""
     
     resource.forEach {
       switch $0.type {
@@ -87,32 +91,40 @@ class TassPhoto {
       }
     }
     
-    if imageName == nil, videoName != nil {
+    let options = PHImageRequestOptions()
+    options.deliveryMode = .highQualityFormat
+    options.isNetworkAccessAllowed = true
+    options.isSynchronous = true
+    options.resizeMode = .exact
+    options.version = .original
+    
+    PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: 300, height: 300), contentMode: .aspectFill, options: options) { (image, info) in
       do {
-        imageURL = saveURL?.appendingPathComponent("thumbnail.png")
-        imageName = "thumbnail.png"
-        try generateThumbnail(path: videoURL!)?.write(to: imageURL!, options: .withoutOverwriting)
-      }catch(let err) {
+        thumbnail = "thumbnail.png"
+        thumbURL = saveURL?.appendingPathComponent("thumbnail.png")
+        let data = image?.pngData()
+        try data?.write(to: thumbURL!, options: .withoutOverwriting)
+      } catch(let err) {
         dump(err)
       }
     }
     
-    completion(imageName, videoName)
+    completion(imageName, videoName, thumbnail)
     
   }
   
   private func generateThumbnail(path: URL) -> Data? {
-      do {
-          let asset = AVURLAsset(url: path, options: nil)
-          let imgGenerator = AVAssetImageGenerator(asset: asset)
-          imgGenerator.appliesPreferredTrackTransform = true
-          let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(value: 0, timescale: 1), actualTime: nil)
-          let thumbnail = UIImage(cgImage: cgImage)
-        return thumbnail.pngData()
-      } catch let error {
-          print("*** Error generating thumbnail: \(error.localizedDescription)")
-          return nil
-      }
+    do {
+      let asset = AVURLAsset(url: path, options: nil)
+      let imgGenerator = AVAssetImageGenerator(asset: asset)
+      imgGenerator.appliesPreferredTrackTransform = true
+      let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(value: 0, timescale: 1), actualTime: nil)
+      let thumbnail = UIImage(cgImage: cgImage)
+      return thumbnail.pngData()
+    } catch let error {
+      print("*** Error generating thumbnail: \(error.localizedDescription)")
+      return nil
+    }
   }
   
   

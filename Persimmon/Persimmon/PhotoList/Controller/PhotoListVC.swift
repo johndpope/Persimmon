@@ -13,14 +13,21 @@ import RealmSwift
 
 class PhotoListVC: UIViewController {
   
+  var totalCount = 0
+  var finishCount = 0
+  
+  var countAlert: UIAlertController?
+  var vc: TLPhotosPickerViewController?
+  
   var uuid: String = ""
   
   var notificationToken: NotificationToken? = nil
   
-  lazy var object = RealmSingleton.shared.takeSelectAlbum(uuid: uuid, selectRealm: nil)
+  var object: Album? {
+    return RealmSingleton.shared.takeSelectAlbum(uuid: uuid, selectRealm: nil)
+  }
   
   let photoListView = PhotoListView()
-  let photoEmptyView = PhotoListViewEmpty()
   let alertVC = CustomAlertVC()
   
   override func loadView() {
@@ -30,11 +37,9 @@ class PhotoListVC: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    notificationToken = RealmSingleton.shared.realm.observe({ (noti, realm) in
-      print("here reload")
-      DispatchQueue.main.async {
-        self.photoListView.photoView.collectionView.reloadData()
-      }
+    notificationToken = RealmSingleton.shared.realm.observe({ [weak self] (noti, realm) in
+      guard let `self` = self else { return }
+      
     })
     
     view.backgroundColor = .white
@@ -49,7 +54,7 @@ class PhotoListVC: UIViewController {
   
   @objc func backButtonDidTap(_ sender: UIButton) {
     print("눌림")
-//    navigationController?.viewControllers = (navigationController?.viewControllers.dropLast())!
+    //    navigationController?.viewControllers = (navigationController?.viewControllers.dropLast())!
     navigationController?.popViewController(animated: true)
     
   }
@@ -67,22 +72,23 @@ class PhotoListVC: UIViewController {
     let libraryAction = UIAlertAction(title: "앨범", style: .default) {
       [unowned self] (alert) -> Void in
       
-      let vc = TLPhotosPickerViewController()
-      vc.configure.cancelTitle = "취소"
-      vc.configure.doneTitle = "완료"
-      vc.configure.tapHereToChange = "탭해서 바꾸기"
-      vc.configure.emptyMessage = "앨범 없음"
-      vc.configure.recordingVideoQuality = .typeHigh
-      vc.configure.selectedColor = .appColor(.appPersimmonColor)
-      vc.delegate = self
+      self.vc = TLPhotosPickerViewController()
+      self.vc?.configure.cancelTitle = "취소"
+      self.vc?.configure.doneTitle = "완료"
+      self.vc?.configure.tapHereToChange = "탭해서 바꾸기"
+      self.vc?.configure.emptyMessage = "앨범 없음"
+      self.vc?.configure.recordingVideoQuality = .typeHigh
+      self.vc?.configure.selectedColor = .appColor(.appPersimmonColor)
+      self.vc?.delegate = self
       //        vc.configure.customLocalizedTitle = ["카메라 롤": "카메라 롤"]
       //        vc.configure.cameraBgColor = .appColor(.appPersimmonColor)
       //       let selecAlbumVC = SelectAlbumVC()
-      self.present(vc, animated: true)
+      self.present(self.vc!, animated: true)
     }
     
     let cameraAction = UIAlertAction(title: "카메라", style: .default) {
-      [unowned self] (alert) -> Void in
+      [weak self] (alert) -> Void in
+      guard let `self` = self else { return }
       let imagePicker = UIImagePickerController()
       imagePicker.delegate = self
       imagePicker.sourceType = .camera
@@ -108,6 +114,7 @@ class PhotoListVC: UIViewController {
   }
   
   deinit {
+    print("deinit at PhotoListVC")
     notificationToken?.invalidate()
   }
   
@@ -123,34 +130,55 @@ extension PhotoListVC: UIImagePickerControllerDelegate, UINavigationControllerDe
 
 extension PhotoListVC: TLPhotosPickerViewControllerDelegate {
   func dismissPhotoPicker(withPHAssets: [PHAsset]) {
+    if withPHAssets.count != 0 {
+      totalCount = withPHAssets.count
+      countAlert = UIAlertController(title: "가져오는중...", message: "\(self.finishCount) / \(self.totalCount)", preferredStyle: .alert)
+      
+      self.vc?.present(countAlert!, animated: true)
+    }
     
-    withPHAssets.forEach { (asset) in
+    
+    
+    withPHAssets.forEach { [weak self] (asset) in
+      guard let `self` = self else { return }
       let photoUUID = UUID().uuidString
       TassPhoto().saveMediaFile(asset: asset, uuid: photoUUID, progressBlock: { (per) in
         print(per)
-      }) { (imageName, videoName) in
-//        print("result: ", imageURL, videoURL, "\n", photoUUID)
-        RealmSingleton.shared.writeToRealm(albumUUID: self.uuid, photoUUID: photoUUID, localName: (imageName, videoName))
-        
+      }) { (imageName, videoName, thumbnail) in
+        RealmSingleton.shared.writeToRealm(albumUUID: self.uuid, photoUUID: photoUUID, localName: (imageName, videoName, thumbnail)) { [weak self] count in
+          DispatchQueue.main.async {
+            guard let `self` = self else { return }
+            self.finishCount = self.finishCount + count
+            self.countAlert?.message = "\(self.finishCount) / \(self.totalCount)"
+            if self.finishCount == self.totalCount {
+              self.countAlert?.dismiss(animated: true, completion: {
+                self.vc?.dismiss(animated: true) {
+                  self.finishCount = 0
+                  self.photoListView.photoView.collectionView.reloadData()
+                }
+              })
+            }
+          }
+        }
       }
-      
     }
+    
   }
   
   func dismissPhotoPicker(withTLPHAssets: [TLPHAsset]) {
     
-//    let manager = PHImageManager()
-//    let option = PHLivePhotoRequestOptions()
-//    option.deliveryMode = .highQualityFormat
-//    option.isNetworkAccessAllowed = true
-//    option.version = .original
-//    option.progressHandler = { (per, err, state, info) in
-//      print("here percent: \(per), useUnsafe: \(state)")
-//    }
-//
-//    withTLPHAssets.forEach { (asset) in
-//        RealmSingleton.shared.writeWithPhoto(albumUUID: self.uuid, asset: asset)
-//    }
+    //    let manager = PHImageManager()
+    //    let option = PHLivePhotoRequestOptions()
+    //    option.deliveryMode = .highQualityFormat
+    //    option.isNetworkAccessAllowed = true
+    //    option.version = .original
+    //    option.progressHandler = { (per, err, state, info) in
+    //      print("here percent: \(per), useUnsafe: \(state)")
+    //    }
+    //
+    //    withTLPHAssets.forEach { (asset) in
+    //        RealmSingleton.shared.writeWithPhoto(albumUUID: self.uuid, asset: asset)
+    //    }
     
     
     
@@ -268,13 +296,12 @@ extension PhotoListVC: UICollectionViewDataSource {
     cell.configure = PhotosPickerConfigure()
     cell.photoUUID = photo.uuid
     cell.cellType = photo.type
-    cell.videoURL = photo.videoName
-    cell.imageURL = photo.imageName
+    cell.videoName = photo.videoName
+    cell.imageName = photo.imageName
+    cell.thumbnail = photo.thumbnail
     
     return cell
   }
-  
-  
 }
 
 extension PhotoListVC: UICollectionViewDelegate {
@@ -305,8 +332,6 @@ public struct PhotosPickerConfigure {
   public var cameraIcon = UIImage(named: "camera")
   public var videoIcon = UIImage(named: "video")
   public var placeholderIcon = UIImage(named: "insertPhotoMaterial")
-//  public var nibSet: (nibName: String, bundle:Bundle)? = nil
-//  public var cameraCellNibSet: (nibName: String, bundle:Bundle)? = nil
   public var fetchCollectionTypes: [(PHAssetCollectionType,PHAssetCollectionSubtype)]? = nil
   public var supportedInterfaceOrientations: UIInterfaceOrientationMask = .portrait
   public init() {

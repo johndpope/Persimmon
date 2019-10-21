@@ -42,6 +42,7 @@ public class Photo: Object, PrimaryKeyAware {
   @objc dynamic var type: String = ""
   @objc dynamic var imageName: String = ""
   @objc dynamic var videoName: String = ""
+  @objc dynamic var thumbnail: String = ""
   
   override public static func primaryKey() -> String? {
       return "uuid"
