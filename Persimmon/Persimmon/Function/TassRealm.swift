@@ -50,9 +50,9 @@ final class RealmSingleton {
     return selectRealm.object(ofType: Album.self, forPrimaryKey: uuid)
   }
   
-  func writeToRealm(albumUUID: String, photoUUID: String, localName: (String?, String?, String), completion: @escaping (Int) -> ()) {
-    DispatchQueue(label: "realm", qos: .background).async {
-      autoreleasepool {
+  func writeToRealm(albumUUID: String, photoUUID: String, localName: (String?, String?, String), completion: @escaping () -> ()) {
+//    DispatchQueue(label: "realm", qos: .background).async {
+//      autoreleasepool {
         let otherRealm = try! Realm()
         otherRealm.beginWrite()
         self.selectAlbum = self.takeSelectAlbum(uuid: albumUUID, selectRealm: otherRealm)
@@ -61,8 +61,6 @@ final class RealmSingleton {
         let photo = Photo()
         var type: String
         photo.uuid = photoUUID
-        
-        
         
         if localName.0 != nil, localName.1 == nil {
           type = "image"
@@ -85,14 +83,14 @@ final class RealmSingleton {
         otherRealm.add(object, update: .modified)
         do {
           try otherRealm.commitWrite()
-          completion(1)
+          completion()
         } catch(let err) {
           dump(err)
-          completion(0)
+          completion()
         }
         
-      }
-    }
+//      }
+//    }
   }
   
   // Data -> realm write

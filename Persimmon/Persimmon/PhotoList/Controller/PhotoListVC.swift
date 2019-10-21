@@ -13,12 +13,6 @@ import RealmSwift
 
 class PhotoListVC: UIViewController {
   
-  var totalCount = 0
-  var finishCount = 0
-  
-  var countAlert: UIAlertController?
-  var vc: TLPhotosPickerViewController?
-  
   var uuid: String = ""
   
   var notificationToken: NotificationToken? = nil
@@ -37,8 +31,7 @@ class PhotoListVC: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    notificationToken = RealmSingleton.shared.realm.observe({ [weak self] (noti, realm) in
-      guard let `self` = self else { return }
+    notificationToken = RealmSingleton.shared.realm.observe({ (noti, realm) in
       
     })
     
@@ -71,24 +64,25 @@ class PhotoListVC: UIViewController {
     
     let libraryAction = UIAlertAction(title: "앨범", style: .default) {
       [unowned self] (alert) -> Void in
+      //      guard let `self` = self else { return }
+      let vc = TLPhotosPickerViewController()
+      vc.configure.cancelTitle = "취소"
+      vc.configure.doneTitle = "완료"
+      vc.configure.tapHereToChange = "탭해서 바꾸기"
+      vc.configure.emptyMessage = "앨범 없음"
+      vc.configure.recordingVideoQuality = .typeHigh
+      vc.configure.selectedColor = .appColor(.appPersimmonColor)
+      vc.delegate = self
       
-      self.vc = TLPhotosPickerViewController()
-      self.vc?.configure.cancelTitle = "취소"
-      self.vc?.configure.doneTitle = "완료"
-      self.vc?.configure.tapHereToChange = "탭해서 바꾸기"
-      self.vc?.configure.emptyMessage = "앨범 없음"
-      self.vc?.configure.recordingVideoQuality = .typeHigh
-      self.vc?.configure.selectedColor = .appColor(.appPersimmonColor)
-      self.vc?.delegate = self
       //        vc.configure.customLocalizedTitle = ["카메라 롤": "카메라 롤"]
       //        vc.configure.cameraBgColor = .appColor(.appPersimmonColor)
       //       let selecAlbumVC = SelectAlbumVC()
-      self.present(self.vc!, animated: true)
+      self.present(vc, animated: true)
     }
     
     let cameraAction = UIAlertAction(title: "카메라", style: .default) {
-      [weak self] (alert) -> Void in
-      guard let `self` = self else { return }
+      [unowned self] (alert) -> Void in
+//      guard let `self` = self else { return }
       let imagePicker = UIImagePickerController()
       imagePicker.delegate = self
       imagePicker.sourceType = .camera
@@ -130,154 +124,29 @@ extension PhotoListVC: UIImagePickerControllerDelegate, UINavigationControllerDe
 
 extension PhotoListVC: TLPhotosPickerViewControllerDelegate {
   func dismissPhotoPicker(withPHAssets: [PHAsset]) {
-    if withPHAssets.count != 0 {
-      totalCount = withPHAssets.count
-      countAlert = UIAlertController(title: "가져오는중...", message: "\(self.finishCount) / \(self.totalCount)", preferredStyle: .alert)
-      
-      self.vc?.present(countAlert!, animated: true)
-    }
-    
-    
-    
-    withPHAssets.forEach { [weak self] (asset) in
-      guard let `self` = self else { return }
-      let photoUUID = UUID().uuidString
-      TassPhoto().saveMediaFile(asset: asset, uuid: photoUUID, progressBlock: { (per) in
-        print(per)
-      }) { (imageName, videoName, thumbnail) in
-        RealmSingleton.shared.writeToRealm(albumUUID: self.uuid, photoUUID: photoUUID, localName: (imageName, videoName, thumbnail)) { [weak self] count in
-          DispatchQueue.main.async {
-            guard let `self` = self else { return }
-            self.finishCount = self.finishCount + count
-            self.countAlert?.message = "\(self.finishCount) / \(self.totalCount)"
-            if self.finishCount == self.totalCount {
-              self.countAlert?.dismiss(animated: true, completion: {
-                self.vc?.dismiss(animated: true) {
-                  self.finishCount = 0
-                  self.photoListView.photoView.collectionView.reloadData()
-                }
-              })
-            }
+    DispatchQueue.global().async {
+      withPHAssets.forEach { [weak self] (asset) in
+        guard let `self` = self else { return }
+        let photoUUID = UUID().uuidString
+        TassPhoto().saveMediaFile(asset: asset, uuid: photoUUID, progressBlock: { (per) in
+          print(per)
+        }) { (imageName, videoName, thumbnail) in
+          RealmSingleton.shared.writeToRealm(albumUUID: self.uuid, photoUUID: photoUUID, localName: (imageName, videoName, thumbnail)) {
+            print("Finish work")
+            
           }
         }
       }
     }
-    
   }
   
-  func dismissPhotoPicker(withTLPHAssets: [TLPHAsset]) {
-    
-    //    let manager = PHImageManager()
-    //    let option = PHLivePhotoRequestOptions()
-    //    option.deliveryMode = .highQualityFormat
-    //    option.isNetworkAccessAllowed = true
-    //    option.version = .original
-    //    option.progressHandler = { (per, err, state, info) in
-    //      print("here percent: \(per), useUnsafe: \(state)")
-    //    }
-    //
-    //    withTLPHAssets.forEach { (asset) in
-    //        RealmSingleton.shared.writeWithPhoto(albumUUID: self.uuid, asset: asset)
-    //    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //    _ = withTLPHAssets.first?.exportVideoFile(options: nil, outputURL: nil, outputFileType: .mov, progressBlock: { (percent) in
-    //      print("here percent: ", percent)
-    //    }, completionBlock: { (url, str) in
-    //      print("here result - url: ", url, "\nstr: ", str)
-    //    })
-    
-    //    let manager = PHImageManager()
-    //    let manager = assetresource
-    
-    //    let asset = withTLPHAssets.first
-    //    let manager = PHAssetResourceManager()
-    //
-    //    func videoFilename(phAsset: PHAsset) -> URL? {
-    //      guard let resource = (PHAssetResource.assetResources(for: phAsset).filter{ $0.type == .video }).first else {
-    //        return nil
-    //      }
-    //      var writeURL: URL?
-    //      let fileName = resource.originalFilename
-    //      if #available(iOS 10.0, *) {
-    //        writeURL = FileManager.default.temporaryDirectory.appendingPathComponent("\(fileName)")
-    //
-    //        let documentsDir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("\(fileName)")
-    //        print("here path: ", documentsDir)
-    //
-    //      } else {
-    //        writeURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent("\(fileName)")
-    //      }
-    //
-    //      let testAsset = PHCachingImageManager()
-    //      let option = PHFetchOptions()
-    //      let collection = PHAssetCollection()
-    //      collection
-    //      let test1 = PHAssetCreationRequest.forAsset()
-    //      let test2 = NSMutableData() as? PHLivePhoto
-    //      PHLivePhoto.request(withResourceFileURLs: <#T##[URL]#>, placeholderImage: <#T##UIImage?#>, targetSize: <#T##CGSize#>, contentMode: .aspectFit, resultHandler: <#T##(PHLivePhoto?, [AnyHashable : Any]) -> Void#>)
-    //      return writeURL
-    //    }
-    //
-    //    print("here: url: ", videoFilename(phAsset: (asset?.phAsset)!))
-    //
-    //    guard let phAsset = asset?.phAsset, asset?.type == .photo || asset?.type == .livePhoto else { return }
-    //    var resource: PHAssetResource? = nil
-    //    if phAsset.mediaSubtypes.contains(.photoLive) == true {
-    //      resource = PHAssetResource.assetResources(for: phAsset).filter { $0.type == .pairedVideo }.first
-    //
-    //    }else {
-    //      resource = PHAssetResource.assetResources(for: phAsset).filter { $0.type == .photo }.first
-    //    }
-    //
-    ////    let test = PHAssetResource.assetResources(for: phAsset).first
-    //
-    //    let options = PHAssetResourceRequestOptions()
-    //    options.isNetworkAccessAllowed = true
-    //    options.progressHandler = { (per) in
-    //      print(per)
-    //    }
-    //
-    //    print("here resource: ", resource)
-    //
-    //    manager.requestData(for: resource!, options: options, dataReceivedHandler: { (data) in
-    //      print("here data: ", data)
-    //    }) { (err) in
-    //      print("here err: ", err)
-    //    }
-    //
-    //
-    //
-    //
-    //    if let fileSize = resource?.value(forKey: "fileSize") as? Int {
-    //      print("here fileSize1: ", fileSize)
-    //    }else {
-    //      PHImageManager.default().requestImageData(for: phAsset, options: nil) { (data, uti, orientation, info) in
-    //        var fileSize = -1
-    //        if let data = data {
-    //          let bcf = ByteCountFormatter()
-    //          bcf.countStyle = .file
-    //          fileSize = data.count
-    //        }
-    //        DispatchQueue.main.async {
-    //          print("here fileSize2: ", fileSize)
-    //        }
-    //      }
-    //    }
-    //
-    //
-    
-    
-    
+  func dismissComplete() {
+    print("dismiss")
+    DispatchQueue.main.async {
+      self.photoListView.photoView.collectionView.reloadData()
+    }
   }
+  
 }
 
 

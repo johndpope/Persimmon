@@ -34,6 +34,7 @@ class TassPhoto {
   
   
   func saveMediaFile(asset: PHAsset?, uuid: String, progressBlock:((Double) -> Void)? = nil, completionBlock:@escaping ((String?, String?, String) -> Void)) {
+    
     guard let phAsset = asset else { return }
     
     let resource = PHAssetResource.assetResources(for: phAsset)
@@ -45,12 +46,11 @@ class TassPhoto {
     writeURL = url?.appendingPathComponent(uuid)
     
     try? fileManager.createDirectory(at: writeURL!, withIntermediateDirectories: true, attributes: nil)
-    DispatchQueue(label: "realm", qos: .background).async {
-      self.saveResource(asset: phAsset, resource: resource, saveURL: writeURL, progressBlock: progressBlock) { (imageName, videoName, thumbnail) in
-        completionBlock(imageName, videoName, thumbnail)
-        
-      }
+    //    DispatchQueue(label: "realm", qos: .background).async {
+    self.saveResource(asset: phAsset, resource: resource, saveURL: writeURL, progressBlock: progressBlock) { (imageName, videoName, thumbnail) in
+      completionBlock(imageName, videoName, thumbnail)
     }
+    //    }
     
   }
   
