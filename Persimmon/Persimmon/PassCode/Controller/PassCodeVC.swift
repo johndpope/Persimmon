@@ -13,7 +13,7 @@ class PassCodeVC: UIViewController {
   
   var isFirst: Bool = false
   let launchPassCodeView = LaunchPassCodeView()
-  let passCodeViw = PassCodeView()
+  let passCodeView = PassCodeView()
   
   
   let userDefaults = UserDefaults.standard
@@ -109,8 +109,19 @@ class PassCodeVC: UIViewController {
     super.viewDidLoad()
     
     launchPassCodeView.passCodeView.delegate = self
+    launchPassCodeView.passCodeView.deleteBtn.addTarget(self, action: #selector(deleteBtnTapped(_:)), for: .touchUpInside)
+   
   }
   
+  // text <- delete
+  @objc func deleteBtnTapped(_ sender: UIButton) {
+    if text.isEmpty {
+      print("delete")
+    } else {
+      text.removeLast()
+    }
+    
+  }
   
 }
 
@@ -120,8 +131,6 @@ extension PassCodeVC: PassCodeViewDelegate {
   func didTapButton(input: String) {
     
     text.append(input)
-    
   }
-  
   
 }

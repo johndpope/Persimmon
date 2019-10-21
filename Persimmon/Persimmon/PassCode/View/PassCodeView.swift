@@ -159,7 +159,7 @@ class PassCodeView: UIView {
   }()
   lazy var deleteBtn: UIButton = {
     let button = UIButton(type: .system)
-    button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
+//    button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("⇠", for: .normal)
     button.titleLabel?.font = UIFont(name: "NanumPen", size: 45)
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
