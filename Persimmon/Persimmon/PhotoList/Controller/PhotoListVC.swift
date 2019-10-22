@@ -31,8 +31,11 @@ class PhotoListVC: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    notificationToken = RealmSingleton.shared.realm.observe({ (noti, realm) in
-      
+    notificationToken = RealmSingleton.shared.realm.observe({ [weak self] (noti, realm) in
+      guard let `self` = self else { return }
+      DispatchQueue.main.async {
+        self.photoListView.photoView.collectionView.reloadData()
+      }
     })
     
     view.backgroundColor = .white
@@ -141,10 +144,7 @@ extension PhotoListVC: TLPhotosPickerViewControllerDelegate {
   }
   
   func dismissComplete() {
-    print("dismiss")
-    DispatchQueue.main.async {
-      self.photoListView.photoView.collectionView.reloadData()
-    }
+    print("dismiss TLPhotoVC")
   }
   
 }
