@@ -14,52 +14,71 @@ import RealmSwift
 class PhotoListVC: UIViewController {
   
   var uuid: String = ""
-  
+  let photoListView = PhotoListView()
+  let alertVC = CustomAlertVC()
   var notificationToken: NotificationToken? = nil
   
   var object: Album? {
     return RealmSingleton.shared.takeSelectAlbum(albumUUID: uuid)
+    
   }
-  
-  let photoListView = PhotoListView()
-  let alertVC = CustomAlertVC()
   
   override func loadView() {
     self.view = photoListView
+    
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+    setupView()
     notificationToken = RealmSingleton.shared.realm.observe({ [weak self] (noti, realm) in
       guard let `self` = self else { return }
       DispatchQueue.main.async {
         self.photoListView.photoView.collectionView.reloadData()
-        self.photoListView.topView.listNumberLabel.text = "완료"
+        self.photoListView.topView.listNumberLabel.text = self.takeSubTitle()
+        self.photoListView.topView.profileImageView.image = self.takeLastImage()
       }
     })
     
+  }
+  
+  private func setupView() {
     view.backgroundColor = .white
     photoListView.topView.backBtn.addTarget(self, action: #selector(backButtonDidTap(_:)), for: .touchUpInside)
     photoListView.addBtn.addTarget(self, action: #selector(addButtonDidTap(_:)), for: .touchUpInside)
-    
     photoListView.photoView.collectionView.register(UINib(nibName: "PhotoCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "PhotoCollectionViewCell")
     photoListView.photoView.collectionView.delegate = self
     photoListView.photoView.collectionView.dataSource = self
+    photoListView.topView.albumTitle.text = object?.title ?? "애러당!"
+    photoListView.topView.listNumberLabel.text = takeSubTitle()
+    photoListView.topView.profileImageView.image = takeLastImage()
+    
+  }
+  
+  private func takeLastImage() -> UIImage? {
+    guard let lastPhoto = object?.photos.last else {
+      return UIImage(named: "icon") }
+    let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let imageData = try? Data(contentsOf: url.appendingPathComponent("\(String(describing: lastPhoto.uuid))/\(String(describing: lastPhoto.thumbnail))"))
+    return UIImage(data: imageData ?? Data())
+    
+  }
+  
+  private func takeSubTitle() -> String {
+    let totalCount = object?.photos.count ?? 0
+    let videoCount = object?.photos.filter("type = 'video'").count ?? 0
+    let photoCount = totalCount - videoCount
+    return "\(photoCount) Photos, \(videoCount) videos"
     
   }
   
   @objc func backButtonDidTap(_ sender: UIButton) {
-    print("눌림")
-    //    navigationController?.viewControllers = (navigationController?.viewControllers.dropLast())!
     navigationController?.popViewController(animated: true)
     
   }
   
   // MARK: - add버튼 눌렀을때 alert띄우기
   @objc func addButtonDidTap(_ sender: Any) {
-    //    photoListView.createAlert()
-    
     //1. 알림창을 경고 형식으로 정의 한다.
     
     let alert = UIAlertController(title: "", message: "가져오기",preferredStyle: .actionSheet)
@@ -68,7 +87,6 @@ class PhotoListVC: UIViewController {
     
     let libraryAction = UIAlertAction(title: "앨범", style: .default) {
       [unowned self] (alert) -> Void in
-      //      guard let `self` = self else { return }
       let vc = TLPhotosPickerViewController()
       vc.configure.cancelTitle = "취소"
       vc.configure.doneTitle = "완료"
@@ -77,16 +95,11 @@ class PhotoListVC: UIViewController {
       vc.configure.recordingVideoQuality = .typeHigh
       vc.configure.selectedColor = .appColor(.appPersimmonColor)
       vc.delegate = self
-      
-      //        vc.configure.customLocalizedTitle = ["카메라 롤": "카메라 롤"]
-      //        vc.configure.cameraBgColor = .appColor(.appPersimmonColor)
-      //       let selecAlbumVC = SelectAlbumVC()
       self.present(vc, animated: true)
     }
     
     let cameraAction = UIAlertAction(title: "카메라", style: .default) {
       [unowned self] (alert) -> Void in
-//      guard let `self` = self else { return }
       let imagePicker = UIImagePickerController()
       imagePicker.delegate = self
       imagePicker.sourceType = .camera
@@ -114,7 +127,9 @@ class PhotoListVC: UIViewController {
   deinit {
     print("deinit at PhotoListVC")
     notificationToken?.invalidate()
+    
   }
+  
   
 }
 
@@ -123,32 +138,43 @@ extension PhotoListVC: UIImagePickerControllerDelegate, UINavigationControllerDe
     //    let image = info[.originalImage] as? UIImage
     //    self.faceImageView.image = image
     picker.dismiss(animated: true)
+    
   }
+  
+  
 }
 
 extension PhotoListVC: TLPhotosPickerViewControllerDelegate {
   func dismissPhotoPicker(withPHAssets: [PHAsset]) {
-    DispatchQueue(label: "tass", qos: .userInteractive, attributes: .concurrent).async {
+    DispatchQueue(label: "tass",
+                  qos: .userInteractive,
+                  attributes: .concurrent)
+      .async {
       RealmSingleton.shared.writeData(
         albumUUID: self.uuid,
         localNames: TassPhoto().saveMediaFiles(
           assets: withPHAssets,
-          progress: { [weak self] (count, total) in
-//          print("progress: \(count) / \(total)")
-            guard let `self` = self else { return }
-            DispatchQueue.main.async {
+          progress: {
+            [weak self] (count, total) in
+            guard let `self` = self else {
+              return }
+            DispatchQueue.main
+              .async {
               self.photoListView.topView.listNumberLabel.text = "\(count) / \(total)"
             }
-            
-        })) { (failCount) in
+        })) {
+          (failCount) in
           print("failCount: ", failCount)
       }
     }
+    
   }
   
   func dismissComplete() {
     print("dismiss TLPhotoVC")
+    
   }
+  
   
 }
 
@@ -156,11 +182,11 @@ extension PhotoListVC: TLPhotosPickerViewControllerDelegate {
 extension PhotoListVC: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return object?.photos.count ?? 0
+    
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCell", for: indexPath) as! PhotoCollectionViewCell
-    
     cell.liveBadgeImageView?.image = nil
     cell.isCameraCell = false
     
@@ -173,7 +199,10 @@ extension PhotoListVC: UICollectionViewDataSource {
     cell.thumbnail = photo.thumbnail
     
     return cell
+    
   }
+  
+  
 }
 
 extension PhotoListVC: UICollectionViewDelegate {
@@ -206,9 +235,7 @@ public struct PhotosPickerConfigure {
   public var placeholderIcon = UIImage(named: "insertPhotoMaterial")
   public var fetchCollectionTypes: [(PHAssetCollectionType,PHAssetCollectionSubtype)]? = nil
   public var supportedInterfaceOrientations: UIInterfaceOrientationMask = .portrait
-  public init() {
-    
-  }
+  public init() {}
   
 }
 
