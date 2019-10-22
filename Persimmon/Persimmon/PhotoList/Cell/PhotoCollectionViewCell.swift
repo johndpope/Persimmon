@@ -44,7 +44,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         guard let `self` = self else { return }
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
         let imageData = try? Data(contentsOf: url.appendingPathComponent("\(self.photoUUID)/\(new)")) else {
-            print("error")
+            print("error in PhotoCollectionViewCell's thumbnail Property")
             return
         }
         

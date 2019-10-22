@@ -18,7 +18,7 @@ class PhotoListVC: UIViewController {
   var notificationToken: NotificationToken? = nil
   
   var object: Album? {
-    return RealmSingleton.shared.takeSelectAlbum(uuid: uuid, selectRealm: nil)
+    return RealmSingleton.shared.takeSelectAlbum(albumUUID: uuid)
   }
   
   let photoListView = PhotoListView()
@@ -35,6 +35,7 @@ class PhotoListVC: UIViewController {
       guard let `self` = self else { return }
       DispatchQueue.main.async {
         self.photoListView.photoView.collectionView.reloadData()
+        self.photoListView.topView.listNumberLabel.text = "완료"
       }
     })
     
@@ -127,18 +128,20 @@ extension PhotoListVC: UIImagePickerControllerDelegate, UINavigationControllerDe
 
 extension PhotoListVC: TLPhotosPickerViewControllerDelegate {
   func dismissPhotoPicker(withPHAssets: [PHAsset]) {
-    DispatchQueue.global().async {
-      withPHAssets.forEach { [weak self] (asset) in
-        guard let `self` = self else { return }
-        let photoUUID = UUID().uuidString
-        TassPhoto().saveMediaFile(asset: asset, uuid: photoUUID, progressBlock: { (per) in
-          print(per)
-        }) { (imageName, videoName, thumbnail) in
-          RealmSingleton.shared.writeToRealm(albumUUID: self.uuid, photoUUID: photoUUID, localName: (imageName, videoName, thumbnail)) {
-            print("Finish work")
+    DispatchQueue(label: "tass", qos: .userInteractive, attributes: .concurrent).async {
+      RealmSingleton.shared.writeData(
+        albumUUID: self.uuid,
+        localNames: TassPhoto().saveMediaFiles(
+          assets: withPHAssets,
+          progress: { [weak self] (count, total) in
+//          print("progress: \(count) / \(total)")
+            guard let `self` = self else { return }
+            DispatchQueue.main.async {
+              self.photoListView.topView.listNumberLabel.text = "\(count) / \(total)"
+            }
             
-          }
-        }
+        })) { (failCount) in
+          print("failCount: ", failCount)
       }
     }
   }

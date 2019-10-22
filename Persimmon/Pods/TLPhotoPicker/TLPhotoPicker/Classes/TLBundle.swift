@@ -6,7 +6,7 @@
 //
 //
 
-import UIKit
+import Foundation
 
 open class TLBundle {
     open class func podBundleImage(named: String) -> UIImage? {
@@ -14,10 +14,7 @@ open class TLBundle {
         if let url = podBundle.url(forResource: "TLPhotoPickerController", withExtension: "bundle") {
             let bundle = Bundle(url: url)
             return UIImage(named: named, in: bundle, compatibleWith: nil)!
-        } else {
-//          let topBundle = Bundle(path: "/Users/tass/Desktop/Persimmon/Persimmon/Persimmon/Persimmon/Source/Assets.xcassets")
-//          return UIImage(named: named, in: topBundle, compatibleWith: nil)
-      }
+        }
         return nil
     }
     
