@@ -63,7 +63,6 @@ class AlbumListView: UIView {
   
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
-    
     addSubViews()
     setupSNP()
     setupTableView()
@@ -71,7 +70,6 @@ class AlbumListView: UIView {
   }
  
   private func setupTableView() {
-    
     tableView.register(AlbumListTableCell.self, forCellReuseIdentifier: AlbumListTableCell.identifier)
 
   }
@@ -81,10 +79,10 @@ class AlbumListView: UIView {
       .forEach { self.addSubview($0) }
     [editBtn, addBtn, albumLabel]
       .forEach { topView.addSubview($0) }
+    
   }
   
   private func setupSNP() {
-    
     topView.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
       $0.height.equalToSuperview().multipliedBy(0.22)
@@ -109,14 +107,15 @@ class AlbumListView: UIView {
       $0.leading.trailing.bottom.equalToSuperview()
       $0.top.equalTo(topView.snp.bottom)
     }
-    
   }
+  
   
 }
 
 extension AlbumListView: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return albums.count
+    
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -127,11 +126,12 @@ extension AlbumListView: UITableViewDataSource {
     cell.subTitleLabel.text = "[ \(albums[indexPath.row].photos.count.description) ]"
     cell.albumImageView.contentMode = .scaleAspectFill
     
-    
     guard let lastPhoto = albums[indexPath.row].photos.last,
       let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
       let imageData = try? Data(contentsOf: url.appendingPathComponent("\(lastPhoto.uuid)/\(lastPhoto.thumbnail)")) else {
-      return cell
+        cell.albumImageView.image = UIImage(named: "persimmonIcon")
+        return cell
+        
     }
     
     cell.albumImageView.image = UIImage(data: imageData)
@@ -144,20 +144,21 @@ extension AlbumListView: UITableViewDataSource {
 extension AlbumListView: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return UIScreen.main.bounds.height * 0.13
+    
   }
   
   func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
     return UIScreen.main.bounds.height * 0.10
+    
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let uuid = albums[indexPath.row].uuid
     delegate?.didSelectCell(indexPath: self, uuid: uuid)
+    
   }
   
   func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-  
-    
     let deleteAction = UIContextualAction(style: .normal, title: nil) { (UIContextualAction, UIView,  success: (Bool) -> Void) in
       // 삭제버튼
       success(true)
@@ -165,25 +166,25 @@ extension AlbumListView: UITableViewDelegate {
     
     deleteAction.image = UIImage(named: "delete")
     deleteAction.backgroundColor = .white
-    
-    
 
     let editAction = UIContextualAction(style: .normal, title: nil) { (UIContextualAction, UIView, success: (Bool) -> Void) in
       // 수정버튼
       success(true)
     }
+    
     editAction.image = UIImage(named: "modification")
     editAction.backgroundColor = .white
 
     return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+    
   }
   
   
   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
     if editingStyle == .delete {
-      
       print("editing")
     }
+    
   }
   
 
