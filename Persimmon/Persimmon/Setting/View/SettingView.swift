@@ -71,7 +71,7 @@ class SettingView: UIView {
   
   let scaleBtn: UIButton = {
     let button = UIButton(type: .custom)
-    button.setImage(UIImage(named: "persimmonIPassCodeIcon"), for: .selected)
+    button.setImage(UIImage(named: "persimmonIPasscodeIcon"), for: .selected)
     button.setImage(UIImage(named: "persimmonIPasscodeIconsmall"), for: .normal)
     let scale = UserDefaults.standard.bool(forKey: "scale")
     button.frame = CGRect(x: 0, y: 0, width: 25, height: 25)

@@ -87,4 +87,7 @@ class TopView: UIView {
     }
   }
   
+  deinit {
+    print("deinit TopView")
+  }
 }

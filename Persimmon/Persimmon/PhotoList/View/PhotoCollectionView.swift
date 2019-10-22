@@ -24,25 +24,24 @@ class PhotoCollectionView: UIView {
     layout.itemSize = itemSize
     layout.minimumInteritemSpacing = 5
     layout.minimumLineSpacing = 5
-    
     return layout
   }()
   
   lazy var collectionView: UICollectionView = {
     let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: flowLayout)
-    view.showsHorizontalScrollIndicator = true
+    view.showsHorizontalScrollIndicator = false
     view.showsVerticalScrollIndicator = true
     view.isScrollEnabled = true
     view.clipsToBounds = true
     view.delaysContentTouches = true
-    view.canCancelContentTouches = true
+    view.canCancelContentTouches = false
     view.keyboardDismissMode = .none
     view.contentMode = .scaleToFill
     view.semanticContentAttribute = .unspecified
     view.isUserInteractionEnabled = true
-    view.isMultipleTouchEnabled = true
+    view.isMultipleTouchEnabled = false
     view.isOpaque = true
-    view.clearsContextBeforeDrawing = true
+    view.clearsContextBeforeDrawing = false
     view.autoresizesSubviews = true
     
     
@@ -65,7 +64,7 @@ class PhotoCollectionView: UIView {
   }
   
   deinit {
-    print("deinit!!!")
+    print("deinit at PhotoCollectionView")
   }
   
 }
