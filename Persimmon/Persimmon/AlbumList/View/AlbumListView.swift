@@ -133,7 +133,7 @@ extension AlbumListView: UITableViewDataSource {
       let imageData = try? Data(contentsOf: url.appendingPathComponent("\(lastPhoto.uuid)/\(lastPhoto.thumbnail)")) else {
       return cell
     }
-    print("localURL: ", url) 
+    
     cell.albumImageView.image = UIImage(data: imageData)
     return cell
   }

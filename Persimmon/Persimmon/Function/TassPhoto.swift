@@ -31,6 +31,66 @@ class TassPhoto {
     return nil
   }
   
+  func saveMediaFiles(assets: [PHAsset], progress: (Int, Int) -> ()) -> [(String?, String?, String)] {
+    var resultArr: [(String?, String?, String)] = []
+    let assetResource = PHAssetResource.self
+    let option = PHAssetResourceRequestOptions()
+    option.isNetworkAccessAllowed = false
+    let options = PHImageRequestOptions()
+    options.deliveryMode = .highQualityFormat
+    options.isNetworkAccessAllowed = false
+    options.isSynchronous = true
+    options.resizeMode = .exact
+    options.version = .original
+    let url = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
+    var writeURL: URL? = nil
+    assets.forEach { (asset) in
+      var videoURL: URL?
+      var imageURL: URL?
+      var thumbURL: URL?
+      var videoName: String?
+      var imageName: String?
+      let photoUUID = UUID().uuidString
+      let resource = assetResource.assetResources(for: asset)
+      
+      writeURL = url?.appendingPathComponent(photoUUID)
+      try? fileManager.createDirectory(at: writeURL!, withIntermediateDirectories: true, attributes: nil)
+      let saveURL = writeURL
+      resource.forEach {
+        switch $0.type {
+        case .pairedVideo, .adjustmentBasePairedVideo, .adjustmentBaseVideo, .fullSizePairedVideo, .video, .fullSizeVideo:
+          videoName = $0.originalFilename
+          videoURL = saveURL?.appendingPathComponent(videoName!)
+          PHAssetResourceManager.default().writeData(for: $0, toFile: videoURL!, options: option) { (err) in
+            guard let err = err else { return }
+            videoName = nil
+            dump(err)
+          }
+        default:
+          imageName = $0.originalFilename
+          imageURL = saveURL?.appendingPathComponent(imageName!)
+          PHAssetResourceManager.default().writeData(for: $0, toFile: imageURL!, options: option) { (err) in
+            guard let err = err else { return }
+            imageName = nil
+            dump(err)
+          }
+        }
+      }
+      PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: 300, height: 300), contentMode: .aspectFill, options: options) { (image, info) in
+        do {
+          thumbURL = saveURL?.appendingPathComponent("thumbnail.png")
+          let data = image?.pngData()
+          try data?.write(to: thumbURL!, options: .withoutOverwriting)
+        } catch(let err) {
+          dump(err)
+        }
+      }
+      resultArr.append((imageName, videoName, photoUUID))
+      progress(resultArr.count, assets.count)
+    }
+    return resultArr
+  }
+  
   
   
   func saveMediaFile(asset: PHAsset?, uuid: String, progressBlock:((Double) -> Void)? = nil, completionBlock:@escaping ((String?, String?, String) -> Void)) {
