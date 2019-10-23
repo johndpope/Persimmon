@@ -55,6 +55,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     }
   }
   var cellType: String = ""
+  var isSelect: Bool = false
   
   private var observer: NSObjectProtocol?
   @IBOutlet var imageView: UIImageView?
@@ -169,10 +170,12 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     self.livePhotoView?.isHidden = true
     self.livePhotoView?.stopPlayback()
     self.livePhotoView?.delegate = nil
+    
   }
   
   deinit {
-    //        print("deinit TLPhotoCollectionViewCell")
+//    print("deinit TLPhotoCollectionViewCell")
+    
   }
   
   override func awakeFromNib() {
@@ -191,6 +194,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
       self.livePhotoView?.accessibilityIgnoresInvertColors = true
       self.videoIconImageView?.accessibilityIgnoresInvertColors = true
     }
+    
   }
   
   override func prepareForReuse() {
@@ -200,6 +204,37 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     self.durationView?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
     self.selectedHeight?.constant = 10
     self.selectedAsset = false
+    
   }
+  
+  
+}
+
+
+struct PhotosPickerConfigure {
+  var emptyImage: UIImage? = nil
+  var usedCameraButton = false
+  var usedPrefetch = false
+  var allowedLivePhotos = true
+  var allowedVideo = true
+  var allowedAlbumCloudShared = false
+  var allowedVideoRecording = false
+  var recordingVideoQuality: UIImagePickerController.QualityType = .typeHigh
+  var maxVideoDuration:TimeInterval? = nil
+  var autoPlay = false
+  var muteAudio = true
+  var mediaType: PHAssetMediaType? = nil
+  var numberOfColumn = UserDefaults.standard.bool(forKey: "scale") ? 3 : 4
+  var singleSelectedMode = false
+  var maxSelectedAssets: Int? = nil
+  var fetchOption: PHFetchOptions? = nil
+  var selectedColor = UIColor.appColor(.appPersimmonColor)
+  var cameraBgColor = UIColor(red: 221/255, green: 223/255, blue: 226/255, alpha: 1)
+  var cameraIcon = UIImage(named: "camera")
+  var videoIcon = UIImage(named: "video")
+  var placeholderIcon = UIImage(named: "insertPhotoMaterial")
+  var fetchCollectionTypes: [(PHAssetCollectionType,PHAssetCollectionSubtype)]? = nil
+  var supportedInterfaceOrientations: UIInterfaceOrientationMask = .portrait
+  init() {}
   
 }

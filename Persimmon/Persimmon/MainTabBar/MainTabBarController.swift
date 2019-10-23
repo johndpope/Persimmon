@@ -11,7 +11,7 @@ import UIKit
 class MainTabBarController: UITabBarController {
 
 
-  private let photoListVC = PhotoListVC()
+  private let photoGraveVC = PhotoGraveVC()
 
   private let albumListVC = AlbumListVC()
 
@@ -36,8 +36,8 @@ class MainTabBarController: UITabBarController {
 
     tabBar.tintColor = .appColor(.appFontColor)
     tabBar.backgroundColor = .appColor(.appGreenColor)
-    self.setViewControllers([albumListVC, photoListVC, settingVC], animated: true)
-//    self.viewControllers = [albumListVC, photoListVC, settingVC]
+    self.setViewControllers([albumListVC, photoGraveVC, settingVC], animated: true)
+//    self.viewControllers = [albumListVC, photoGraveVC, settingVC]
   }
 
   private func installTabBarItems() {
@@ -45,9 +45,9 @@ class MainTabBarController: UITabBarController {
     let trashCanItem = UITabBarItem(title: "휴지통", image: UIImage(named: "garbage"), tag: 1)
     
     let settingVCItem = UITabBarItem(title: "설정", image: UIImage(named: "settings"), tag: 2)
-
-    photoListVC.tabBarItem = trashCanItem
+    
     albumListVC.tabBarItem = albumListVCItem
+    photoGraveVC.tabBarItem = trashCanItem
     settingVC.tabBarItem = settingVCItem
   }
 

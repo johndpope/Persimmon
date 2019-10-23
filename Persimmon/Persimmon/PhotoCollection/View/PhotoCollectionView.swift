@@ -44,8 +44,6 @@ class PhotoCollectionView: UIView {
     view.clearsContextBeforeDrawing = false
     view.autoresizesSubviews = true
     
-    
-    
     if #available(iOS 13.0, *) {
       view.backgroundColor = .systemBackground
     } else {

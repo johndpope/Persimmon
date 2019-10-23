@@ -11,16 +11,30 @@ import Photos
 import TLPhotoPicker
 import RealmSwift
 
+class SelectedPhoto {
+  var index: IndexPath?
+  var order: Int?
+}
+
 class PhotoListVC: UIViewController {
   
   var uuid: String = ""
   let photoListView = PhotoListView()
   let alertVC = CustomAlertVC()
   var notificationToken: NotificationToken? = nil
+  var selectedPhotos = [SelectedPhoto]()
   
   var object: Album? {
     return RealmSingleton.shared.takeSelectAlbum(albumUUID: uuid)
     
+  }
+  
+  var collectionView: UICollectionView {
+    return photoListView.photoView.collectionView
+  }
+  
+  var deleteBtnState: Bool {
+    return photoListView.topView.deleteBtn.isSelected
   }
   
   override func loadView() {
@@ -44,11 +58,12 @@ class PhotoListVC: UIViewController {
   
   private func setupView() {
     view.backgroundColor = .white
-    photoListView.topView.backBtn.addTarget(self, action: #selector(backButtonDidTap(_:)), for: .touchUpInside)
+    photoListView.topView.backBtn.addTarget(self, action: #selector(didTapBackBtn(_:)), for: .touchUpInside)
+    photoListView.topView.deleteBtn.addTarget(self, action: #selector(didTapDeleteBtn(_:)), for: .touchUpInside)
     photoListView.addBtn.addTarget(self, action: #selector(addButtonDidTap(_:)), for: .touchUpInside)
-    photoListView.photoView.collectionView.register(UINib(nibName: "PhotoCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "PhotoCollectionViewCell")
-    photoListView.photoView.collectionView.delegate = self
-    photoListView.photoView.collectionView.dataSource = self
+    collectionView.register(UINib(nibName: "PhotoCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "PhotoCollectionViewCell")
+    collectionView.delegate = self
+    collectionView.dataSource = self
     photoListView.topView.albumTitle.text = object?.title ?? "애러당!"
     photoListView.topView.listNumberLabel.text = takeSubTitle()
     photoListView.topView.profileImageView.image = takeLastImage()
@@ -59,7 +74,7 @@ class PhotoListVC: UIViewController {
     guard let lastPhoto = object?.photos.last else {
       return UIImage(named: "icon") }
     let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-    let imageData = try? Data(contentsOf: url.appendingPathComponent("\(String(describing: lastPhoto.uuid))/\(String(describing: lastPhoto.thumbnail))"))
+    let imageData = try? Data(contentsOf: url.appendingPathComponent("\(String(describing: lastPhoto.photoUUID))/\(String(describing: lastPhoto.thumbnail))"))
     return UIImage(data: imageData ?? Data())
     
   }
@@ -72,9 +87,18 @@ class PhotoListVC: UIViewController {
     
   }
   
-  @objc func backButtonDidTap(_ sender: UIButton) {
+  @objc func didTapBackBtn(_ sender: UIButton) {
     navigationController?.popViewController(animated: true)
     
+  }
+  
+  @objc func didTapDeleteBtn(_ sender: UIButton) {
+    sender.isSelected.toggle()
+    let tempIndex: [IndexPath] = selectedPhotos.compactMap { (photo) -> IndexPath? in
+      photo.index
+    }
+    selectedPhotos = []
+    collectionView.reloadItems(at: tempIndex)
   }
   
   // MARK: - add버튼 눌렀을때 alert띄우기
@@ -192,12 +216,26 @@ extension PhotoListVC: UICollectionViewDataSource {
     
     guard let photo = object?.photos[indexPath.row] else { return cell }
     cell.configure = PhotosPickerConfigure()
-    cell.photoUUID = photo.uuid
+    cell.photoUUID = photo.photoUUID
     cell.cellType = photo.type
     cell.videoName = photo.videoName
     cell.imageName = photo.imageName
     cell.thumbnail = photo.thumbnail
-    
+    cell.selectedAsset = false
+    cell.orderLabel?.text = nil
+    cell.isSelect = false
+    for photo in selectedPhotos {
+      if photo.index == indexPath {
+        cell.selectedAsset = true
+        cell.isSelect = true
+        cell.orderLabel?.text = "\(photo.order ?? 0)"
+        break
+      }
+    }
+    cell.alpha = 0
+    UIView.transition(with: cell, duration: 0.1, options: .curveEaseIn, animations: {
+        cell.alpha = 1
+    }, completion: nil)
     return cell
     
   }
@@ -206,37 +244,73 @@ extension PhotoListVC: UICollectionViewDataSource {
 }
 
 extension PhotoListVC: UICollectionViewDelegate {
+  func orderUpdateCells() {
+    let visibleIndexPaths = self.collectionView.indexPathsForVisibleItems.sorted(by: { $0.row < $1.row })
+    for indexPath in visibleIndexPaths {
+      guard let cell = self.collectionView.cellForItem(at: indexPath) as? PhotoCollectionViewCell else { continue }
+      for photo in selectedPhotos {
+        if photo.index == indexPath {
+          cell.selectedAsset = true
+          cell.isSelect = true
+          cell.orderLabel?.text = "\(photo.order ?? 0)"
+          break
+        } else {
+          cell.isSelect = false
+          cell.selectedAsset = false
+          cell.orderLabel?.text = nil
+        }
+      }
+    }
+    
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    guard deleteBtnState, let cell = collectionView.cellForItem(at: indexPath) as? PhotoCollectionViewCell else { return }
+    
+    cell.popScaleAnim()
+    if let index = self.selectedPhotos.firstIndex(where: { $0.index == indexPath }) {
+      //deselect
+      self.selectedPhotos.remove(at: index)
+      #if swift(>=4.1)
+      self.selectedPhotos = self.selectedPhotos.enumerated().compactMap({ (offset, photo) -> SelectedPhoto? in
+        let photo = photo
+        photo.order = offset + 1
+        return photo
+      })
+      #else
+      self.selectedPhotos = self.selectedPhotos.enumerated().flatMap({ (offset, photo) -> TLPHAsset? in
+        var photo = photo
+        photo.order = offset + 1
+        return photo
+      })
+      #endif
+      cell.selectedAsset = false
+      cell.isSelect = false
+      self.orderUpdateCells()
+    }else {
+      //select
+      let photo = SelectedPhoto()
+      photo.index = indexPath
+      photo.order = self.selectedPhotos.count + 1
+      self.selectedPhotos.append(photo)
+      cell.selectedAsset = true
+      cell.isSelect = true
+      cell.orderLabel?.text = "\(photo.order ?? 0)"
+    }
+  }
+  
+  //  func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+  //    guard deleteBtnState, let cell = collectionView.cellForItem(at: indexPath) as? PhotoCollectionViewCell else { return }
+  //    cell.selectedAsset = false
+  //    cell.orderLabel?.text = nil
+  //    print(collectionView.indexPathsForSelectedItems?.count)
+  //
+  //  }
   
 }
 
 
 
-public struct PhotosPickerConfigure {
-  public var emptyImage: UIImage? = nil
-  public var usedCameraButton = false
-  public var usedPrefetch = false
-  public var allowedLivePhotos = true
-  public var allowedVideo = true
-  public var allowedAlbumCloudShared = false
-  public var allowedVideoRecording = false
-  public var recordingVideoQuality: UIImagePickerController.QualityType = .typeHigh
-  public var maxVideoDuration:TimeInterval? = nil
-  public var autoPlay = false
-  public var muteAudio = true
-  public var mediaType: PHAssetMediaType? = nil
-  public var numberOfColumn = UserDefaults.standard.bool(forKey: "scale") ? 3 : 4
-  public var singleSelectedMode = false
-  public var maxSelectedAssets: Int? = nil
-  public var fetchOption: PHFetchOptions? = nil
-  public var selectedColor = UIColor.appColor(.appPersimmonColor)
-  public var cameraBgColor = UIColor(red: 221/255, green: 223/255, blue: 226/255, alpha: 1)
-  public var cameraIcon = UIImage(named: "camera")
-  public var videoIcon = UIImage(named: "video")
-  public var placeholderIcon = UIImage(named: "insertPhotoMaterial")
-  public var fetchCollectionTypes: [(PHAssetCollectionType,PHAssetCollectionSubtype)]? = nil
-  public var supportedInterfaceOrientations: UIInterfaceOrientationMask = .portrait
-  public init() {}
-  
-}
+
 
 

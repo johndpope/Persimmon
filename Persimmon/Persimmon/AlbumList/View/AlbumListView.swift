@@ -128,7 +128,7 @@ extension AlbumListView: UITableViewDataSource {
     
     guard let lastPhoto = albums[indexPath.row].photos.last,
       let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
-      let imageData = try? Data(contentsOf: url.appendingPathComponent("\(lastPhoto.uuid)/\(lastPhoto.thumbnail)")) else {
+      let imageData = try? Data(contentsOf: url.appendingPathComponent("\(lastPhoto.photoUUID)/\(lastPhoto.thumbnail)")) else {
         cell.albumImageView.image = UIImage(named: "persimmonIcon")
         return cell
         
@@ -153,7 +153,7 @@ extension AlbumListView: UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let uuid = albums[indexPath.row].uuid
+    let uuid = albums[indexPath.row].albumUUID
     delegate?.didSelectCell(indexPath: self, uuid: uuid)
     
   }
