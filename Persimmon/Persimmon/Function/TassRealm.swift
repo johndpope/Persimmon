@@ -65,7 +65,7 @@ final class RealmSingleton {
   }
   
   // 저장 후 이미지이름 비디오이름 포토UUID를 저장한다. 비동기!!!
-  func writeData(albumUUID: String, localNames: [(String?, String?, String)], completion: (Int) -> ()) {
+  func writeData(albumUUID: String, localNames: [(String?, String?, String, String?)], completion: (Int) -> ()) {
     var failCount = 0
     var photos: [Photo] = []
     localNames.forEach { (localName) in
@@ -78,6 +78,7 @@ final class RealmSingleton {
         photo.imageName = localName.0!
       } else if localName.0 == nil, localName.1 != nil {
         photo.type = "video"
+        photo.duration = localName.3 ?? "0:0"
         photo.videoName = localName.1!
       } else if localName.0 != nil, localName.1 != nil {
         photo.type = "live"

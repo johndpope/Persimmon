@@ -120,6 +120,29 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     }
   }
   
+  func cellConfigure(photo: Photo) {
+    self.photoUUID = photo.photoUUID
+    self.cellType = photo.type
+    self.videoName = photo.videoName
+    self.imageName = photo.imageName
+    self.thumbnail = photo.thumbnail
+    
+    self.selectedAsset = false
+    self.orderLabel?.text = nil
+    
+    if self.cellType == "video" {
+      self.durationView?.isHidden = false
+      self.selectedHeight?.constant = -10
+      self.durationLabel?.text = photo.duration
+    } else if self.cellType == "live" {
+      self.liveBadgeImageView?.image = PHLivePhotoView.livePhotoBadgeImage(options: .overContent)
+    } else {
+      self.liveBadgeImageView?.image = nil
+      self.selectedHeight?.constant = 10
+      self.durationView?.isHidden = true
+    }
+  }
+  
   @objc func timeFormatted(timeInterval: TimeInterval) -> String {
     let seconds: Int = lround(timeInterval)
     var hour: Int = 0

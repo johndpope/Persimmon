@@ -31,8 +31,8 @@ class TassPhoto {
     return nil
   }
   
-  func saveMediaFiles(assets: [PHAsset], progress: (Int, Int) -> ()) -> [(String?, String?, String)] {
-    var resultArr: [(String?, String?, String)] = []
+  func saveMediaFiles(assets: [PHAsset], progress: (Int, Int) -> ()) -> [(String?, String?, String, String?)] {
+    var resultArr: [(String?, String?, String, String?)] = []
     let assetResource = PHAssetResource.self
     let option = PHAssetResourceRequestOptions()
     option.isNetworkAccessAllowed = false
@@ -50,6 +50,7 @@ class TassPhoto {
       var thumbURL: URL?
       var videoName: String?
       var imageName: String?
+      var duration: String?
       let photoUUID = UUID().uuidString
       let resource = assetResource.assetResources(for: asset)
       
@@ -61,6 +62,7 @@ class TassPhoto {
         case .pairedVideo, .adjustmentBasePairedVideo, .adjustmentBaseVideo, .fullSizePairedVideo, .video, .fullSizeVideo:
           videoName = $0.originalFilename
           videoURL = saveURL?.appendingPathComponent(videoName!)
+          duration = timeFormatted(timeInterval: asset.duration)
           PHAssetResourceManager.default().writeData(for: $0, toFile: videoURL!, options: option) { (err) in
             guard let err = err else { return }
             videoName = nil
@@ -85,7 +87,7 @@ class TassPhoto {
           dump(err)
         }
       }
-      resultArr.append((imageName, videoName, photoUUID))
+      resultArr.append((imageName, videoName, photoUUID, duration))
       progress(resultArr.count, assets.count)
     }
     return resultArr
@@ -242,5 +244,20 @@ class TassPhoto {
       })
     }
   }
+  
+  private func timeFormatted(timeInterval: TimeInterval) -> String {
+      let seconds: Int = lround(timeInterval)
+      var hour: Int = 0
+      var minute: Int = Int(seconds/60)
+      let second: Int = seconds % 60
+      if minute > 59 {
+          hour = minute / 60
+          minute = minute % 60
+          return String(format: "%d:%d:%02d", hour, minute, second)
+      } else {
+          return String(format: "%d:%02d", minute, second)
+      }
+  }
+  
   
 }
