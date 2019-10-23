@@ -8,13 +8,11 @@
 
 import UIKit
 import Photos
+import PhotosUI
 import TLPhotoPicker
 import RealmSwift
 
-class SelectedPhoto {
-  var index: IndexPath?
-  var order: Int?
-}
+
 
 class PhotoListVC: UIViewController {
   
@@ -216,20 +214,16 @@ extension PhotoListVC: UICollectionViewDataSource {
     
     guard let photo = object?.photos[indexPath.row] else { return cell }
     cell.configure = PhotosPickerConfigure()
-    cell.photoUUID = photo.photoUUID
-    cell.cellType = photo.type
-    cell.videoName = photo.videoName
-    cell.imageName = photo.imageName
-    cell.thumbnail = photo.thumbnail
-    cell.selectedAsset = false
-    cell.orderLabel?.text = nil
+    cell.cellConfigure(photo: photo)
+    
     for photo in selectedPhotos {
       if photo.index == indexPath {
         cell.selectedAsset = true
-        cell.orderLabel?.text = "\(photo.order ?? 0)"
+        cell.orderLabel?.text = "\(photo.order)"
         break
       }
     }
+    
     cell.alpha = 0
     UIView.transition(with: cell, duration: 0.1, options: .curveEaseIn, animations: {
         cell.alpha = 1
@@ -241,6 +235,8 @@ extension PhotoListVC: UICollectionViewDataSource {
   
 }
 
+
+
 extension PhotoListVC: UICollectionViewDelegate {
   func orderUpdateCells() {
     let visibleIndexPaths = self.collectionView.indexPathsForVisibleItems.sorted(by: { $0.row < $1.row })
@@ -249,7 +245,7 @@ extension PhotoListVC: UICollectionViewDelegate {
       for photo in selectedPhotos {
         if photo.index == indexPath {
           cell.selectedAsset = true
-          cell.orderLabel?.text = "\(photo.order ?? 0)"
+          cell.orderLabel?.text = "\(photo.order)"
           break
         } else {
           cell.selectedAsset = false
@@ -284,12 +280,10 @@ extension PhotoListVC: UICollectionViewDelegate {
       self.orderUpdateCells()
     }else {
       //select
-      let photo = SelectedPhoto()
-      photo.index = indexPath
-      photo.order = self.selectedPhotos.count + 1
+      let photo = SelectedPhoto(index: indexPath, order: self.selectedPhotos.count + 1)
       self.selectedPhotos.append(photo)
       cell.selectedAsset = true
-      cell.orderLabel?.text = "\(photo.order ?? 0)"
+      cell.orderLabel?.text = "\(photo.order)"
     }
   }
   

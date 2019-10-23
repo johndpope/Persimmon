@@ -9,6 +9,17 @@
 import UIKit
 import SnapKit
 
+// 선택되는 셀의 순서 및 갯수를 표현하기 위해 필요
+final class SelectedPhoto {
+  var index: IndexPath
+  var order: Int
+  
+  init(index: IndexPath, order: Int) {
+    self.index = index
+    self.order = order
+  }
+}
+
 class PhotoCollectionView: UIView {
   
   let flowLayout: UICollectionViewFlowLayout = {
