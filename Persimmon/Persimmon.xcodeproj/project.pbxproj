@@ -731,7 +731,11 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Persimmon/Source/\"";
+
+
+
 				DEVELOPMENT_TEAM = "";
+
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Persimmon/Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

@@ -19,7 +19,9 @@ class ChangePassCodeVC: UIViewController {
   var text: String = "" {
     didSet {
       print("현재 입력한 passcode: ", text)
-      if isPassCodeIn {}
+      if isPassCodeIn {
+        
+      }
       
       if text.count == 4 {
         if let savePassCode = userDefaults.string(forKey: "pw") {
