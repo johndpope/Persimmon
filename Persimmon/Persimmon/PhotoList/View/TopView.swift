@@ -48,6 +48,15 @@ class TopView: UIView {
     return button
   }()
   
+  let deleteBtn: UIButton = {
+    let button = UIButton(type: .custom)
+    button.setTitleColor(.appColor(.appFontColor), for: .normal)
+    button.setTitle("선택", for: .normal)
+    button.setTitle("삭제", for: .selected)
+    button.titleLabel?.font = UIFont(name: "NanumPen", size: 30)
+    return button
+  }()
+  
   // 레이아웃이 시작이 될때마다 불리고
   override func layoutSubviews() {
     super.layoutSubviews()
@@ -58,7 +67,7 @@ class TopView: UIView {
   }
   
   private func addSubViews() {
-    [profileImageView, backBtn, albumTitle, listNumberLabel]
+    [profileImageView, backBtn, albumTitle, listNumberLabel, deleteBtn]
       .forEach { self.addSubview($0) }
     //    [label, cameraBtn, cameraLabel, photoLibraryBtn, photoLibraryLabel]
     //      .forEach { containerView.addSubview($0) }
@@ -68,22 +77,32 @@ class TopView: UIView {
     backBtn.snp.makeConstraints {
       $0.top.equalTo(self.snp.topMargin).offset(10)
       $0.leading.equalToSuperview().offset(20)
+      
+    }
+    
+    deleteBtn.snp.makeConstraints {
+      $0.top.equalTo(self.snp.topMargin).offset(10)
+      $0.trailing.equalToSuperview().offset(-20)
+      
     }
     
     profileImageView.snp.makeConstraints {
       $0.top.equalTo(self.snp.topMargin).offset(10)
       $0.centerX.equalToSuperview()
       $0.width.height.equalTo(self.snp.height).multipliedBy(0.55)
+      
     }
     
     albumTitle.snp.makeConstraints {
       $0.bottom.equalTo(listNumberLabel.snp.top).offset(-10)
       $0.centerX.equalToSuperview()
+      
     }
     
     listNumberLabel.snp.makeConstraints {
       $0.bottom.equalToSuperview().offset(-5)
       $0.centerX.equalToSuperview()
+      
     }
   }
   

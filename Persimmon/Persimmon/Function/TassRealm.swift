@@ -43,6 +43,7 @@ final class RealmSingleton {
     }
   }
   
+  // realm 과 albumUUID를 통해 단 한개의 album object를 반환
   func takeSelectAlbum(albumUUID: String, selectRealm: Realm? = nil) -> Album? {
     guard let selectRealm = selectRealm else {
       return realm.object(ofType: Album.self, forPrimaryKey: albumUUID)
@@ -50,12 +51,27 @@ final class RealmSingleton {
     return selectRealm.object(ofType: Album.self, forPrimaryKey: albumUUID)
   }
   
+  // GravePhotos 오브젝트를 가져옴, Grave있으면 가져오고 없으면 만들어서 가져옴
+  func takeGrave(selectRealm: Realm? = nil) -> Grave {
+    let temp = selectRealm == nil ? realm : selectRealm
+    guard let select = temp, let grave = select.object(ofType: Grave.self, forPrimaryKey: "Grave") else {
+      let object = Grave()
+      try! realm.write {
+        realm.add(object, update: .all)
+      }
+      return realm.object(ofType: Grave.self, forPrimaryKey: "Grave")!
+    }
+    return grave
+  }
+  
+  // 저장 후 이미지이름 비디오이름 포토UUID를 저장한다. 비동기!!!
   func writeData(albumUUID: String, localNames: [(String?, String?, String)], completion: (Int) -> ()) {
     var failCount = 0
     var photos: [Photo] = []
     localNames.forEach { (localName) in
       let photo = Photo()
-      photo.uuid = localName.2
+      photo.photoUUID = localName.2
+      photo.albumUUID = albumUUID
       
       if localName.0 != nil, localName.1 == nil {
         photo.type = "image"
@@ -74,24 +90,27 @@ final class RealmSingleton {
       photos.append(photo)
     }
     
-    do{
-      let otherRealm = try! Realm()
-      otherRealm.beginWrite()
-      guard let object = takeSelectAlbum(albumUUID: albumUUID, selectRealm: otherRealm) else { return }
-      object.photos.append(objectsIn: photos)
-      otherRealm.add(object, update: .modified)
-      try otherRealm.commitWrite()
-      completion(failCount)
-    } catch(let err) {
-      dump(err)
-      completion(9999)
+    // objective-c 객체가 swift 객체가 메모리에서 해제될때 같이 해제되도록 하는 autoreleasepool, 비동기처리시 필요
+    autoreleasepool {
+      do{
+        let otherRealm = try! Realm()
+        otherRealm.beginWrite()
+        guard let object = takeSelectAlbum(albumUUID: albumUUID, selectRealm: otherRealm) else { return }
+        object.photos.append(objectsIn: photos)
+        otherRealm.add(object, update: .modified)
+        try otherRealm.commitWrite()
+        completion(failCount)
+      } catch(let err) {
+        dump(err)
+        completion(9999)
+      }
     }
     
     
   }
   
   func writeToRealm(albumUUID: String, photoUUID: String, localName: (String?, String?, String), completion: @escaping () -> ()) {
-//    DispatchQueue(label: "realm", qos: .background).async {
+    //    DispatchQueue(label: "realm", qos: .background).async {
 //      autoreleasepool {
         let otherRealm = try! Realm()
         otherRealm.beginWrite()
@@ -100,7 +119,7 @@ final class RealmSingleton {
         guard let object = self.selectAlbum else { return }
         let photo = Photo()
         var type: String
-        photo.uuid = photoUUID
+        photo.photoUUID = photoUUID
         
         if localName.0 != nil, localName.1 == nil {
           type = "image"
