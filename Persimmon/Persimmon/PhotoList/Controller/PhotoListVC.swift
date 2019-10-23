@@ -14,50 +14,71 @@ import RealmSwift
 class PhotoListVC: UIViewController {
   
   var uuid: String = ""
-  
+  let photoListView = PhotoListView()
+  let alertVC = CustomAlertVC()
   var notificationToken: NotificationToken? = nil
   
-  lazy var object = RealmSingleton.shared.takeSelectAlbum(uuid: uuid, selectRealm: nil)
-  
-  let photoListView = PhotoListView()
-  let photoEmptyView = PhotoListViewEmpty()
-  let alertVC = CustomAlertVC()
+  var object: Album? {
+    return RealmSingleton.shared.takeSelectAlbum(albumUUID: uuid)
+    
+  }
   
   override func loadView() {
     self.view = photoListView
+    
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    notificationToken = RealmSingleton.shared.realm.observe({ (noti, realm) in
-      print("here reload")
+    setupView()
+    notificationToken = RealmSingleton.shared.realm.observe({ [weak self] (noti, realm) in
+      guard let `self` = self else { return }
       DispatchQueue.main.async {
         self.photoListView.photoView.collectionView.reloadData()
+        self.photoListView.topView.listNumberLabel.text = self.takeSubTitle()
+        self.photoListView.topView.profileImageView.image = self.takeLastImage()
       }
     })
     
+  }
+  
+  private func setupView() {
     view.backgroundColor = .white
     photoListView.topView.backBtn.addTarget(self, action: #selector(backButtonDidTap(_:)), for: .touchUpInside)
     photoListView.addBtn.addTarget(self, action: #selector(addButtonDidTap(_:)), for: .touchUpInside)
-    
     photoListView.photoView.collectionView.register(UINib(nibName: "PhotoCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "PhotoCollectionViewCell")
     photoListView.photoView.collectionView.delegate = self
     photoListView.photoView.collectionView.dataSource = self
+    photoListView.topView.albumTitle.text = object?.title ?? "애러당!"
+    photoListView.topView.listNumberLabel.text = takeSubTitle()
+    photoListView.topView.profileImageView.image = takeLastImage()
+    
+  }
+  
+  private func takeLastImage() -> UIImage? {
+    guard let lastPhoto = object?.photos.last else {
+      return UIImage(named: "icon") }
+    let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let imageData = try? Data(contentsOf: url.appendingPathComponent("\(String(describing: lastPhoto.uuid))/\(String(describing: lastPhoto.thumbnail))"))
+    return UIImage(data: imageData ?? Data())
+    
+  }
+  
+  private func takeSubTitle() -> String {
+    let totalCount = object?.photos.count ?? 0
+    let videoCount = object?.photos.filter("type = 'video'").count ?? 0
+    let photoCount = totalCount - videoCount
+    return "\(photoCount) Photos, \(videoCount) videos"
     
   }
   
   @objc func backButtonDidTap(_ sender: UIButton) {
-    print("눌림")
-//    navigationController?.viewControllers = (navigationController?.viewControllers.dropLast())!
     navigationController?.popViewController(animated: true)
     
   }
   
   // MARK: - add버튼 눌렀을때 alert띄우기
   @objc func addButtonDidTap(_ sender: Any) {
-    //    photoListView.createAlert()
-    
     //1. 알림창을 경고 형식으로 정의 한다.
     
     let alert = UIAlertController(title: "", message: "가져오기",preferredStyle: .actionSheet)
@@ -66,7 +87,6 @@ class PhotoListVC: UIViewController {
     
     let libraryAction = UIAlertAction(title: "앨범", style: .default) {
       [unowned self] (alert) -> Void in
-      
       let vc = TLPhotosPickerViewController()
       vc.configure.cancelTitle = "취소"
       vc.configure.doneTitle = "완료"
@@ -75,9 +95,6 @@ class PhotoListVC: UIViewController {
       vc.configure.recordingVideoQuality = .typeHigh
       vc.configure.selectedColor = .appColor(.appPersimmonColor)
       vc.delegate = self
-      //        vc.configure.customLocalizedTitle = ["카메라 롤": "카메라 롤"]
-      //        vc.configure.cameraBgColor = .appColor(.appPersimmonColor)
-      //       let selecAlbumVC = SelectAlbumVC()
       self.present(vc, animated: true)
     }
     
@@ -108,8 +125,11 @@ class PhotoListVC: UIViewController {
   }
   
   deinit {
+    print("deinit at PhotoListVC")
     notificationToken?.invalidate()
+    
   }
+  
   
 }
 
@@ -118,149 +138,55 @@ extension PhotoListVC: UIImagePickerControllerDelegate, UINavigationControllerDe
     //    let image = info[.originalImage] as? UIImage
     //    self.faceImageView.image = image
     picker.dismiss(animated: true)
+    
   }
+  
+  
 }
 
 extension PhotoListVC: TLPhotosPickerViewControllerDelegate {
   func dismissPhotoPicker(withPHAssets: [PHAsset]) {
-    
-    withPHAssets.forEach { (asset) in
-      let photoUUID = UUID().uuidString
-      TassPhoto().saveMediaFile(asset: asset, uuid: photoUUID, progressBlock: { (per) in
-        print(per)
-      }) { (imageName, videoName) in
-//        print("result: ", imageURL, videoURL, "\n", photoUUID)
-        RealmSingleton.shared.writeToRealm(albumUUID: self.uuid, photoUUID: photoUUID, localName: (imageName, videoName))
-        
+    DispatchQueue(label: "tass",
+                  qos: .userInteractive,
+                  attributes: .concurrent)
+      .async {
+      RealmSingleton.shared.writeData(
+        albumUUID: self.uuid,
+        localNames: TassPhoto().saveMediaFiles(
+          assets: withPHAssets,
+          progress: {
+            [weak self] (count, total) in
+            guard let `self` = self else {
+              return }
+            DispatchQueue.main
+              .async {
+              self.photoListView.topView.listNumberLabel.text = "\(count) / \(total)"
+            }
+        })) {
+          (failCount) in
+          print("failCount: ", failCount)
       }
-      
     }
+    
   }
   
-  func dismissPhotoPicker(withTLPHAssets: [TLPHAsset]) {
-    
-//    let manager = PHImageManager()
-//    let option = PHLivePhotoRequestOptions()
-//    option.deliveryMode = .highQualityFormat
-//    option.isNetworkAccessAllowed = true
-//    option.version = .original
-//    option.progressHandler = { (per, err, state, info) in
-//      print("here percent: \(per), useUnsafe: \(state)")
-//    }
-//
-//    withTLPHAssets.forEach { (asset) in
-//        RealmSingleton.shared.writeWithPhoto(albumUUID: self.uuid, asset: asset)
-//    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //    _ = withTLPHAssets.first?.exportVideoFile(options: nil, outputURL: nil, outputFileType: .mov, progressBlock: { (percent) in
-    //      print("here percent: ", percent)
-    //    }, completionBlock: { (url, str) in
-    //      print("here result - url: ", url, "\nstr: ", str)
-    //    })
-    
-    //    let manager = PHImageManager()
-    //    let manager = assetresource
-    
-    //    let asset = withTLPHAssets.first
-    //    let manager = PHAssetResourceManager()
-    //
-    //    func videoFilename(phAsset: PHAsset) -> URL? {
-    //      guard let resource = (PHAssetResource.assetResources(for: phAsset).filter{ $0.type == .video }).first else {
-    //        return nil
-    //      }
-    //      var writeURL: URL?
-    //      let fileName = resource.originalFilename
-    //      if #available(iOS 10.0, *) {
-    //        writeURL = FileManager.default.temporaryDirectory.appendingPathComponent("\(fileName)")
-    //
-    //        let documentsDir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("\(fileName)")
-    //        print("here path: ", documentsDir)
-    //
-    //      } else {
-    //        writeURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent("\(fileName)")
-    //      }
-    //
-    //      let testAsset = PHCachingImageManager()
-    //      let option = PHFetchOptions()
-    //      let collection = PHAssetCollection()
-    //      collection
-    //      let test1 = PHAssetCreationRequest.forAsset()
-    //      let test2 = NSMutableData() as? PHLivePhoto
-    //      PHLivePhoto.request(withResourceFileURLs: <#T##[URL]#>, placeholderImage: <#T##UIImage?#>, targetSize: <#T##CGSize#>, contentMode: .aspectFit, resultHandler: <#T##(PHLivePhoto?, [AnyHashable : Any]) -> Void#>)
-    //      return writeURL
-    //    }
-    //
-    //    print("here: url: ", videoFilename(phAsset: (asset?.phAsset)!))
-    //
-    //    guard let phAsset = asset?.phAsset, asset?.type == .photo || asset?.type == .livePhoto else { return }
-    //    var resource: PHAssetResource? = nil
-    //    if phAsset.mediaSubtypes.contains(.photoLive) == true {
-    //      resource = PHAssetResource.assetResources(for: phAsset).filter { $0.type == .pairedVideo }.first
-    //
-    //    }else {
-    //      resource = PHAssetResource.assetResources(for: phAsset).filter { $0.type == .photo }.first
-    //    }
-    //
-    ////    let test = PHAssetResource.assetResources(for: phAsset).first
-    //
-    //    let options = PHAssetResourceRequestOptions()
-    //    options.isNetworkAccessAllowed = true
-    //    options.progressHandler = { (per) in
-    //      print(per)
-    //    }
-    //
-    //    print("here resource: ", resource)
-    //
-    //    manager.requestData(for: resource!, options: options, dataReceivedHandler: { (data) in
-    //      print("here data: ", data)
-    //    }) { (err) in
-    //      print("here err: ", err)
-    //    }
-    //
-    //
-    //
-    //
-    //    if let fileSize = resource?.value(forKey: "fileSize") as? Int {
-    //      print("here fileSize1: ", fileSize)
-    //    }else {
-    //      PHImageManager.default().requestImageData(for: phAsset, options: nil) { (data, uti, orientation, info) in
-    //        var fileSize = -1
-    //        if let data = data {
-    //          let bcf = ByteCountFormatter()
-    //          bcf.countStyle = .file
-    //          fileSize = data.count
-    //        }
-    //        DispatchQueue.main.async {
-    //          print("here fileSize2: ", fileSize)
-    //        }
-    //      }
-    //    }
-    //
-    //
-    
-    
+  func dismissComplete() {
+    print("dismiss TLPhotoVC")
     
   }
+  
+  
 }
 
 
 extension PhotoListVC: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return object?.photos.count ?? 0
+    
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCell", for: indexPath) as! PhotoCollectionViewCell
-    
     cell.liveBadgeImageView?.image = nil
     cell.isCameraCell = false
     
@@ -268,10 +194,12 @@ extension PhotoListVC: UICollectionViewDataSource {
     cell.configure = PhotosPickerConfigure()
     cell.photoUUID = photo.uuid
     cell.cellType = photo.type
-    cell.videoURL = photo.videoName
-    cell.imageURL = photo.imageName
+    cell.videoName = photo.videoName
+    cell.imageName = photo.imageName
+    cell.thumbnail = photo.thumbnail
     
     return cell
+    
   }
   
   
@@ -305,13 +233,9 @@ public struct PhotosPickerConfigure {
   public var cameraIcon = UIImage(named: "camera")
   public var videoIcon = UIImage(named: "video")
   public var placeholderIcon = UIImage(named: "insertPhotoMaterial")
-//  public var nibSet: (nibName: String, bundle:Bundle)? = nil
-//  public var cameraCellNibSet: (nibName: String, bundle:Bundle)? = nil
   public var fetchCollectionTypes: [(PHAssetCollectionType,PHAssetCollectionSubtype)]? = nil
   public var supportedInterfaceOrientations: UIInterfaceOrientationMask = .portrait
-  public init() {
-    
-  }
+  public init() {}
   
 }
 

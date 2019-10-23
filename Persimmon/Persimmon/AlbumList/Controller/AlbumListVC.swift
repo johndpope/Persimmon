@@ -85,9 +85,14 @@ class AlbumListVC: UIViewController {
 
 extension AlbumListVC: AlbumListViewDelegate {
   func didSelectCell(indexPath: AlbumListView, uuid: String) {
-    let photoListVC = PhotoListVC()
-    photoListVC.uuid = uuid
-    navigationController?.pushViewController(photoListVC, animated: true)
+    
+    DispatchQueue.main.async { [weak self] in
+      guard let `self` = self else { return }
+      let photoListVC = PhotoListVC()
+      photoListVC.uuid = uuid
+      self.navigationController?.pushViewController(photoListVC, animated: true)
+    }
+    
   }
   
   

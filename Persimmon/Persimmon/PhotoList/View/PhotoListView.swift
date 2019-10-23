@@ -186,6 +186,10 @@ class PhotoListView: UIView {
     }
   }
   
+  deinit {
+    print("deinit at PhotoListView")
+  }
+  
 }
 
 

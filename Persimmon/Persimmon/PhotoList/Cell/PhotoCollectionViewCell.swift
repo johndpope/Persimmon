@@ -35,24 +35,25 @@ class PlayerView: UIView {
 class PhotoCollectionViewCell: UICollectionViewCell {
   
   var photoUUID: String = ""
-  var imageURL: String = "" {
+  var imageName: String = ""
+  var videoName: String = ""
+  var thumbnail: String = "" {
     willSet(new) {
       self.imageView?.image = nil
-      DispatchQueue.global(qos: .userInteractive).async {
+      DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+        guard let `self` = self else { return }
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
-          var imageData = try? Data(contentsOf: url.appendingPathComponent("\(self.photoUUID)/\(new)")) else {
-            print("error")
+        let imageData = try? Data(contentsOf: url.appendingPathComponent("\(self.photoUUID)/\(new)")) else {
+            print("error in PhotoCollectionViewCell's thumbnail Property")
             return
         }
         
         DispatchQueue.main.async {
-          self.imageView?.image = UIImage(data: imageData, scale: 0.1)
-          imageData = Data()
+          self.imageView?.image = UIImage(data: imageData)
         }
       }
     }
   }
-  var videoURL: String = ""
   var cellType: String = ""
   
   private var observer: NSObjectProtocol?
@@ -200,4 +201,5 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     self.selectedHeight?.constant = 10
     self.selectedAsset = false
   }
+  
 }
