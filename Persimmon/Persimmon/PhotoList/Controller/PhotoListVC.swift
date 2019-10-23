@@ -223,11 +223,9 @@ extension PhotoListVC: UICollectionViewDataSource {
     cell.thumbnail = photo.thumbnail
     cell.selectedAsset = false
     cell.orderLabel?.text = nil
-    cell.isSelect = false
     for photo in selectedPhotos {
       if photo.index == indexPath {
         cell.selectedAsset = true
-        cell.isSelect = true
         cell.orderLabel?.text = "\(photo.order ?? 0)"
         break
       }
@@ -251,11 +249,9 @@ extension PhotoListVC: UICollectionViewDelegate {
       for photo in selectedPhotos {
         if photo.index == indexPath {
           cell.selectedAsset = true
-          cell.isSelect = true
           cell.orderLabel?.text = "\(photo.order ?? 0)"
           break
         } else {
-          cell.isSelect = false
           cell.selectedAsset = false
           cell.orderLabel?.text = nil
         }
@@ -285,7 +281,6 @@ extension PhotoListVC: UICollectionViewDelegate {
       })
       #endif
       cell.selectedAsset = false
-      cell.isSelect = false
       self.orderUpdateCells()
     }else {
       //select
@@ -294,18 +289,10 @@ extension PhotoListVC: UICollectionViewDelegate {
       photo.order = self.selectedPhotos.count + 1
       self.selectedPhotos.append(photo)
       cell.selectedAsset = true
-      cell.isSelect = true
       cell.orderLabel?.text = "\(photo.order ?? 0)"
     }
   }
   
-  //  func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-  //    guard deleteBtnState, let cell = collectionView.cellForItem(at: indexPath) as? PhotoCollectionViewCell else { return }
-  //    cell.selectedAsset = false
-  //    cell.orderLabel?.text = nil
-  //    print(collectionView.indexPathsForSelectedItems?.count)
-  //
-  //  }
   
 }
 

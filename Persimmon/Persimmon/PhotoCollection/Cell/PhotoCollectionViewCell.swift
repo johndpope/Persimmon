@@ -55,7 +55,6 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     }
   }
   var cellType: String = ""
-  var isSelect: Bool = false
   
   private var observer: NSObjectProtocol?
   @IBOutlet var imageView: UIImageView?
