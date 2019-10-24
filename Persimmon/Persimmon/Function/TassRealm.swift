@@ -51,6 +51,21 @@ final class RealmSingleton {
     return selectRealm.object(ofType: Album.self, forPrimaryKey: albumUUID)
   }
   
+  func changeAlbumTitle(title: String?, albumUUID: String) {
+    let title = title == "" ? "구 앨범" : title ?? "구 앨범"
+    let object = takeSelectAlbum(albumUUID: albumUUID)
+    try! realm.write {
+      object?.title = title
+    }
+  }
+  
+  func deleteAlbum(albumUUID: String) {
+    guard let object = takeSelectAlbum(albumUUID: albumUUID) else { return }
+    try! realm.write {
+      realm.delete(object)
+    }
+  }
+  
   // GravePhotos 오브젝트를 가져옴, Grave있으면 가져오고 없으면 만들어서 가져옴
   func takeGrave(selectRealm: Realm? = nil) -> Grave {
     let temp = selectRealm == nil ? realm : selectRealm

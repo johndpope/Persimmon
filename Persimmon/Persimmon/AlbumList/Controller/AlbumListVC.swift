@@ -15,6 +15,8 @@ class AlbumListVC: UIViewController {
   
   let albumListView = AlbumListView()
   
+  var albums = RealmSingleton.shared.realm.objects(Album.self)
+  
   override func loadView() {
     self.view = albumListView
   }
@@ -22,10 +24,12 @@ class AlbumListVC: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .white
-    albumListView.delegate = self
+    albumListView.tableView.delegate = self
+    albumListView.tableView.dataSource = self
     albumListView.addBtn.addTarget(self, action: #selector(didTapAddBtn(_:)), for: .touchUpInside)
     
-    notificationToken = RealmSingleton.shared.realm.observe({ (noti, realm) in
+    notificationToken = RealmSingleton.shared.realm.observe({ [weak self] (noti, realm) in
+      guard let `self` = self else { return }
       DispatchQueue.main.async {
         self.albumListView.tableView.reloadData()
       }
@@ -33,12 +37,12 @@ class AlbumListVC: UIViewController {
     
     albumListView.editBtn.addTarget(self, action: #selector(editBtnDidTap(_:)), for: .touchUpInside)
     navigationItem.leftBarButtonItem = editButtonItem
-
+    
   }
   @objc func editBtnDidTap(_ sender: UIButton) {
     
-   }
-   
+  }
+  
   
   deinit {
     notificationToken?.invalidate()
@@ -51,41 +55,67 @@ class AlbumListVC: UIViewController {
   @objc func didTapAddBtn(_ sender: UIButton) {
     //1. 알림창을 경고 형식으로 정의 한다.
     
-    let alert = UIAlertController(title: nil, message: "새 앨범 만들기",preferredStyle: .alert)
-    
-    //2. add textfield
-    alert.addTextField()
-    alert.textFields?.first?.placeholder = "새 앨범"
-    //3. 버튼을 정의 한다.
-    
-    let cameraAction = UIAlertAction(title: "만들기", style: .default) { (_) -> Void in
-      let text = alert.textFields?.first?.text
-      RealmSingleton.shared.addAlbum(title: text)
+    UIAlertController().makeTextFieldAlert(title: nil, mesage: "새 앨범 만들기", actionTitle: "만들기", vc: self) { (result) in
+      switch result {
+      case .success(let text):
+        RealmSingleton.shared.addAlbum(title: text)
+      case .failure(_):
+        break
+      }
     }
-    
-    let cancelAction = UIAlertAction(title: "취소", style: .cancel)
-    //4. 정의된 버튼을 알림창 객체에 추가한다.
-    
-    
-    alert.addAction(cameraAction)
-    alert.addAction(cancelAction)
-    let contentVC = CustomAlertVC()
-    alert.view.tintColor = UIColor.appColor(.appGreenColor)
-    // 뷰 컨트롤러 알림창의 콘텐츠 뷰 컨트롤러 속성에 등록한다.
-    
-    alert.setValue(contentVC, forKeyPath: "contentViewController")
-    
-    //4. 알림창을 화면에 표시한다.
-    
-    self.present(alert, animated: true)
     
   }
   
 }
 
-extension AlbumListVC: AlbumListViewDelegate {
-  func didSelectCell(indexPath: AlbumListView, uuid: String) {
+
+extension AlbumListVC: UITableViewDataSource {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return albums.count
     
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    tableView.separatorStyle = .singleLine
+    let cell = tableView.dequeueReusableCell(withIdentifier: AlbumListTableCell.identifier, for: indexPath) as! AlbumListTableCell
+    cell.selectionStyle = .none
+    cell.titleLabel.text = albums[indexPath.row].title
+    cell.subTitleLabel.text = "[ \(albums[indexPath.row].photos.count.description) ]"
+    cell.albumImageView.contentMode = .scaleAspectFill
+    
+    guard let lastPhoto = albums[indexPath.row].photos.last,
+      let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
+      let imageData = try? Data(contentsOf: url.appendingPathComponent("\(lastPhoto.photoUUID)/\(lastPhoto.thumbnail)")) else {
+        cell.albumImageView.image = UIImage(named: "persimmonIcon")
+        return cell
+        
+    }
+    
+    cell.albumImageView.image = UIImage(data: imageData)
+    return cell
+  }
+  
+  
+}
+
+
+extension AlbumListVC: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return UIScreen.main.bounds.height * 0.13
+    
+  }
+  
+  func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+    return UIScreen.main.bounds.height * 0.10
+    
+  }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let uuid = albums[indexPath.row].albumUUID
+    didSelectCell(uuid: uuid)
+  }
+  
+  func didSelectCell(uuid: String) {
     DispatchQueue.main.async { [weak self] in
       guard let `self` = self else { return }
       let photoListVC = PhotoListVC()
@@ -95,5 +125,57 @@ extension AlbumListVC: AlbumListViewDelegate {
     
   }
   
+  func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    let deleteAction = UIContextualAction(style: .normal, title: nil) { (UIContextualAction, UIView,  success: @escaping (Bool) -> Void) in
+      // 삭제버튼
+      UIAlertController().makeAlert(title: "앨범삭제", mesage: "정말 삭제합니까?", actionTitle: "삭제", vc: self) { (state) in
+        if state {
+          var photoUUIDs: [String] = []
+          let uuid = self.albums[indexPath.row].albumUUID
+          self.albums[indexPath.row].photos.forEach { (photo) in
+            photoUUIDs.append(photo.photoUUID)
+          }
+          TassPhoto().deletePhotos(photoUUIDs: photoUUIDs)
+          RealmSingleton.shared.deleteAlbum(albumUUID: uuid)
+          success(true)
+        } else {
+          success(false)
+        }
+      }
+      
+    }
+    
+    deleteAction.image = UIImage(named: "delete")
+    deleteAction.backgroundColor = .white
+    
+    let editAction = UIContextualAction(style: .normal, title: nil) { (UIContextualAction, UIView, success: @escaping (Bool) -> Void) in
+      UIAlertController().makeTextFieldAlert(title: nil, mesage: "앨범 타이틀 수정", actionTitle: "수정", vc: self) { (result) in
+        switch result {
+        case .success(let text):
+          let uuid = self.albums[indexPath.row].albumUUID
+          RealmSingleton.shared.changeAlbumTitle(title: text, albumUUID: uuid)
+          success(true)
+        case .failure(_):
+          success(false)
+          break
+        }
+      }
+    }
+    
+    editAction.image = UIImage(named: "modification")
+    editAction.backgroundColor = .white
+
+    return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+    
+  }
   
+  
+//  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//    if editingStyle == .delete {
+//      print("editing")
+//    }
+//
+//  }
+  
+
 }

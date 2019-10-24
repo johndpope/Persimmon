@@ -50,21 +50,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 // MARK: - 앱 다시 실행했을때 넘어오는 뷰 -> passCodeVC
   func applicationDidBecomeActive(_ application: UIApplication) {
     print("\n-------------[applicationDidBecomeActive]-------------\n")
+//    let rootView = PassCodeVC()
+//    window?.rootViewController = rootView
+//    window?.makeKeyAndVisible()
+  }
+  
+  func applicationWillResignActive(_ application: UIApplication) {
+    print("\n-------------[applicationWillResignActive]-------------\n")
     let rootView = PassCodeVC()
     window?.rootViewController = rootView
     window?.makeKeyAndVisible()
   }
   
+  func applicationDidEnterBackground(_ application: UIApplication) {
+    print("\n-------------[applicationDidEnterBackground]-------------\n")
+    
+  }
   
-  func checkPassCodeState() {
-     let passCodeVC = PassCodeVC()
-     let passCodeNavi = UINavigationController(rootViewController: passCodeVC)
-
-     self.window = UIWindow(frame: UIScreen.main.bounds)
-     window?.backgroundColor = .white
-     window?.rootViewController = passCodeNavi
-     window?.makeKeyAndVisible()
-   }
+  func applicationWillTerminate(_ application: UIApplication) {
+    print("\n-------------[applicationWillTerminate]-------------\n")
+  }
+  
+  func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
+    print("\n-------------[applicationDidReceiveMemoryWarning]-------------\n")
+  }
+  
+  
+//  func checkPassCodeState() {
+//     let passCodeVC = PassCodeVC()
+//     let passCodeNavi = UINavigationController(rootViewController: passCodeVC)
+//
+//     self.window = UIWindow(frame: UIScreen.main.bounds)
+//     window?.backgroundColor = .white
+//     window?.rootViewController = passCodeNavi
+//     window?.makeKeyAndVisible()
+//   }
   
 
   

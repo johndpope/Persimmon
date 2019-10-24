@@ -11,17 +11,7 @@ import SnapKit
 import RealmSwift
 import TLPhotoPicker
 
-
-protocol AlbumListViewDelegate {
-  func didSelectCell(indexPath: AlbumListView, uuid: String)
-}
-
 class AlbumListView: UIView {
-  
-  var delegate: AlbumListViewDelegate?
-  
-  var albums = RealmSingleton.shared.realm.objects(Album.self)
-  
   let topView: UIView = {
     let topView = UIView()
     topView.backgroundColor = UIColor.appColor(.appLayerBorderColor)
@@ -54,8 +44,6 @@ class AlbumListView: UIView {
   
   lazy var tableView: UITableView = {
     let tableView = UITableView()
-    tableView.dataSource = self
-    tableView.delegate = self
     tableView.separatorStyle = .none
     return tableView
   }()
@@ -112,80 +100,6 @@ class AlbumListView: UIView {
   
 }
 
-extension AlbumListView: UITableViewDataSource {
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return albums.count
-    
-  }
-  
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    tableView.separatorStyle = .singleLine
-    let cell = tableView.dequeueReusableCell(withIdentifier: AlbumListTableCell.identifier, for: indexPath) as! AlbumListTableCell
-    cell.selectionStyle = .none
-    cell.titleLabel.text = albums[indexPath.row].title
-    cell.subTitleLabel.text = "[ \(albums[indexPath.row].photos.count.description) ]"
-    cell.albumImageView.contentMode = .scaleAspectFill
-    
-    guard let lastPhoto = albums[indexPath.row].photos.last,
-      let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
-      let imageData = try? Data(contentsOf: url.appendingPathComponent("\(lastPhoto.photoUUID)/\(lastPhoto.thumbnail)")) else {
-        cell.albumImageView.image = UIImage(named: "persimmonIcon")
-        return cell
-        
-    }
-    
-    cell.albumImageView.image = UIImage(data: imageData)
-    return cell
-  }
-  
-  
-}
 
-extension AlbumListView: UITableViewDelegate {
-  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return UIScreen.main.bounds.height * 0.13
-    
-  }
-  
-  func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-    return UIScreen.main.bounds.height * 0.10
-    
-  }
-  
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let uuid = albums[indexPath.row].albumUUID
-    delegate?.didSelectCell(indexPath: self, uuid: uuid)
-    
-  }
-  
-  func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    let deleteAction = UIContextualAction(style: .normal, title: nil) { (UIContextualAction, UIView,  success: (Bool) -> Void) in
-      // 삭제버튼
-      success(true)
-    }
-    
-    deleteAction.image = UIImage(named: "delete")
-    deleteAction.backgroundColor = .white
 
-    let editAction = UIContextualAction(style: .normal, title: nil) { (UIContextualAction, UIView, success: (Bool) -> Void) in
-      // 수정버튼
-      success(true)
-    }
-    
-    editAction.image = UIImage(named: "modification")
-    editAction.backgroundColor = .white
 
-    return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
-    
-  }
-  
-  
-  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-    if editingStyle == .delete {
-      print("editing")
-    }
-    
-  }
-  
-
-}
