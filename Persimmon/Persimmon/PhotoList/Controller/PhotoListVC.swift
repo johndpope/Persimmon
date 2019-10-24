@@ -168,27 +168,31 @@ extension PhotoListVC: UIImagePickerControllerDelegate, UINavigationControllerDe
 
 extension PhotoListVC: TLPhotosPickerViewControllerDelegate {
   func dismissPhotoPicker(withPHAssets: [PHAsset]) {
-    DispatchQueue(label: "tass",
-                  qos: .userInteractive,
-                  attributes: .concurrent)
-      .async {
-      RealmSingleton.shared.writeData(
-        albumUUID: self.uuid,
-        localNames: TassPhoto().saveMediaFiles(
-          assets: withPHAssets,
-          progress: {
-            [weak self] (count, total) in
-            guard let `self` = self else {
-              return }
-            DispatchQueue.main
-              .async {
-              self.photoListView.topView.listNumberLabel.text = "\(count) / \(total)"
-            }
-        })) {
-          (failCount) in
-          print("failCount: ", failCount)
+    let savePhotoTaskID = UIApplication.shared.beginBackgroundTask(withName: "tass") {
+      DispatchQueue(label: "tass",
+                    qos: .userInteractive,
+                    attributes: .concurrent)
+        .async {
+        RealmSingleton.shared.writeData(
+          albumUUID: self.uuid,
+          localNames: TassPhoto().saveMediaFiles(
+            assets: withPHAssets,
+            progress: {
+              [weak self] (count, total) in
+              guard let `self` = self else {
+                return }
+              DispatchQueue.main
+                .async {
+                self.photoListView.topView.listNumberLabel.text = "\(count) / \(total)"
+              }
+          })) {
+            (failCount) in
+            print("failCount: ", failCount)
+        }
       }
     }
+    
+    UIApplication.shared.endBackgroundTask(savePhotoTaskID)
     
   }
   

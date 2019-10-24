@@ -50,6 +50,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 // MARK: - 앱 다시 실행했을때 넘어오는 뷰 -> passCodeVC
   func applicationDidBecomeActive(_ application: UIApplication) {
     print("\n-------------[applicationDidBecomeActive]-------------\n")
+//    let rootView = PassCodeVC()
+//    window?.rootViewController = rootView
+//    window?.makeKeyAndVisible()
+  }
+  
+  func applicationDidEnterBackground(_ application: UIApplication) {
+    print("\n-------------[applicationDidEnterBackground]-------------\n")
     let rootView = PassCodeVC()
     window?.rootViewController = rootView
     window?.makeKeyAndVisible()
