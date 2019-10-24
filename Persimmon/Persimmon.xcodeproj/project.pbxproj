@@ -19,6 +19,7 @@
 		521F9DB92357AF3A00506B9C /* PhotoCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521F9DB82357AF3A00506B9C /* PhotoCollectionView.swift */; };
 		521F9DBF2357E59300506B9C /* PhotoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 521F9DBE2357E59300506B9C /* PhotoCollectionViewCell.xib */; };
 		521F9DC32357E79000506B9C /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521F9DC22357E79000506B9C /* PhotoCollectionViewCell.swift */; };
+		522D0A9B2362520900A0C32A /* AlertExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522D0A9A2362520900A0C32A /* AlertExtension.swift */; };
 		523705BA2351024200869F57 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523705B92351024200869F57 /* AppDelegate.swift */; };
 		523705BC2351024200869F57 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523705BB2351024200869F57 /* SceneDelegate.swift */; };
 		523705C02351024400869F57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 523705BF2351024400869F57 /* Assets.xcassets */; };
@@ -68,6 +69,7 @@
 		521F9DB82357AF3A00506B9C /* PhotoCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionView.swift; sourceTree = "<group>"; };
 		521F9DBE2357E59300506B9C /* PhotoCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoCollectionViewCell.xib; sourceTree = "<group>"; };
 		521F9DC22357E79000506B9C /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		522D0A9A2362520900A0C32A /* AlertExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertExtension.swift; sourceTree = "<group>"; };
 		523705B62351024200869F57 /* Persimmon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Persimmon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		523705B92351024200869F57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		523705BB2351024200869F57 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -457,6 +459,7 @@
 				521F9DB0235516A400506B9C /* UIDeviceExtension.swift */,
 				521F9DB22355725F00506B9C /* BundleExtention.swift */,
 				520BD602235939E5003E6D6B /* UIImageExtension.swift */,
+				522D0A9A2362520900A0C32A /* AlertExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -594,6 +597,7 @@
 				C10C9BB92353799E00FA56A3 /* PhotoListView.swift in Sources */,
 				C10C9BC823537C8F00FA56A3 /* SettingVC.swift in Sources */,
 				521F9DAF23527CA500506B9C /* CustomPhotoPicker.swift in Sources */,
+				522D0A9B2362520900A0C32A /* AlertExtension.swift in Sources */,
 				52F27F29235BD93400066C99 /* Test.swift in Sources */,
 				521F9DB92357AF3A00506B9C /* PhotoCollectionView.swift in Sources */,
 				C1A9D643235B621100BFF2E6 /* DonationView.swift in Sources */,
@@ -765,7 +769,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Persimmon/Source/\"";
-				DEVELOPMENT_TEAM = 5W72YMDK56;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Persimmon/Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -790,7 +794,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Persimmon/Source/\"";
-				DEVELOPMENT_TEAM = 5W72YMDK56;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Persimmon/Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

@@ -55,23 +55,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //    window?.makeKeyAndVisible()
   }
   
-  func applicationDidEnterBackground(_ application: UIApplication) {
-    print("\n-------------[applicationDidEnterBackground]-------------\n")
+  func applicationWillResignActive(_ application: UIApplication) {
+    print("\n-------------[applicationWillResignActive]-------------\n")
     let rootView = PassCodeVC()
     window?.rootViewController = rootView
     window?.makeKeyAndVisible()
   }
   
+  func applicationDidEnterBackground(_ application: UIApplication) {
+    print("\n-------------[applicationDidEnterBackground]-------------\n")
+    
+  }
   
-  func checkPassCodeState() {
-     let passCodeVC = PassCodeVC()
-     let passCodeNavi = UINavigationController(rootViewController: passCodeVC)
-
-     self.window = UIWindow(frame: UIScreen.main.bounds)
-     window?.backgroundColor = .white
-     window?.rootViewController = passCodeNavi
-     window?.makeKeyAndVisible()
-   }
+  func applicationWillTerminate(_ application: UIApplication) {
+    print("\n-------------[applicationWillTerminate]-------------\n")
+  }
+  
+  func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
+    print("\n-------------[applicationDidReceiveMemoryWarning]-------------\n")
+  }
+  
+  
+//  func checkPassCodeState() {
+//     let passCodeVC = PassCodeVC()
+//     let passCodeNavi = UINavigationController(rootViewController: passCodeVC)
+//
+//     self.window = UIWindow(frame: UIScreen.main.bounds)
+//     window?.backgroundColor = .white
+//     window?.rootViewController = passCodeNavi
+//     window?.makeKeyAndVisible()
+//   }
   
 
   

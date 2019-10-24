@@ -15,6 +15,7 @@ import RealmSwift
 
 
 class PhotoListVC: UIViewController {
+  var backgroundTask: UIBackgroundTaskIdentifier = .invalid
   
   var uuid: String = ""
   let photoListView = PhotoListView()
@@ -49,6 +50,7 @@ class PhotoListVC: UIViewController {
         self.photoListView.photoView.collectionView.reloadData()
         self.photoListView.topView.listNumberLabel.text = self.takeSubTitle()
         self.photoListView.topView.profileImageView.image = self.takeLastImage()
+        
       }
     })
     
@@ -149,6 +151,9 @@ class PhotoListVC: UIViewController {
   deinit {
     print("deinit at PhotoListVC")
     notificationToken?.invalidate()
+    print("Background task during.")
+    if self.backgroundTask != .invalid {
+      self.endBackgroundTask() }
     
   }
   
@@ -168,32 +173,55 @@ extension PhotoListVC: UIImagePickerControllerDelegate, UINavigationControllerDe
 
 extension PhotoListVC: TLPhotosPickerViewControllerDelegate {
   func dismissPhotoPicker(withPHAssets: [PHAsset]) {
-    let savePhotoTaskID = UIApplication.shared.beginBackgroundTask(withName: "tass") {
-      DispatchQueue(label: "tass",
-                    qos: .userInteractive,
-                    attributes: .concurrent)
-        .async {
+    
+    DispatchQueue(label: "tass",
+                  qos: .default,
+                  attributes: .concurrent)
+      .async { [weak self] in
+        guard let `self` = self else { return }
+        self.registerBackgroundTask()
+        let localNames = TassPhoto().saveMediaFiles(
+          assets: withPHAssets,
+          progress: {
+            [weak self] (count, total) in
+            guard let `self` = self else {
+              return }
+            DispatchQueue.main
+              .async { [weak self] in
+                guard let `self` = self else { return }
+                self.photoListView.topView.listNumberLabel.text = "\(count) / \(total)"
+            }
+        })
+        
         RealmSingleton.shared.writeData(
           albumUUID: self.uuid,
-          localNames: TassPhoto().saveMediaFiles(
-            assets: withPHAssets,
-            progress: {
-              [weak self] (count, total) in
-              guard let `self` = self else {
-                return }
-              DispatchQueue.main
-                .async {
-                self.photoListView.topView.listNumberLabel.text = "\(count) / \(total)"
-              }
-          })) {
+          localNames: localNames) {
             (failCount) in
             print("failCount: ", failCount)
+            PHPhotoLibrary.shared().performChanges({
+              PHAssetChangeRequest.deleteAssets(withPHAssets as NSArray)
+            })
         }
-      }
     }
     
-    UIApplication.shared.endBackgroundTask(savePhotoTaskID)
+  }
+  
+  func registerBackgroundTask() {
+    backgroundTask = UIApplication.shared.beginBackgroundTask(withName: "tassBackGround", expirationHandler: { [weak self] in
+      self?.endBackgroundTask()
+    })
+    assert(backgroundTask != .invalid)
+    DispatchQueue.main.async {
+      print("Background time remaining = " +
+      "\(UIApplication.shared.backgroundTimeRemaining) seconds")
+    }
     
+  }
+  
+  func endBackgroundTask() {
+    print("Background task ended.")
+    UIApplication.shared.endBackgroundTask(backgroundTask)
+    backgroundTask = .invalid
   }
   
   func dismissComplete() {

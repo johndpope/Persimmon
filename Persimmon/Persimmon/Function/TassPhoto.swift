@@ -10,7 +10,6 @@ import UIKit
 import Photos
 import MobileCoreServices
 
-
 class TassPhoto {
   
   let fileManager = FileManager.default
@@ -29,6 +28,15 @@ class TassPhoto {
       }
     }
     return nil
+  }
+  
+  func deletePhotos(photoUUIDs: [String]) {
+    let url = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+    photoUUIDs.forEach { (uuid) in
+      let photoURL = url.appendingPathComponent(uuid)
+      try! fileManager.removeItem(at: photoURL)
+    }
+    
   }
   
   func saveMediaFiles(assets: [PHAsset], progress: (Int, Int) -> ()) -> [(String?, String?, String, String?)] {
