@@ -17,6 +17,12 @@ class AlbumListVC: UIViewController {
   
   var albums = RealmSingleton.shared.realm.objects(Album.self)
   
+  var action = false
+  
+  var tableView: UITableView {
+    return albumListView.tableView
+  }
+  
   override func loadView() {
     self.view = albumListView
   }
@@ -24,14 +30,14 @@ class AlbumListVC: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .white
-    albumListView.tableView.delegate = self
-    albumListView.tableView.dataSource = self
+    tableView.delegate = self
+    tableView.dataSource = self
     albumListView.addBtn.addTarget(self, action: #selector(didTapAddBtn(_:)), for: .touchUpInside)
     
     notificationToken = RealmSingleton.shared.realm.observe({ [weak self] (noti, realm) in
       guard let `self` = self else { return }
       DispatchQueue.main.async {
-        self.albumListView.tableView.reloadData()
+        self.tableView.reloadData()
       }
     })
     
@@ -40,7 +46,7 @@ class AlbumListVC: UIViewController {
     
   }
   @objc func editBtnDidTap(_ sender: UIButton) {
-    
+    UIAlertController().makeAlert(title: "수정", mesage: "앨범을 왼쪽에서 오른쪽으로 스와이프하면 수정가능합니다.", actionTitle: "네", vc: self) { (_) in }
   }
   
   
@@ -128,7 +134,7 @@ extension AlbumListVC: UITableViewDelegate {
   func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     let deleteAction = UIContextualAction(style: .normal, title: nil) { (UIContextualAction, UIView,  success: @escaping (Bool) -> Void) in
       // 삭제버튼
-      UIAlertController().makeAlert(title: "앨범삭제", mesage: "정말 삭제합니까?", actionTitle: "삭제", vc: self) { (state) in
+      UIAlertController().makeAlert(title: "앨범삭제", mesage: "앨범에 있는 사진 또한 영구적으로 삭제 됩니다.", actionTitle: "삭제", vc: self) { (state) in
         if state {
           var photoUUIDs: [String] = []
           let uuid = self.albums[indexPath.row].albumUUID
@@ -164,14 +170,14 @@ extension AlbumListVC: UITableViewDelegate {
     
     editAction.image = UIImage(named: "modification")
     editAction.backgroundColor = .white
-
+    
     return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
     
   }
   
   
 //  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//    if editingStyle == .delete {
+//    if editingStyle == .insert {
 //      print("editing")
 //    }
 //
