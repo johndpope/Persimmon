@@ -57,14 +57,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   func applicationWillResignActive(_ application: UIApplication) {
     print("\n-------------[applicationWillResignActive]-------------\n")
-    let rootView = PassCodeVC()
-    window?.rootViewController = rootView
-    window?.makeKeyAndVisible()
   }
   
   func applicationDidEnterBackground(_ application: UIApplication) {
     print("\n-------------[applicationDidEnterBackground]-------------\n")
-    
+    let rootView = PassCodeVC()
+    window?.rootViewController = rootView
+    window?.makeKeyAndVisible()
   }
   
   func applicationWillTerminate(_ application: UIApplication) {

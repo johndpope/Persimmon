@@ -52,9 +52,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
   func sceneWillResignActive(_ scene: UIScene) {
     print("\n-------------[sceneWillResignActive]-------------\n")
-    let rootView = PassCodeVC()
-    window?.rootViewController = rootView
-    window?.makeKeyAndVisible()
   }
   
   func sceneWillEnterForeground(_ scene: UIScene) {
@@ -63,6 +60,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
   func sceneDidEnterBackground(_ scene: UIScene) {
     print("\n-------------[sceneDidEnterBackground]-------------\n")
+    let rootView = PassCodeVC()
+    window?.rootViewController = rootView
+    window?.makeKeyAndVisible()
   }
   
   

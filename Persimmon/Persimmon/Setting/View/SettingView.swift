@@ -56,7 +56,7 @@ class SettingView: UIView {
     let imageView = UIImageView()
     imageView.clipsToBounds = true
     imageView.contentMode = .scaleAspectFit
-    imageView.image = UIImage(named: "icon")
+    imageView.image = UIImage(named: "PersimmonIconFalse")
     return imageView
   }()
   
@@ -71,8 +71,8 @@ class SettingView: UIView {
   
   let scaleBtn: UIButton = {
     let button = UIButton(type: .custom)
-    button.setImage(UIImage(named: "persimmonIPasscodeIcon"), for: .selected)
-    button.setImage(UIImage(named: "persimmonIPasscodeIconsmall"), for: .normal)
+    button.setImage(UIImage(named: "PersimmonIconFalse"), for: .selected)
+    button.setImage(UIImage(named: "PersimmonIconTrue"), for: .normal)
     let scale = UserDefaults.standard.bool(forKey: "scale")
     button.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
     button.isSelected = scale
@@ -80,8 +80,6 @@ class SettingView: UIView {
     return button
   }()
   
-  
- 
   
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
