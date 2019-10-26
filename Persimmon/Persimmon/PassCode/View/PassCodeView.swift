@@ -43,28 +43,28 @@ class PassCodeView: UIView {
   
   lazy var passcode1: UIButton = {
     let button = UIButton(type: .custom)
-    button.setImage(UIImage(named: "persimmonIPassCodeIcon"), for: .normal)
+    button.setImage(UIImage(named: "PasscodeIcon"), for: .normal)
     button.alpha = 0.7
     return button
   }()
   
   lazy var passcode2: UIButton = {
     let button = UIButton(type: .custom)
-    button.setImage(UIImage(named: "persimmonIPassCodeIcon"), for: .normal)
+    button.setImage(UIImage(named: "PasscodeIcon"), for: .normal)
     button.alpha = 0.7
     return button
   }()
   
   lazy var passcode3: UIButton = {
     let button = UIButton(type: .custom)
-    button.setImage(UIImage(named: "persimmonIPassCodeIcon"), for: .normal)
+    button.setImage(UIImage(named: "PasscodeIcon"), for: .normal)
     button.alpha = 0.7
     return button
   }()
   
   lazy var passcode4: UIButton = {
     let button = UIButton(type: .custom)
-    button.setImage(UIImage(named: "persimmonIPassCodeIcon"), for: .normal)
+    button.setImage(UIImage(named: "PasscodeIcon"), for: .normal)
     button.alpha = 0.7
     return button
   }()

@@ -64,7 +64,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let rootView = PassCodeVC()
     window?.rootViewController = rootView
     window?.makeKeyAndVisible()
+
+
     
+
   }
   
   func applicationWillTerminate(_ application: UIApplication) {

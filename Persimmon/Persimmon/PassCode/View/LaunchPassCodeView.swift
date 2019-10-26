@@ -36,9 +36,6 @@ class LaunchPassCodeView: UIView {
   
   private func setupSNP() {
     
-//    let bounds = UIScreen.main.bounds
-    
-//    srcrollView.frame = CGRect(x: 0, y: 0, width: bounds.width * 2, height: bounds.height)
     
     srcrollView.snp.makeConstraints {
       $0.top.leading.trailing.bottom.equalToSuperview()
@@ -55,10 +52,6 @@ class LaunchPassCodeView: UIView {
       $0.width.height.equalToSuperview()
       
     }
-    
-
-
   }
   
-
 }
