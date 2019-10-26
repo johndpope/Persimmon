@@ -22,6 +22,7 @@ class PhotoListVC: UIViewController {
   let alertVC = CustomAlertVC()
   var notificationToken: NotificationToken? = nil
   var selectedPhotos = [SelectedPhoto]()
+  let popUpView = PopUpView(frame: .zero, modify: "이동")
   
   var object: Album? {
     return RealmSingleton.shared.takeSelectAlbum(albumUUID: uuid)
@@ -32,8 +33,8 @@ class PhotoListVC: UIViewController {
     return photoListView.photoView.collectionView
   }
   
-  var deleteBtnState: Bool {
-    return photoListView.topView.deleteBtn.isSelected
+  var selectBtnState: Bool {
+    return photoListView.topView.selectBtn.isSelected
   }
   
   override func loadView() {
@@ -58,16 +59,41 @@ class PhotoListVC: UIViewController {
   
   private func setupView() {
     view.backgroundColor = .white
-    photoListView.topView.backBtn.addTarget(self, action: #selector(didTapBackBtn(_:)), for: .touchUpInside)
-    photoListView.topView.deleteBtn.addTarget(self, action: #selector(didTapDeleteBtn(_:)), for: .touchUpInside)
-    photoListView.addBtn.addTarget(self, action: #selector(addButtonDidTap(_:)), for: .touchUpInside)
-    collectionView.register(UINib(nibName: "PhotoCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "PhotoCollectionViewCell")
+    photoListView.topView.addSubview(popUpView)
+    setupSNP()
+    photoListView.topView.backBtn.addTarget(self,
+                                            action: #selector(didTapBackBtn(_:)),
+                                            for: .touchUpInside)
+    photoListView.topView.selectBtn.addTarget(self,
+                                              action: #selector(didTapSelectBtn(_:)),
+                                              for: .touchUpInside)
+    photoListView.addBtn.addTarget(self,
+                                   action: #selector(addButtonDidTap(_:)),
+                                   for: .touchUpInside)
+    popUpView.cancelBtn.addTarget(self,
+                                  action: #selector(didTapCancelBtn(_:)),
+                                  for: .touchUpInside)
+    popUpView.deleteBtn.addTarget(self,
+                                  action: #selector(didTapDeleteBtn(_:)),
+                                  for: .touchUpInside)
+    popUpView.modifyBtn.addTarget(self,
+                                  action: #selector(didTapModifyBtn(_:)),
+                                  for: .touchUpInside)
     collectionView.delegate = self
     collectionView.dataSource = self
     photoListView.topView.albumTitle.text = object?.title ?? "애러당!"
     photoListView.topView.listNumberLabel.text = takeSubTitle()
     photoListView.topView.profileImageView.image = takeLastImage()
     
+  }
+  
+  private func setupSNP() {
+    popUpView.snp.makeConstraints {
+      $0.top.equalToSuperview()
+      $0.height.equalTo(50)
+      $0.trailing.equalToSuperview().offset(200)
+      $0.width.equalToSuperview().multipliedBy(0.3)
+    }
   }
   
   private func takeLastImage() -> UIImage? {
@@ -92,13 +118,55 @@ class PhotoListVC: UIViewController {
     
   }
   
-  @objc func didTapDeleteBtn(_ sender: UIButton) {
-    sender.isSelected.toggle()
+  @objc func didTapSelectBtn(_ sender: UIButton) {
+    popUpView.snp.remakeConstraints {
+      $0.top.height.equalTo(photoListView.topView.selectBtn)
+      $0.trailing.equalToSuperview().offset(-5)
+      $0.width.equalToSuperview().multipliedBy(0.3)
+    }
+    
+    photoListView.topView.selectBtn.isHidden.toggle()
+    photoListView.topView.selectBtn.isEnabled.toggle()
+    photoListView.topView.selectBtn.isSelected.toggle()
+    popUpView.isHidden = false
+  }
+  
+  @objc func didTapCancelBtn(_ sender: UIButton) {
+    print("printDidCancel")
     let tempIndex: [IndexPath] = selectedPhotos.compactMap { (photo) -> IndexPath? in
       photo.index
     }
-    selectedPhotos = []
+    hiddenPopUpView()
     collectionView.reloadItems(at: tempIndex)
+  }
+  
+  @objc func didTapModifyBtn(_ sender: UIButton) {
+    hiddenPopUpView()
+  }
+  
+  @objc func didTapDeleteBtn(_ sender: UIButton) {
+    print("didTapDelete")
+    let RowArr: [Int] = selectedPhotos.compactMap { (indexPath) -> Int? in
+      indexPath.index.row
+    }
+    
+    RealmSingleton.shared.moveToOther(from: uuid, Arr: RowArr)
+    
+    hiddenPopUpView()
+  }
+  
+  private func hiddenPopUpView() {
+    self.popUpView.snp.remakeConstraints {
+      $0.top.equalToSuperview()
+      $0.height.equalTo(50)
+      $0.trailing.equalToSuperview().offset(200)
+      $0.width.equalToSuperview().multipliedBy(0.3)
+    }
+    photoListView.topView.selectBtn.isHidden.toggle()
+    photoListView.topView.selectBtn.isEnabled.toggle()
+    photoListView.topView.selectBtn.isSelected.toggle()
+    popUpView.isHidden = true
+    selectedPhotos = []
   }
   
   // MARK: - add버튼 눌렀을때 alert띄우기
@@ -213,7 +281,7 @@ extension PhotoListVC: TLPhotosPickerViewControllerDelegate {
     assert(backgroundTask != .invalid)
     DispatchQueue.main.async {
       print("Background time remaining = " +
-      "\(UIApplication.shared.backgroundTimeRemaining) seconds")
+        "\(UIApplication.shared.backgroundTimeRemaining) seconds")
     }
     
   }
@@ -258,7 +326,7 @@ extension PhotoListVC: UICollectionViewDataSource {
     
     cell.alpha = 0
     UIView.transition(with: cell, duration: 0.1, options: .curveEaseIn, animations: {
-        cell.alpha = 1
+      cell.alpha = 1
     }, completion: nil)
     return cell
     
@@ -289,7 +357,7 @@ extension PhotoListVC: UICollectionViewDelegate {
   }
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    guard deleteBtnState, let cell = collectionView.cellForItem(at: indexPath) as? PhotoCollectionViewCell else { return }
+    guard selectBtnState, let cell = collectionView.cellForItem(at: indexPath) as? PhotoCollectionViewCell else { return }
     
     cell.popScaleAnim()
     if let index = self.selectedPhotos.firstIndex(where: { $0.index == indexPath }) {

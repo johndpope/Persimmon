@@ -66,6 +66,28 @@ final class RealmSingleton {
     }
   }
   
+  func moveToOther(from: String, to: String? = nil, Arr: [Int]) {
+    guard let fromAlbum = takeSelectAlbum(albumUUID: from) else { return }
+    let grave = takeGrave()
+    
+    let reversedArr = Arr.sorted().reversed()
+    print("reversedArr", reversedArr)
+    try! realm.write {
+      var tempPhoto = [Photo]()
+      reversedArr.forEach {
+        tempPhoto.append(fromAlbum.photos[$0])
+        fromAlbum.photos.remove(at: $0)
+      }
+      if let to = to {
+        guard let object = takeSelectAlbum(albumUUID: to) else { return }
+        object.photos.append(objectsIn: tempPhoto)
+      } else {
+        grave.photos.append(objectsIn: tempPhoto)
+      }
+    }
+    
+  }
+  
   // GravePhotos 오브젝트를 가져옴, Grave있으면 가져오고 없으면 만들어서 가져옴
   func takeGrave(selectRealm: Realm? = nil) -> Grave {
     let temp = selectRealm == nil ? realm : selectRealm

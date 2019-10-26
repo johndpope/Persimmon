@@ -19,7 +19,7 @@ class CountView: UIView {
     return label
   }()
   
-  let deleteBtn: UIButton = {
+  let selectBtn: UIButton = {
     let button = UIButton(type: .custom)
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
     button.setTitle("선택", for: .normal)
@@ -36,7 +36,7 @@ class CountView: UIView {
   }
   
   private func addSubViews() {
-    [listNumberLabel, deleteBtn]
+    [listNumberLabel, selectBtn]
       .forEach { self.addSubview($0) }
   }
   
@@ -46,7 +46,7 @@ class CountView: UIView {
       
     }
     
-    deleteBtn.snp.makeConstraints {
+    selectBtn.snp.makeConstraints {
       $0.trailing.equalTo(self).offset(-10)
       $0.height.equalTo(listNumberLabel)
       $0.centerY.equalTo(self)

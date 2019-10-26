@@ -54,6 +54,8 @@ class PhotoCollectionView: UIView {
     view.isOpaque = true
     view.clearsContextBeforeDrawing = false
     view.autoresizesSubviews = true
+    view.register(UINib(nibName: "PhotoCollectionViewCell", bundle: nil),
+    forCellWithReuseIdentifier: "PhotoCollectionViewCell")
     
     if #available(iOS 13.0, *) {
       view.backgroundColor = .systemBackground

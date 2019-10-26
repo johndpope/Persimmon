@@ -55,7 +55,7 @@ extension UIAlertController {
 //      alert.textFields?.first?.placeholder = "타이틀을 입력하세요"
       //3. 버튼을 정의 한다.
 
-      let cameraAction = UIAlertAction(title: actionTitle, style: .default) { (_) -> Void in
+    let cameraAction = UIAlertAction(title: actionTitle, style: .destructive) { (_) -> Void in
         completion(true)
       }
 
