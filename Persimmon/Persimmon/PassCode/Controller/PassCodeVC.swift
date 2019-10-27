@@ -15,7 +15,6 @@ class PassCodeVC: UIViewController {
   let launchPassCodeView = LaunchPassCodeView()
   let passCodeView = PassCodeView()
   
-  
   let userDefaults = UserDefaults.standard
   
   var prePassCode: String = ""
@@ -129,7 +128,7 @@ class PassCodeVC: UIViewController {
 
 extension PassCodeVC: PassCodeViewDelegate {
   func didTapButton(input: String) {
-    
+    print(passCodeView.imageStackView.arrangedSubviews.count)
     text.append(input)
   }
   
