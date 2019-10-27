@@ -21,11 +21,11 @@ class PassCodeView: UIView {
   private var secondStackView = UIStackView()
   private var thirdStackView = UIStackView()
   lazy var imageStackView: UIStackView = {
-    let imageStackView = UIStackView(arrangedSubviews: [passcode1, passcode2, passcode3, passcode4])
-    imageStackView.axis = .horizontal
-    imageStackView.distribution = .fillEqually
-    imageStackView.spacing = 5
-    return imageStackView
+    let stackView = UIStackView(arrangedSubviews: [passcode1, passcode2, passcode3, passcode4])
+    stackView.axis = .horizontal
+    stackView.distribution = .fillEqually
+    stackView.spacing = 5
+    return stackView
   }()
   
   
@@ -47,31 +47,31 @@ class PassCodeView: UIView {
 //  }()
 //
   
-  let passcode1: UIButton = {
-    let button = UIButton(type: .custom)
-    button.setImage(UIImage(named: "PasscodeIcon"), for: .normal)
-//    button.alpha = 0.7
-    return button
+  let passcode1: UIImageView = {
+    let view = UIImageView()
+    view.image = UIImage(named: "PasscodeIcon")
+    view.alpha = 0.5
+    return view
   }()
   
   let passcode2: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "PasscodeIcon"), for: .normal)
-//    button.alpha = 0.7
+    button.alpha = 0.5
     return button
   }()
   
   let passcode3: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "PasscodeIcon"), for: .normal)
-//    button.alpha = 0.7
+    button.alpha = 0.5
     return button
   }()
   
   let passcode4: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "PasscodeIcon"), for: .normal)
-//    button.alpha = 0.7
+    button.alpha = 0.5
     return button
   }()
   
@@ -187,6 +187,7 @@ class PassCodeView: UIView {
   @objc func checkingPasscode(_ sender: UIButton) {
     
     guard let input = sender.currentTitle else { return }
+    imageStackView.arrangedSubviews[0].alpha = 1
     delegate?.didTapButton(input: input)
     
   }
