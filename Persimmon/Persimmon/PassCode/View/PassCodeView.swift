@@ -17,12 +17,12 @@ class PassCodeView: UIView {
   
   weak var delegate: PassCodeViewDelegate?
   
-  private var imageStackView = UIStackView()
+  var imageStackView = UIStackView()
   private var firstStackView = UIStackView()
   private var secondStackView = UIStackView()
   private var thirdStackView = UIStackView()
   
-
+  
   let imageView: UIImageView = {
     let img = UIImageView()
     img.image = UIDevice.current.hasNotch ?
@@ -44,28 +44,28 @@ class PassCodeView: UIView {
   lazy var passcode1: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "PasscodeIcon"), for: .normal)
-    button.alpha = 0.7
+//    button.alpha = 0.7
     return button
   }()
   
   lazy var passcode2: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "PasscodeIcon"), for: .normal)
-    button.alpha = 0.7
+//    button.alpha = 0.7
     return button
   }()
   
   lazy var passcode3: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "PasscodeIcon"), for: .normal)
-    button.alpha = 0.7
+//    button.alpha = 0.7
     return button
   }()
   
   lazy var passcode4: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "PasscodeIcon"), for: .normal)
-    button.alpha = 0.7
+//    button.alpha = 0.7
     return button
   }()
   
