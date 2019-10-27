@@ -54,6 +54,7 @@
 		C1618910235270B300C49B57 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C161890F235270B300C49B57 /* ColorExtension.swift */; };
 		C1A9D643235B621100BFF2E6 /* DonationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A9D642235B621100BFF2E6 /* DonationView.swift */; };
 		C1A9D645235B629B00BFF2E6 /* DonationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A9D644235B629B00BFF2E6 /* DonationVC.swift */; };
+		C1A9D64B2364976500BFF2E6 /* PhotoMoveAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A9D64A2364976500BFF2E6 /* PhotoMoveAlertView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -108,6 +109,7 @@
 		C161890F235270B300C49B57 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		C1A9D642235B621100BFF2E6 /* DonationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationView.swift; sourceTree = "<group>"; };
 		C1A9D644235B629B00BFF2E6 /* DonationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationVC.swift; sourceTree = "<group>"; };
+		C1A9D64A2364976500BFF2E6 /* PhotoMoveAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoMoveAlertView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -371,6 +373,7 @@
 				C10C9BB62353798E00FA56A3 /* PhotoListViewEmpty.swift */,
 				C10C9BB82353799E00FA56A3 /* PhotoListView.swift */,
 				521F9DB42357997700506B9C /* TopView.swift */,
+				C1A9D64A2364976500BFF2E6 /* PhotoMoveAlertView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -614,6 +617,7 @@
 				523905A32360503F003EB0B8 /* CountView.swift in Sources */,
 				C1A9D645235B629B00BFF2E6 /* DonationVC.swift in Sources */,
 				C10C9BB92353799E00FA56A3 /* PhotoListView.swift in Sources */,
+				C1A9D64B2364976500BFF2E6 /* PhotoMoveAlertView.swift in Sources */,
 				C10C9BC823537C8F00FA56A3 /* SettingVC.swift in Sources */,
 				521F9DAF23527CA500506B9C /* CustomPhotoPicker.swift in Sources */,
 				522D0A9B2362520900A0C32A /* AlertExtension.swift in Sources */,
