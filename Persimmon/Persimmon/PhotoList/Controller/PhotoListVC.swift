@@ -142,6 +142,7 @@ class PhotoListVC: UIViewController {
   
   @objc func didTapModifyBtn(_ sender: UIButton) {
     hiddenPopUpView()
+
   }
   
   @objc func didTapDeleteBtn(_ sender: UIButton) {
