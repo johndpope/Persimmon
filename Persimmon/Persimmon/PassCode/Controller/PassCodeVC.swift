@@ -17,7 +17,6 @@ class PassCodeVC: UIViewController {
   let userDefaults = UserDefaults.standard
   
   var prePassCode: String = ""
-  
   var stackView: UIStackView {
     return launchPassCodeView.passCodeView.imageStackView
   }
@@ -31,7 +30,6 @@ class PassCodeVC: UIViewController {
     }
     didSet {
       print("현재 입력한 passcode: ", text)
-      
       if text.count == 4 {
         if let saveCode = userDefaults.string(forKey: "pw") {
           if text == saveCode {
@@ -125,6 +123,8 @@ class PassCodeVC: UIViewController {
       print("delete")
     } else {
       text.removeLast()
+      
+ 
     }
     
   }

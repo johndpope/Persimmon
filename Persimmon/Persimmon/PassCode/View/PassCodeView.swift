@@ -28,7 +28,7 @@ class PassCodeView: UIView {
     return stackView
   }()
   
-
+  
   let imageView: UIImageView = {
     let img = UIImageView()
     img.image = UIDevice.current.hasNotch ?
