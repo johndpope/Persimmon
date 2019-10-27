@@ -91,7 +91,15 @@ class PhotoGraveVC: UIViewController {
   }
   
   @objc func didTapModifyBtn(_ sender: UIButton) {
-    hiddenPopUpView()
+    let RowArr: [Int] = selectedPhotos.compactMap { (indexPath) -> Int? in
+      indexPath.index.row
+    }
+    RealmSingleton.shared.restorePhotos(arr: RowArr) {
+      self.hiddenPopUpView()
+      self.collectionView.reloadData()
+      self.photoGraveView.countView.listNumberLabel.text = self.takeSubTitle()
+    }
+    
   }
   
   @objc func didTapDeleteBtn(_ sender: UIButton) {

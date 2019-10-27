@@ -151,7 +151,7 @@ class PhotoListVC: UIViewController {
       indexPath.index.row
     }
     
-    RealmSingleton.shared.moveToOther(from: uuid, Arr: RowArr)
+    RealmSingleton.shared.moveToOther(from: uuid, arr: RowArr)
     
     hiddenPopUpView()
   }

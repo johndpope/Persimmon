@@ -43,7 +43,6 @@ class MainTabBarController: UITabBarController {
   private func installTabBarItems() {
     let albumListVCItem = UITabBarItem(title: "사진첩", image: UIImage(named: "gallery"), tag: 0)
     let trashCanItem = UITabBarItem(title: "휴지통", image: UIImage(named: "garbage"), tag: 1)
-    
     let settingVCItem = UITabBarItem(title: "설정", image: UIImage(named: "settings"), tag: 2)
     
     albumListVC.tabBarItem = albumListVCItem

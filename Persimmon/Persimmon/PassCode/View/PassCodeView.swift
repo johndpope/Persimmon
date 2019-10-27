@@ -17,10 +17,16 @@ class PassCodeView: UIView {
   
   weak var delegate: PassCodeViewDelegate?
   
-  var imageStackView = UIStackView()
   private var firstStackView = UIStackView()
   private var secondStackView = UIStackView()
   private var thirdStackView = UIStackView()
+  lazy var imageStackView: UIStackView = {
+    let imageStackView = UIStackView(arrangedSubviews: [passcode1, passcode2, passcode3, passcode4])
+    imageStackView.axis = .horizontal
+    imageStackView.distribution = .fillEqually
+    imageStackView.spacing = 5
+    return imageStackView
+  }()
   
   
   let imageView: UIImageView = {
@@ -41,35 +47,35 @@ class PassCodeView: UIView {
 //  }()
 //
   
-  lazy var passcode1: UIButton = {
+  let passcode1: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "PasscodeIcon"), for: .normal)
 //    button.alpha = 0.7
     return button
   }()
   
-  lazy var passcode2: UIButton = {
+  let passcode2: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "PasscodeIcon"), for: .normal)
 //    button.alpha = 0.7
     return button
   }()
   
-  lazy var passcode3: UIButton = {
+  let passcode3: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "PasscodeIcon"), for: .normal)
 //    button.alpha = 0.7
     return button
   }()
   
-  lazy var passcode4: UIButton = {
+  let passcode4: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "PasscodeIcon"), for: .normal)
 //    button.alpha = 0.7
     return button
   }()
   
-  lazy var oneBtn: UIButton = {
+  let oneBtn: UIButton = {
     let button = UIButton(type: .system)
     button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("1", for: .normal)
@@ -78,7 +84,7 @@ class PassCodeView: UIView {
     
     return button
   }()
-  lazy var twoBtn: UIButton = {
+  let twoBtn: UIButton = {
     let button = UIButton(type: .system)
     button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("2", for: .normal)
@@ -87,7 +93,7 @@ class PassCodeView: UIView {
     
     return button
   }()
-  lazy var threeBtn: UIButton = {
+  let threeBtn: UIButton = {
     let button = UIButton(type: .system)
     button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("3", for: .normal)
@@ -96,7 +102,7 @@ class PassCodeView: UIView {
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
     return button
   }()
-  lazy var fourBtn: UIButton = {
+  let fourBtn: UIButton = {
     let button = UIButton(type: .system)
     button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("4", for: .normal)
@@ -105,7 +111,7 @@ class PassCodeView: UIView {
     
     return button
   }()
-  lazy var fiveBtn: UIButton = {
+  let fiveBtn: UIButton = {
     let button = UIButton(type: .system)
     button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("5", for: .normal)
@@ -113,7 +119,7 @@ class PassCodeView: UIView {
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
     return button
   }()
-  lazy var sixBtn: UIButton = {
+  let sixBtn: UIButton = {
     let button = UIButton(type: .system)
     button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("6", for: .normal)
@@ -121,7 +127,7 @@ class PassCodeView: UIView {
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
     return button
   }()
-  lazy var sevenBtn: UIButton = {
+  let sevenBtn: UIButton = {
     let button = UIButton(type: .system)
     button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("7", for: .normal)
@@ -130,7 +136,7 @@ class PassCodeView: UIView {
     
     return button
   }()
-  lazy var eightBtn: UIButton = {
+  let eightBtn: UIButton = {
     let button = UIButton(type: .system)
     button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("8", for: .normal)
@@ -139,7 +145,7 @@ class PassCodeView: UIView {
     
     return button
   }()
-  lazy var nineBtn: UIButton = {
+  let nineBtn: UIButton = {
     let button = UIButton(type: .system)
     button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("9", for: .normal)
@@ -148,7 +154,7 @@ class PassCodeView: UIView {
     
     return button
   }()
-  lazy var zeroBtn: UIButton = {
+  let zeroBtn: UIButton = {
     let button = UIButton(type: .system)
     button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("0", for: .normal)
@@ -157,7 +163,7 @@ class PassCodeView: UIView {
     
     return button
   }()
-  lazy var deleteBtn: UIButton = {
+  let deleteBtn: UIButton = {
     let button = UIButton(type: .system)
 //    button.addTarget(self, action: #selector(checkingPasscode(_:)), for: .touchUpInside)
     button.setTitle("⇠", for: .normal)
@@ -166,18 +172,16 @@ class PassCodeView: UIView {
     return button
   }()
   
-  lazy var blankBtn: UIButton = {
+  let blankBtn: UIButton = {
     let button = UIButton(type: .system)
     return button
   }()
-
   
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
     setupStackView()
     addSubviews()
     setupSNP()
-    
   }
   
   @objc func checkingPasscode(_ sender: UIButton) {
@@ -192,12 +196,8 @@ class PassCodeView: UIView {
   }
   
   private func setupStackView() {
-    
     // imageStackView
-    imageStackView = UIStackView(arrangedSubviews: [passcode1, passcode2, passcode3, passcode4])
-    imageStackView.axis = .horizontal
-    imageStackView.distribution = .fillEqually
-    imageStackView.spacing = 5
+    
    
     // firstStackView
     firstStackView = UIStackView(arrangedSubviews: [oneBtn, twoBtn, threeBtn, blankBtn])

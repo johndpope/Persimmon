@@ -66,12 +66,27 @@ final class RealmSingleton {
     }
   }
   
-  func moveToOther(from: String, to: String? = nil, Arr: [Int]) {
+  func restorePhotos(arr: [Int], completion: () -> ()) {
+    let grave = takeGrave()
+    let reversedArr = arr.sorted().reversed()
+    
+    try! realm.write {
+      reversedArr.forEach {
+        let temp = grave.photos[$0]
+        guard let object = takeSelectAlbum(albumUUID: temp.albumUUID) else { return }
+        object.photos.append(temp)
+        grave.photos.remove(at: $0)
+      }
+    }
+    completion()
+    
+  }
+  
+  func moveToOther(from: String, to: String? = nil, arr: [Int]) {
     guard let fromAlbum = takeSelectAlbum(albumUUID: from) else { return }
     let grave = takeGrave()
+    let reversedArr = arr.sorted().reversed()
     
-    let reversedArr = Arr.sorted().reversed()
-    print("reversedArr", reversedArr)
     try! realm.write {
       var tempPhoto = [Photo]()
       reversedArr.forEach {
