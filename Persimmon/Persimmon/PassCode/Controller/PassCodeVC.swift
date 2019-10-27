@@ -19,13 +19,14 @@ class PassCodeVC: UIViewController {
   
   var prePassCode: String = ""
   
- 
+  var persimmonIcon = UIImage(named: "PasscodeIcon")
   
   
   
   var text: String = "" {
     didSet {
       print("현재 입력한 passcode: ", text)
+
       if text.count == 4 {
         if let saveCode = userDefaults.string(forKey: "pw") {
           if text == saveCode {
@@ -109,7 +110,7 @@ class PassCodeVC: UIViewController {
     
     launchPassCodeView.passCodeView.delegate = self
     launchPassCodeView.passCodeView.deleteBtn.addTarget(self, action: #selector(deleteBtnTapped(_:)), for: .touchUpInside)
-   
+    
   }
   
   // text <- delete
@@ -118,6 +119,8 @@ class PassCodeVC: UIViewController {
       print("delete")
     } else {
       text.removeLast()
+      
+ 
     }
     
   }
@@ -130,6 +133,8 @@ extension PassCodeVC: PassCodeViewDelegate {
   func didTapButton(input: String) {
     print(passCodeView.imageStackView.arrangedSubviews.count)
     text.append(input)
+    print("passcode alpha", passCodeView.imageStackView.alpha)
+    
   }
   
 }

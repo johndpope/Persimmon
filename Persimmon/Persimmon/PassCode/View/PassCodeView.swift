@@ -28,7 +28,7 @@ class PassCodeView: UIView {
     return imageStackView
   }()
   
-
+  
   let imageView: UIImageView = {
     let img = UIImageView()
     img.image = UIDevice.current.hasNotch ?
@@ -50,28 +50,28 @@ class PassCodeView: UIView {
   let passcode1: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "PasscodeIcon"), for: .normal)
-    button.alpha = 0.7
+//    button.alpha = 0.7
     return button
   }()
   
   let passcode2: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "PasscodeIcon"), for: .normal)
-    button.alpha = 0.7
+//    button.alpha = 0.7
     return button
   }()
   
   let passcode3: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "PasscodeIcon"), for: .normal)
-    button.alpha = 0.7
+//    button.alpha = 0.7
     return button
   }()
   
   let passcode4: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "PasscodeIcon"), for: .normal)
-    button.alpha = 0.7
+//    button.alpha = 0.7
     return button
   }()
   
