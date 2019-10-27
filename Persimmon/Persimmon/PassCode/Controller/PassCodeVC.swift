@@ -13,19 +13,25 @@ class PassCodeVC: UIViewController {
   
   var isFirst: Bool = false
   let launchPassCodeView = LaunchPassCodeView()
-  let passCodeView = PassCodeView()
   
   let userDefaults = UserDefaults.standard
   
   var prePassCode: String = ""
   
- 
+  var stackView: UIStackView {
+    return launchPassCodeView.passCodeView.imageStackView
+  }
   
   
   
   var text: String = "" {
+    willSet {
+      guard text.count < 4 else { return }
+      stackView.arrangedSubviews[text.count].alpha = 1
+    }
     didSet {
       print("현재 입력한 passcode: ", text)
+      
       if text.count == 4 {
         if let saveCode = userDefaults.string(forKey: "pw") {
           if text == saveCode {
@@ -39,18 +45,19 @@ class PassCodeVC: UIViewController {
             
             print("넘어가라")
           } else {
+            
             let alert = UIAlertController(title: "", message: "비밀번호가 틀립니다.", preferredStyle: .alert)
             
             let reInput = UIAlertAction(title: "확인", style: .default) { (action) in
               self.text = ""
               self.prePassCode = ""
+              self.stackView.arrangedSubviews.forEach { (view) in
+                view.alpha = 0.5
+              }
             }
             alert.addAction(reInput)
             present(alert, animated: true)
-            
           }
-          
-          
         } else { // 초기
           if prePassCode == "" {
             let alert = UIAlertController(title: "", message: "현재 비밀번호: \(text)", preferredStyle: .alert)
@@ -109,7 +116,7 @@ class PassCodeVC: UIViewController {
     
     launchPassCodeView.passCodeView.delegate = self
     launchPassCodeView.passCodeView.deleteBtn.addTarget(self, action: #selector(deleteBtnTapped(_:)), for: .touchUpInside)
-   
+    
   }
   
   // text <- delete
@@ -128,7 +135,6 @@ class PassCodeVC: UIViewController {
 
 extension PassCodeVC: PassCodeViewDelegate {
   func didTapButton(input: String) {
-    print(passCodeView.imageStackView.arrangedSubviews.count)
     text.append(input)
   }
   

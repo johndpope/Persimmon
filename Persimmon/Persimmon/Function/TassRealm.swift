@@ -69,14 +69,25 @@ final class RealmSingleton {
   func restorePhotos(arr: [Int], completion: () -> ()) {
     let grave = takeGrave()
     let reversedArr = arr.sorted().reversed()
+    let newAlbum = Album()
+    newAlbum.title = "복원된 사진"
     
     try! realm.write {
       reversedArr.forEach {
         let temp = grave.photos[$0]
-        guard let object = takeSelectAlbum(albumUUID: temp.albumUUID) else { return }
+        
+        guard let object = takeSelectAlbum(albumUUID: temp.albumUUID) else {
+          temp.albumUUID = newAlbum.albumUUID
+          newAlbum.photos.append(temp)
+          grave.photos.remove(at: $0)
+          return }
+        
+        temp.albumUUID = object.albumUUID
         object.photos.append(temp)
         grave.photos.remove(at: $0)
       }
+      guard newAlbum.photos.count > 0 else { return }
+      realm.add(newAlbum, update: .modified)
     }
     completion()
     
