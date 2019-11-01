@@ -55,6 +55,8 @@
 		C1A9D643235B621100BFF2E6 /* DonationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A9D642235B621100BFF2E6 /* DonationView.swift */; };
 		C1A9D645235B629B00BFF2E6 /* DonationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A9D644235B629B00BFF2E6 /* DonationVC.swift */; };
 		C1A9D64B2364976500BFF2E6 /* PhotoMoveAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A9D64A2364976500BFF2E6 /* PhotoMoveAlertView.swift */; };
+		C1A9D64F236AE49200BFF2E6 /* DisplayCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A9D64E236AE49200BFF2E6 /* DisplayCollectionCell.swift */; };
+		C1A9D651236AE4BA00BFF2E6 /* DisplayCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A9D650236AE4BA00BFF2E6 /* DisplayCollectionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -110,6 +112,8 @@
 		C1A9D642235B621100BFF2E6 /* DonationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationView.swift; sourceTree = "<group>"; };
 		C1A9D644235B629B00BFF2E6 /* DonationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationVC.swift; sourceTree = "<group>"; };
 		C1A9D64A2364976500BFF2E6 /* PhotoMoveAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoMoveAlertView.swift; sourceTree = "<group>"; };
+		C1A9D64E236AE49200BFF2E6 /* DisplayCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayCollectionCell.swift; sourceTree = "<group>"; };
+		C1A9D650236AE4BA00BFF2E6 /* DisplayCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayCollectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -269,6 +273,7 @@
 			isa = PBXGroup;
 			children = (
 				521F9DB82357AF3A00506B9C /* PhotoCollectionView.swift */,
+				C1A9D650236AE4BA00BFF2E6 /* DisplayCollectionView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -363,6 +368,7 @@
 			children = (
 				521F9DC22357E79000506B9C /* PhotoCollectionViewCell.swift */,
 				521F9DBE2357E59300506B9C /* PhotoCollectionViewCell.xib */,
+				C1A9D64E236AE49200BFF2E6 /* DisplayCollectionCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -624,6 +630,7 @@
 				52F27F29235BD93400066C99 /* Test.swift in Sources */,
 				521F9DB92357AF3A00506B9C /* PhotoCollectionView.swift in Sources */,
 				C1A9D643235B621100BFF2E6 /* DonationView.swift in Sources */,
+				C1A9D64F236AE49200BFF2E6 /* DisplayCollectionCell.swift in Sources */,
 				C10C9C0E2356CD7500FA56A3 /* SettingView.swift in Sources */,
 				523705CE235105C700869F57 /* PassCodeVC.swift in Sources */,
 				C10C9BC223537A8000FA56A3 /* MainTabBarController.swift in Sources */,
@@ -649,6 +656,7 @@
 				520BD60123593344003E6D6B /* TassPhoto.swift in Sources */,
 				523705BC2351024200869F57 /* SceneDelegate.swift in Sources */,
 				C10C9C1423574E1700FA56A3 /* ChangePassCodeVC.swift in Sources */,
+				C1A9D651236AE4BA00BFF2E6 /* DisplayCollectionView.swift in Sources */,
 				C10C9BD62354786B00FA56A3 /* SelectAlbumVC.swift in Sources */,
 				C1618910235270B300C49B57 /* ColorExtension.swift in Sources */,
 				521F9DA923520C4100506B9C /* TestRealm.swift in Sources */,
