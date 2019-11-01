@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class DisplayCollectionView: UIView {
   
@@ -46,5 +47,14 @@ class DisplayCollectionView: UIView {
     }
     return view
   }()
+  
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    self.addSubview(collectionView)
+    
+    collectionView.snp.makeConstraints {
+      $0.leading.trailing.top.bottom.equalTo(self)
+    }
+  }
   
 }

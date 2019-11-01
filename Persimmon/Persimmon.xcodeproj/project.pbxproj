@@ -29,6 +29,10 @@
 		5239059F23604FD4003EB0B8 /* PhotoGraveVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5239059E23604FD4003EB0B8 /* PhotoGraveVC.swift */; };
 		523905A123604FE7003EB0B8 /* PhotoGraveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523905A023604FE7003EB0B8 /* PhotoGraveView.swift */; };
 		523905A32360503F003EB0B8 /* CountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523905A22360503F003EB0B8 /* CountView.swift */; };
+		52739626236CDB000067C60D /* DisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52739625236CDB000067C60D /* DisplayView.swift */; };
+		52739628236CDB220067C60D /* DisplayVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52739627236CDB220067C60D /* DisplayVC.swift */; };
+		5273962A236CDDA50067C60D /* TopDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52739629236CDDA50067C60D /* TopDisplayView.swift */; };
+		5273962C236CDDAE0067C60D /* BottomDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5273962B236CDDAE0067C60D /* BottomDisplayView.swift */; };
 		52C1B7952366FB1D0039F71D /* SelectAlbumTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C1B7942366FB1D0039F71D /* SelectAlbumTableView.swift */; };
 		52E2A83423637BAB00070C35 /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E2A83323637BAB00070C35 /* PopUpView.swift */; };
 		52F27F29235BD93400066C99 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F27F28235BD93400066C99 /* Test.swift */; };
@@ -86,6 +90,10 @@
 		5239059E23604FD4003EB0B8 /* PhotoGraveVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGraveVC.swift; sourceTree = "<group>"; };
 		523905A023604FE7003EB0B8 /* PhotoGraveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGraveView.swift; sourceTree = "<group>"; };
 		523905A22360503F003EB0B8 /* CountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountView.swift; sourceTree = "<group>"; };
+		52739625236CDB000067C60D /* DisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayView.swift; sourceTree = "<group>"; };
+		52739627236CDB220067C60D /* DisplayVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayVC.swift; sourceTree = "<group>"; };
+		52739629236CDDA50067C60D /* TopDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopDisplayView.swift; sourceTree = "<group>"; };
+		5273962B236CDDAE0067C60D /* BottomDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomDisplayView.swift; sourceTree = "<group>"; };
 		52C1B7942366FB1D0039F71D /* SelectAlbumTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAlbumTableView.swift; sourceTree = "<group>"; };
 		52E2A83323637BAB00070C35 /* PopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpView.swift; sourceTree = "<group>"; };
 		52F27F28235BD93400066C99 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
@@ -194,6 +202,7 @@
 		523705B82351024200869F57 /* Persimmon */ = {
 			isa = PBXGroup;
 			children = (
+				52739620236CDABE0067C60D /* Display */,
 				52E2A83123637B9300070C35 /* PopUpView */,
 				5239059B23604F24003EB0B8 /* PhotoCollection */,
 				5239059823604EBE003EB0B8 /* PhotoGrave */,
@@ -276,6 +285,33 @@
 			children = (
 				521F9DB82357AF3A00506B9C /* PhotoCollectionView.swift */,
 				C1A9D650236AE4BA00BFF2E6 /* DisplayCollectionView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		52739620236CDABE0067C60D /* Display */ = {
+			isa = PBXGroup;
+			children = (
+				52739622236CDAD60067C60D /* View */,
+				52739621236CDACD0067C60D /* Controller */,
+			);
+			path = Display;
+			sourceTree = "<group>";
+		};
+		52739621236CDACD0067C60D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				52739627236CDB220067C60D /* DisplayVC.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		52739622236CDAD60067C60D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				52739625236CDB000067C60D /* DisplayView.swift */,
+				5273962B236CDDAE0067C60D /* BottomDisplayView.swift */,
+				52739629236CDDA50067C60D /* TopDisplayView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -629,6 +665,7 @@
 				C1A9D64B2364976500BFF2E6 /* PhotoMoveAlertView.swift in Sources */,
 				C10C9BC823537C8F00FA56A3 /* SettingVC.swift in Sources */,
 				521F9DAF23527CA500506B9C /* CustomPhotoPicker.swift in Sources */,
+				5273962C236CDDAE0067C60D /* BottomDisplayView.swift in Sources */,
 				522D0A9B2362520900A0C32A /* AlertExtension.swift in Sources */,
 				52F27F29235BD93400066C99 /* Test.swift in Sources */,
 				521F9DB92357AF3A00506B9C /* PhotoCollectionView.swift in Sources */,
@@ -664,7 +701,10 @@
 				C10C9BD62354786B00FA56A3 /* SelectAlbumVC.swift in Sources */,
 				C1618910235270B300C49B57 /* ColorExtension.swift in Sources */,
 				521F9DA923520C4100506B9C /* TestRealm.swift in Sources */,
+				52739628236CDB220067C60D /* DisplayVC.swift in Sources */,
+				5273962A236CDDA50067C60D /* TopDisplayView.swift in Sources */,
 				520BD603235939E5003E6D6B /* UIImageExtension.swift in Sources */,
+				52739626236CDB000067C60D /* DisplayView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -805,7 +845,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Persimmon/Source/\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 5W72YMDK56;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Persimmon/Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -830,7 +870,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Persimmon/Source/\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 5W72YMDK56;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Persimmon/Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
