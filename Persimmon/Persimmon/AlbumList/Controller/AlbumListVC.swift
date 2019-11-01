@@ -88,6 +88,7 @@ extension AlbumListVC: UITableViewDataSource {
     cell.titleLabel.text = albums[indexPath.row].title
     cell.subTitleLabel.text = "[ \(albums[indexPath.row].photos.count.description) ]"
     cell.albumImageView.contentMode = .scaleAspectFill
+    cell.albumUUID = albums[indexPath.row].albumUUID
     
     guard let lastPhoto = albums[indexPath.row].photos.last,
       let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,

@@ -66,6 +66,9 @@ class PassCodeVC: UIViewController {
             let reInput = UIAlertAction(title: "다시하기", style: .default) { (action) in
               self.text = ""
               self.prePassCode = ""
+              self.stackView.arrangedSubviews.forEach { (view) in
+                view.alpha = 0.5
+              }
             }
             alert.addAction(okAction)
             alert.addAction(reInput)
@@ -89,6 +92,9 @@ class PassCodeVC: UIViewController {
               let reInput = UIAlertAction(title: "확인", style: .default) { (action) in
                 self.text = ""
                 self.prePassCode = ""
+                self.stackView.arrangedSubviews.forEach { (view) in
+                  view.alpha = 0.5
+                }
               }
               alert.addAction(reInput)
               present(alert, animated: true)
@@ -115,6 +121,13 @@ class PassCodeVC: UIViewController {
     launchPassCodeView.passCodeView.delegate = self
     launchPassCodeView.passCodeView.deleteBtn.addTarget(self, action: #selector(deleteBtnTapped(_:)), for: .touchUpInside)
     
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    guard userDefaults.string(forKey: "pw") == nil else { return }
+    
+    UIAlertController().makeAlert(title: "비밀번호", mesage: "오른쪽으로 스와이프하여 초기비밀번호를 만들어주세요.", actionTitle: "네", vc: self) {_ in}
   }
   
   // text <- delete

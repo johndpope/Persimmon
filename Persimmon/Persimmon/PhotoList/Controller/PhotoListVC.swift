@@ -141,7 +141,10 @@ class PhotoListVC: UIViewController {
   }
   
   @objc func didTapModifyBtn(_ sender: UIButton) {
-    hiddenPopUpView()
+    UIAlertController().makeTableViewAlert(title: nil, mesage: "", actionTitle: "선택", vc: self) { (_) in
+      self.hiddenPopUpView()
+    }
+    
 
   }
   

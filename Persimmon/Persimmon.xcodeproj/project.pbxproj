@@ -29,6 +29,7 @@
 		5239059F23604FD4003EB0B8 /* PhotoGraveVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5239059E23604FD4003EB0B8 /* PhotoGraveVC.swift */; };
 		523905A123604FE7003EB0B8 /* PhotoGraveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523905A023604FE7003EB0B8 /* PhotoGraveView.swift */; };
 		523905A32360503F003EB0B8 /* CountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523905A22360503F003EB0B8 /* CountView.swift */; };
+		52C1B7952366FB1D0039F71D /* SelectAlbumTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C1B7942366FB1D0039F71D /* SelectAlbumTableView.swift */; };
 		52E2A83423637BAB00070C35 /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E2A83323637BAB00070C35 /* PopUpView.swift */; };
 		52F27F29235BD93400066C99 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F27F28235BD93400066C99 /* Test.swift */; };
 		BE2EB11FFDB65390A2741BE2 /* Pods_Persimmon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BB6C34114F54D1E909A5A9B /* Pods_Persimmon.framework */; };
@@ -85,6 +86,7 @@
 		5239059E23604FD4003EB0B8 /* PhotoGraveVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGraveVC.swift; sourceTree = "<group>"; };
 		523905A023604FE7003EB0B8 /* PhotoGraveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGraveView.swift; sourceTree = "<group>"; };
 		523905A22360503F003EB0B8 /* CountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountView.swift; sourceTree = "<group>"; };
+		52C1B7942366FB1D0039F71D /* SelectAlbumTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAlbumTableView.swift; sourceTree = "<group>"; };
 		52E2A83323637BAB00070C35 /* PopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpView.swift; sourceTree = "<group>"; };
 		52F27F28235BD93400066C99 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		5BB6C34114F54D1E909A5A9B /* Pods_Persimmon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Persimmon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -359,6 +361,7 @@
 			children = (
 				C10C9BC923537EEE00FA56A3 /* PhotoListVC.swift */,
 				C10C9BD7235482C800FA56A3 /* CustomAlertVC.swift */,
+				52C1B7942366FB1D0039F71D /* SelectAlbumTableView.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -646,6 +649,7 @@
 				523705D22351070900869F57 /* PassCodeView.swift in Sources */,
 				521F9DB1235516A400506B9C /* UIDeviceExtension.swift in Sources */,
 				52E2A83423637BAB00070C35 /* PopUpView.swift in Sources */,
+				52C1B7952366FB1D0039F71D /* SelectAlbumTableView.swift in Sources */,
 				521F9DB32355725F00506B9C /* BundleExtention.swift in Sources */,
 				C10C9BBF235379D900FA56A3 /* SelectAlbumView.swift in Sources */,
 				C10C9BAA235378CC00FA56A3 /* AlbumListVC.swift in Sources */,
