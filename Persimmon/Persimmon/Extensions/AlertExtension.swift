@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 extension UIAlertController {
   
@@ -81,28 +82,30 @@ extension UIAlertController {
   
   
   func makeTableViewAlert(title: String?, mesage: String, actionTitle: String, vc: UIViewController, completion: @escaping (Bool) -> ()) {
-    let alrController = UIAlertController(title: "\n\n\n\n\n\n", message: nil, preferredStyle: .alert)
+    let alrController = UIAlertController(title: "\n\n\n\n\n\n\n\n\n\n\n\n", message: nil, preferredStyle: .alert)
     
     let margin:CGFloat = 8.0
     
-    let rect = CGRect(x: margin, y: margin, width: alrController.view.bounds.width - margin * 0.4, height: 100)
-    
-    var tableView: UITableView = {
-      var tb = UITableView(frame: rect)
-      //      tb.delegate = self
-      //      tb.dataSource = self
-      tb.backgroundColor = UIColor.appColor(.appGreenColor)
-      
-      return tb
-    }()
-    
+    let tableView = SelectAlbumTableView()
     
     alrController.view.addSubview(tableView)
+    tableView.snp.makeConstraints {
+      $0.centerX.equalToSuperview()
+      $0.top.equalToSuperview().offset(5)
+      $0.width.equalToSuperview().multipliedBy(0.9)
+      $0.height.equalToSuperview().multipliedBy(0.85)
+    }
     alrController.view.tintColor = UIColor.appColor(.appFontColor)
     let cancelAction = UIAlertAction(title: "취소", style: .cancel) { (_) -> Void in
-         completion(false)
-       }
+      completion(false)
+    }
+    let selectAction = UIAlertAction(title: actionTitle, style: .default) { (_) -> Void in
+
+      completion(false)
+    }
+    
     alrController.addAction(cancelAction)
+    alrController.addAction(selectAction)
 
     vc.present(alrController, animated: true)
     

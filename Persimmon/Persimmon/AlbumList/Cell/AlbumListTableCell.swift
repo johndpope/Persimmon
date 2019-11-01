@@ -12,13 +12,13 @@ import SnapKit
 class AlbumListTableCell: UITableViewCell {
   
   static let identifier = "AlbumListTableCell"
+  var albumUUID: String = ""
   
   lazy var albumImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.clipsToBounds = true
     return imageView
   }()
-  
   
   lazy var titleLabel: UILabel = {
     let label = UILabel()
