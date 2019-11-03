@@ -84,8 +84,6 @@ extension UIAlertController {
   func makeTableViewAlert(title: String?, mesage: String, actionTitle: String, vc: UIViewController, completion: @escaping (Bool) -> ()) {
     let alrController = UIAlertController(title: "\n\n\n\n\n\n\n\n\n\n\n\n", message: nil, preferredStyle: .alert)
     
-    let margin:CGFloat = 8.0
-    
     let tableView = SelectAlbumTableView()
     
     alrController.view.addSubview(tableView)

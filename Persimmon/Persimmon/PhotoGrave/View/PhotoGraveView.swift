@@ -21,7 +21,7 @@ class PhotoGraveView: UIView {
   
   override func layoutSubviews() {
     super.layoutSubviews()
-    self.backgroundColor = UIColor.appColor(.appLayerBorderColor)
+    self.backgroundColor = .appColor(.appLayerBorderColor)
     addSubViews()
     setupSNP()
   }

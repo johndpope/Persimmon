@@ -12,7 +12,7 @@ import SnapKit
 class TopView: UIView {
   
   // 프로필이미지
-  lazy var profileImageView: UIImageView = {
+  var profileImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.clipsToBounds = true
     imageView.contentMode = .scaleAspectFill
@@ -40,7 +40,7 @@ class TopView: UIView {
     return label
   }()
   
-  lazy var backBtn: UIButton = {
+  var backBtn: UIButton = {
     let button = UIButton(type: .custom)
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
     button.setTitle("⇠", for: .normal)

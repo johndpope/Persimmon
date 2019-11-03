@@ -7,14 +7,17 @@
 //
 
 import UIKit
+import SnapKit
 
 class DisplayCollectionView: UIView {
   
   let flowLayout: UICollectionViewFlowLayout = {
     let layout = UICollectionViewFlowLayout()
     layout.scrollDirection = .horizontal
-    let itemSize = UIScreen.main.bounds.size
-    layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    let height = UIScreen.main.bounds.height - 44
+    let width = UIScreen.main.bounds.width
+    let itemSize = CGSize(width: width, height: height)
+//    layout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
     layout.itemSize = itemSize
     layout.minimumInteritemSpacing = 0
     layout.minimumLineSpacing = 0
@@ -36,6 +39,7 @@ class DisplayCollectionView: UIView {
     view.isUserInteractionEnabled = true
     view.isMultipleTouchEnabled = false
     view.isOpaque = true
+    view.isPrefetchingEnabled = true
     view.clearsContextBeforeDrawing = false
     view.autoresizesSubviews = true
     view.register(DisplayCollectionCell.self, forCellWithReuseIdentifier: DisplayCollectionCell.identifier)
@@ -46,5 +50,14 @@ class DisplayCollectionView: UIView {
     }
     return view
   }()
+  
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    self.addSubview(collectionView)
+    
+    collectionView.snp.makeConstraints {
+      $0.leading.trailing.top.bottom.equalTo(self)
+    }
+  }
   
 }
