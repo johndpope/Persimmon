@@ -17,7 +17,7 @@ import RealmSwift
 class PhotoListVC: UIViewController {
   var backgroundTask: UIBackgroundTaskIdentifier = .invalid
   
-  var uuid: String = ""
+  var albumUUID: String = ""
   let photoListView = PhotoListView()
   let alertVC = CustomAlertVC()
   var notificationToken: NotificationToken? = nil
@@ -25,7 +25,7 @@ class PhotoListVC: UIViewController {
   let popUpView = PopUpView(frame: .zero, modify: "이동")
   
   var object: Album? {
-    return RealmSingleton.shared.takeSelectAlbum(albumUUID: uuid)
+    return RealmSingleton.shared.takeSelectAlbum(albumUUID: albumUUID)
     
   }
   
@@ -154,7 +154,7 @@ class PhotoListVC: UIViewController {
       indexPath.index.row
     }
     
-    RealmSingleton.shared.moveToOther(from: uuid, arr: RowArr)
+    RealmSingleton.shared.moveToOther(from: albumUUID, arr: RowArr)
     
     hiddenPopUpView()
   }
@@ -266,7 +266,7 @@ extension PhotoListVC: TLPhotosPickerViewControllerDelegate {
         })
         
         RealmSingleton.shared.writeData(
-          albumUUID: self.uuid,
+          albumUUID: self.albumUUID,
           localNames: localNames) {
             (failCount) in
             print("failCount: ", failCount)
@@ -361,35 +361,45 @@ extension PhotoListVC: UICollectionViewDelegate {
   }
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    guard selectBtnState, let cell = collectionView.cellForItem(at: indexPath) as? PhotoCollectionViewCell else { return }
-    
-    cell.popScaleAnim()
-    if let index = self.selectedPhotos.firstIndex(where: { $0.index == indexPath }) {
-      //deselect
-      self.selectedPhotos.remove(at: index)
-      #if swift(>=4.1)
-      self.selectedPhotos = self.selectedPhotos.enumerated().compactMap({ (offset, photo) -> SelectedPhoto? in
-        let photo = photo
-        photo.order = offset + 1
-        return photo
-      })
-      #else
-      self.selectedPhotos = self.selectedPhotos.enumerated().flatMap({ (offset, photo) -> TLPHAsset? in
-        var photo = photo
-        photo.order = offset + 1
-        return photo
-      })
-      #endif
-      cell.selectedAsset = false
-      self.orderUpdateCells()
-    }else {
-      //select
-      let photo = SelectedPhoto(index: indexPath, order: self.selectedPhotos.count + 1)
-      self.selectedPhotos.append(photo)
-      cell.selectedAsset = true
-      cell.orderLabel?.text = "\(photo.order)"
+    if !selectBtnState {
+      let displayVC = DisplayVC()
+      let model = DisplayModel(uuid: albumUUID, indexPath: indexPath)
+      displayVC.model = model
+      navigationController?.pushViewController(displayVC, animated: true)
+      
+    } else {
+      guard let cell = collectionView.cellForItem(at: indexPath) as? PhotoCollectionViewCell else { return }
+      
+      cell.popScaleAnim()
+      if let index = self.selectedPhotos.firstIndex(where: { $0.index == indexPath }) {
+        //deselect
+        self.selectedPhotos.remove(at: index)
+        #if swift(>=4.1)
+        self.selectedPhotos = self.selectedPhotos.enumerated().compactMap({ (offset, photo) -> SelectedPhoto? in
+          let photo = photo
+          photo.order = offset + 1
+          return photo
+        })
+        #else
+        self.selectedPhotos = self.selectedPhotos.enumerated().flatMap({ (offset, photo) -> TLPHAsset? in
+          var photo = photo
+          photo.order = offset + 1
+          return photo
+        })
+        #endif
+        cell.selectedAsset = false
+        self.orderUpdateCells()
+      }else {
+        //select
+        let photo = SelectedPhoto(index: indexPath, order: self.selectedPhotos.count + 1)
+        self.selectedPhotos.append(photo)
+        cell.selectedAsset = true
+        cell.orderLabel?.text = "\(photo.order)"
+      }
     }
   }
+  
+  
   
   
 }

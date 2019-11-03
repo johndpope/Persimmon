@@ -33,8 +33,11 @@
 		52739628236CDB220067C60D /* DisplayVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52739627236CDB220067C60D /* DisplayVC.swift */; };
 		5273962A236CDDA50067C60D /* TopDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52739629236CDDA50067C60D /* TopDisplayView.swift */; };
 		5273962C236CDDAE0067C60D /* BottomDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5273962B236CDDAE0067C60D /* BottomDisplayView.swift */; };
+		5289C350236DDBDF0002641D /* LivePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5289C34F236DDBDF0002641D /* LivePhoto.swift */; };
 		52C1B7952366FB1D0039F71D /* SelectAlbumTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C1B7942366FB1D0039F71D /* SelectAlbumTableView.swift */; };
 		52E2A83423637BAB00070C35 /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E2A83323637BAB00070C35 /* PopUpView.swift */; };
+		52E4044B236CFE83001B2071 /* DisplayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E4044A236CFE83001B2071 /* DisplayModel.swift */; };
+		52E4044E236DAAFA001B2071 /* DisplayCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E4044D236DAAFA001B2071 /* DisplayCellModel.swift */; };
 		52F27F29235BD93400066C99 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F27F28235BD93400066C99 /* Test.swift */; };
 		BE2EB11FFDB65390A2741BE2 /* Pods_Persimmon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BB6C34114F54D1E909A5A9B /* Pods_Persimmon.framework */; };
 		C10C9BA5235289ED00FA56A3 /* LaunchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10C9BA4235289ED00FA56A3 /* LaunchScreenView.swift */; };
@@ -94,8 +97,11 @@
 		52739627236CDB220067C60D /* DisplayVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayVC.swift; sourceTree = "<group>"; };
 		52739629236CDDA50067C60D /* TopDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopDisplayView.swift; sourceTree = "<group>"; };
 		5273962B236CDDAE0067C60D /* BottomDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomDisplayView.swift; sourceTree = "<group>"; };
+		5289C34F236DDBDF0002641D /* LivePhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivePhoto.swift; sourceTree = "<group>"; };
 		52C1B7942366FB1D0039F71D /* SelectAlbumTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAlbumTableView.swift; sourceTree = "<group>"; };
 		52E2A83323637BAB00070C35 /* PopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpView.swift; sourceTree = "<group>"; };
+		52E4044A236CFE83001B2071 /* DisplayModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayModel.swift; sourceTree = "<group>"; };
+		52E4044D236DAAFA001B2071 /* DisplayCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayCellModel.swift; sourceTree = "<group>"; };
 		52F27F28235BD93400066C99 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		5BB6C34114F54D1E909A5A9B /* Pods_Persimmon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Persimmon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C2736417BA302DF8EE103DF /* Pods-Persimmon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Persimmon.release.xcconfig"; path = "Target Support Files/Pods-Persimmon/Pods-Persimmon.release.xcconfig"; sourceTree = "<group>"; };
@@ -202,6 +208,7 @@
 		523705B82351024200869F57 /* Persimmon */ = {
 			isa = PBXGroup;
 			children = (
+				5289C34E236DDBCE0002641D /* LivePhoto */,
 				52739620236CDABE0067C60D /* Display */,
 				52E2A83123637B9300070C35 /* PopUpView */,
 				5239059B23604F24003EB0B8 /* PhotoCollection */,
@@ -274,6 +281,7 @@
 		5239059B23604F24003EB0B8 /* PhotoCollection */ = {
 			isa = PBXGroup;
 			children = (
+				52E4044C236DAAE9001B2071 /* Model */,
 				C10C9BB42353794C00FA56A3 /* Cell */,
 				5239059C23604F41003EB0B8 /* View */,
 			);
@@ -292,6 +300,7 @@
 		52739620236CDABE0067C60D /* Display */ = {
 			isa = PBXGroup;
 			children = (
+				52E40449236CFE66001B2071 /* Model */,
 				52739622236CDAD60067C60D /* View */,
 				52739621236CDACD0067C60D /* Controller */,
 			);
@@ -316,6 +325,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		5289C34E236DDBCE0002641D /* LivePhoto */ = {
+			isa = PBXGroup;
+			children = (
+				5289C34F236DDBDF0002641D /* LivePhoto.swift */,
+			);
+			path = LivePhoto;
+			sourceTree = "<group>";
+		};
 		52E2A83123637B9300070C35 /* PopUpView */ = {
 			isa = PBXGroup;
 			children = (
@@ -330,6 +347,22 @@
 				52E2A83323637BAB00070C35 /* PopUpView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		52E40449236CFE66001B2071 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				52E4044A236CFE83001B2071 /* DisplayModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		52E4044C236DAAE9001B2071 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				52E4044D236DAAFA001B2071 /* DisplayCellModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		C10C9BA3235289CE00FA56A3 /* LaunchScreen */ = {
@@ -668,7 +701,10 @@
 				5273962C236CDDAE0067C60D /* BottomDisplayView.swift in Sources */,
 				522D0A9B2362520900A0C32A /* AlertExtension.swift in Sources */,
 				52F27F29235BD93400066C99 /* Test.swift in Sources */,
+				5289C350236DDBDF0002641D /* LivePhoto.swift in Sources */,
+				52E4044B236CFE83001B2071 /* DisplayModel.swift in Sources */,
 				521F9DB92357AF3A00506B9C /* PhotoCollectionView.swift in Sources */,
+				52E4044E236DAAFA001B2071 /* DisplayCellModel.swift in Sources */,
 				C1A9D643235B621100BFF2E6 /* DonationView.swift in Sources */,
 				C1A9D64F236AE49200BFF2E6 /* DisplayCollectionCell.swift in Sources */,
 				C10C9C0E2356CD7500FA56A3 /* SettingView.swift in Sources */,
@@ -845,7 +881,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Persimmon/Source/\"";
-				DEVELOPMENT_TEAM = 5W72YMDK56;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Persimmon/Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -870,7 +906,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Persimmon/Source/\"";
-				DEVELOPMENT_TEAM = 5W72YMDK56;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Persimmon/Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
