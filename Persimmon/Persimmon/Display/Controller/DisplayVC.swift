@@ -10,11 +10,12 @@ import UIKit
 
 class DisplayVC: UIViewController {
   
+  var showState: Bool = true
+  
   var model: DisplayModel? {
     didSet {
       displayView.collection.collectionView.delegate = self
       displayView.collection.collectionView.dataSource = self
-      displayView.collection.collectionView.scrollToItem(at: model?.selectedCell ?? [], at: .centeredHorizontally, animated: false)
     }
   }
   
@@ -33,9 +34,9 @@ class DisplayVC: UIViewController {
     self.view = displayView
   }
   
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    displayView.collection.collectionView.scrollToItem(at: model?.selectedCell ?? [], at: .centeredHorizontally, animated: false)
   }
   
   
@@ -51,11 +52,16 @@ class DisplayVC: UIViewController {
   }
   
   @objc func didTapPlayBtn(_ sender: UIButton) {
-    
+    guard let cell = displayView.collection.collectionView.visibleCells.first as? DisplayCollectionCell else { return }
+    cell.togglePlay(state: sender.isSelected)
+    sender.isSelected.toggle()
   }
   
   @objc func didTapMuteBtn(_ sender: UIButton) {
-    
+    guard let cell = displayView.collection.collectionView.visibleCells.first as? DisplayCollectionCell else { return }
+    guard cell.livePhotoView.livePhoto != nil else { return }
+    cell.livePhotoView.isMuted.toggle()
+    sender.isSelected.toggle()
   }
   
   @objc func didTapBackBtn(_ sender: UIButton) {
@@ -78,6 +84,8 @@ extension DisplayVC: UICollectionViewDataSource {
     cell.livePhotoView.isHidden = true
     cell.imageView.isHidden = true
     
+    cell.backgroundColor = !showState ? .black : .appColor(.appGreenColor)
+    
     let photo = object.photos[indexPath.row]
     cell.model = DisplayCellModel(type: photo.type,
                                   image: photo.imageName,
@@ -94,14 +102,19 @@ extension DisplayVC: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
     if let cell = cell as? DisplayCollectionCell {
       cell.decelerate = true
+      cell.delegate = nil
+      cell.stopPlay()
     }
   }
   
   
   func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-    
     if let cell = cell as? DisplayCollectionCell {
+      cell.backgroundColor  = !showState ? .black : .appColor(.appGreenColor)
       cell.setImage()
+      cell.delegate = self
+      self.displayView.bottomView.muteBtn.isSelected = false
+      self.displayView.bottomView.playBtn.isSelected = false
     }
   }
   
@@ -114,16 +127,16 @@ extension DisplayVC: UICollectionViewDelegate {
   }
   
   func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-      scrollingFinished()
+    scrollingFinished()
   }
-
+  
   func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-      if decelerate {
-          return
-      }
-      else {
-          scrollingFinished()
-      }
+    if decelerate {
+      return
+    }
+    else {
+      scrollingFinished()
+    }
   }
   
   func scrollingNotFinish() {
@@ -133,7 +146,7 @@ extension DisplayVC: UICollectionViewDelegate {
       cell.decelerate = true
     }
   }
-
+  
   func scrollingFinished() {
     let cells = displayView.collection.collectionView.visibleCells
     cells.forEach { cell in
@@ -141,5 +154,17 @@ extension DisplayVC: UICollectionViewDelegate {
       cell.decelerate = false
     }
   }
+  
+}
+
+
+extension DisplayVC: DisplayCollectionCellDelegate {
+  func didTapShort() -> Bool {
+    showState ? displayView.hidePanel() : displayView.showPanel()
+    showState.toggle()
+    return !showState
+    
+  }
+  
   
 }
