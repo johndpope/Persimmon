@@ -10,19 +10,25 @@ import UIKit
 import AVKit
 import PhotosUI
 
+protocol DisplayCollectionCellDelegate: class {
+  func didTapShort() -> Bool
+}
+
 class DisplayCollectionCell: UICollectionViewCell {
   static let identifier = "DisplayCollectionCell"
+  
+  weak var delegate: DisplayCollectionCellDelegate?
+  var timer: Timer?
+  var time = 0
+  
   private var observer: NSObjectProtocol?
   var requestID: PHLivePhotoRequestID?
   
   var decelerate: Bool = true {
     didSet {
-      print("state ", decelerate)
       guard !decelerate,
         model?.cellType == "live",
         livePhotoView.livePhoto == nil else { return }
-//      self.playItem = nil
-//      self.image = nil
       self.requestID = self.model?.getLivePhoto(completion: { (live) in
         self.live = live
       })
@@ -151,20 +157,9 @@ class DisplayCollectionCell: UICollectionViewCell {
   func setImage() {
       switch self.model?.cellType {
       case "image":
-//        self.playItem = nil
-//        self.live = nil
         guard let image = self.model?.getImage() else { return }
         self.image = image
-//      case "live":
-//        guard !decelerate else { return }
-////        self.playItem = nil
-////        self.image = nil
-//        self.requestID = self.model?.getLivePhoto(completion: { (live) in
-//          self.live = live
-//        })
       case "video":
-//        self.live = nil
-//        self.image = nil
         guard let video = self.model?.getVideo() else { return }
         self.playItem = video
       default:
@@ -172,6 +167,34 @@ class DisplayCollectionCell: UICollectionViewCell {
       }
       
     
+  }
+  
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    if let timer = timer {
+      if !timer.isValid {
+        self.timer  = Timer.scheduledTimer(timeInterval: -1, target: self, selector: #selector(discount), userInfo: nil, repeats: true)
+      }
+    } else {
+      self.timer  = Timer.scheduledTimer(timeInterval: -1, target: self, selector: #selector(discount), userInfo: nil, repeats: true)
+    }
+  }
+  
+  override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    if let timer = timer {
+      if(timer.isValid){
+        if time >= 0 {
+          if let dele = delegate {
+            self.backgroundColor = dele.didTapShort() ? .black : .appColor(.appGreenColor)
+          }
+        }
+        time = 1
+        self.timer?.invalidate()
+      }
+    }
+  }
+  
+  @objc func discount() {
+    self.time -= 1
   }
   
   func endDisplay() {
@@ -182,7 +205,7 @@ class DisplayCollectionCell: UICollectionViewCell {
   
   func togglePlay(state: Bool) {
     if let palyItem = self.playItem {
-      state ? palyItem.play() : palyItem.pause()
+      state ? palyItem.pause() : palyItem.play()
     }
   }
   
