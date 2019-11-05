@@ -166,7 +166,6 @@ class DisplayCollectionCell: UICollectionViewCell {
         break
       }
       
-    
   }
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -215,7 +214,6 @@ class DisplayCollectionCell: UICollectionViewCell {
       self.playItem = nil
     }
     self.livePhotoView.stopPlayback()
-    
   }
   
   override func prepareForReuse() {

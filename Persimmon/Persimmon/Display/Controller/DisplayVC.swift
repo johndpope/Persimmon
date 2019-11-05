@@ -16,6 +16,7 @@ class DisplayVC: UIViewController {
     didSet {
       displayView.collection.collectionView.delegate = self
       displayView.collection.collectionView.dataSource = self
+      displayView.collection.collectionView.prefetchDataSource = self
     }
   }
   
@@ -30,12 +31,20 @@ class DisplayVC: UIViewController {
     return view
   }()
   
-  override func loadView() {
-    self.view = displayView
+//  override func loadView() {
+//    self.view = displayView
+//  }
+  
+  override func viewDidLoad() {
+    self.view.addSubview(displayView)
+    displayView.snp.makeConstraints {
+      $0.leading.top.bottom.trailing.equalToSuperview()
+    }
   }
   
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    view.layoutIfNeeded()
     displayView.collection.collectionView.scrollToItem(at: model?.selectedCell ?? [], at: .centeredHorizontally, animated: false)
   }
   
@@ -164,6 +173,23 @@ extension DisplayVC: DisplayCollectionCellDelegate {
     showState.toggle()
     return !showState
     
+  }
+  
+  
+}
+
+extension DisplayVC: UICollectionViewDataSourcePrefetching {
+  func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+    print("in prefetch")
+    
+    indexPaths.forEach { index in
+      guard let cell = collectionView.cellForItem(at: index) as? DisplayCollectionCell, cell.model?.cellType == "live" else { return }
+      DispatchQueue.global(qos: .userInteractive).async {
+        cell.model?.getLivePhoto(completion: { (live) in
+          cell.livePhotoView.livePhoto = live
+        })
+      }
+    }
   }
   
   
