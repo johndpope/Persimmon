@@ -44,7 +44,7 @@ class DisplayCellModel {
     let videoURL = url.appendingPathComponent("\(uuid)/\(video)")
     let imageURL = url.appendingPathComponent("\(uuid)/\(img)")
     
-    return PHLivePhoto.request(withResourceFileURLs: [videoURL, imageURL], placeholderImage: nil, targetSize: CGSize(width: 200, height: 300), contentMode: .aspectFit) { (livePhoto, info) in
+    return PHLivePhoto.request(withResourceFileURLs: [videoURL, imageURL], placeholderImage: nil, targetSize: .zero, contentMode: .aspectFit) { (livePhoto, info) in
       if let isDegraded = info[PHLivePhotoInfoIsDegradedKey] as? Bool, isDegraded {
         return
       }

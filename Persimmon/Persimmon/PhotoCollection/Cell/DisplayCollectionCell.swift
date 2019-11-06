@@ -22,18 +22,6 @@ class DisplayCollectionCell: UICollectionViewCell {
   var time = 0
   
   private var observer: NSObjectProtocol?
-  var requestID: PHLivePhotoRequestID?
-  
-  var decelerate: Bool = true {
-    didSet {
-      guard !decelerate,
-        model?.cellType == "live",
-        livePhotoView.livePhoto == nil else { return }
-      self.requestID = self.model?.getLivePhoto(completion: { (live) in
-        self.live = live
-      })
-    }
-  }
   
   var imageView: UIImageView = {
     let view = UIImageView()
@@ -55,18 +43,7 @@ class DisplayCollectionCell: UICollectionViewCell {
     return view
   }()
 
-  var model: DisplayCellModel? {
-    didSet {
-      if model?.cellType == "live" {
-        guard let image = self.model?.getImage() else { return }
-        let imageView = UIImageView(image: image)
-        imageView.contentMode = .scaleAspectFit
-        self.backgroundView = imageView
-      } else {
-        self.backgroundView = nil
-      }
-    }
-  }
+  var model: DisplayCellModel?
   
   var live: PHLivePhoto? = nil {
     didSet {
@@ -79,7 +56,6 @@ class DisplayCollectionCell: UICollectionViewCell {
           self.livePhotoView.livePhoto = self.live
           self.livePhotoView.startPlayback(with: .hint)
         }
-      
     }
   }
   
@@ -154,20 +130,6 @@ class DisplayCollectionCell: UICollectionViewCell {
     
   }
   
-  func setImage() {
-      switch self.model?.cellType {
-      case "image":
-        guard let image = self.model?.getImage() else { return }
-        self.image = image
-      case "video":
-        guard let video = self.model?.getVideo() else { return }
-        self.playItem = video
-      default:
-        break
-      }
-      
-  }
-  
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     if let timer = timer {
       if !timer.isValid {
@@ -196,12 +158,6 @@ class DisplayCollectionCell: UICollectionViewCell {
     self.time -= 1
   }
   
-  func endDisplay() {
-    if let id = requestID {
-      PHLivePhoto.cancelRequest(withRequestID: id)
-    }
-  }
-  
   func togglePlay(state: Bool) {
     if let palyItem = self.playItem {
       state ? palyItem.pause() : palyItem.play()
@@ -219,7 +175,6 @@ class DisplayCollectionCell: UICollectionViewCell {
   override func prepareForReuse() {
     super.prepareForReuse()
     stopPlay()
-    endDisplay()
     live = nil
     playItem = nil
     image = nil
@@ -228,11 +183,9 @@ class DisplayCollectionCell: UICollectionViewCell {
   deinit {
     print("deinit displayCollectionCell@@@")
     stopPlay()
-    endDisplay()
     live = nil
     playItem = nil
     image = nil
-    model = nil
   }
   
 }

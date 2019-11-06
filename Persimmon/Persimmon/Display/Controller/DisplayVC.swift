@@ -7,16 +7,17 @@
 //
 
 import UIKit
+import Photos
 
 class DisplayVC: UIViewController {
   
   var showState: Bool = true
-  
   var model: DisplayModel? {
     didSet {
+      model?.asyncPrefetchTempPhotos()
       displayView.collection.collectionView.delegate = self
       displayView.collection.collectionView.dataSource = self
-      displayView.collection.collectionView.prefetchDataSource = self
+//      displayView.collection.collectionView.prefetchDataSource = self
     }
   }
   
@@ -27,13 +28,8 @@ class DisplayVC: UIViewController {
     view.bottomView.muteBtn.addTarget(self, action: #selector(didTapMuteBtn(_:)), for: .touchUpInside)
     view.topView.backBtn.addTarget(self, action: #selector(didTapBackBtn(_:)), for: .touchUpInside)
     view.topView.sharedBtn.addTarget(self, action: #selector(didTapSharedBtn(_:)), for: .touchUpInside)
-    
     return view
   }()
-  
-//  override func loadView() {
-//    self.view = displayView
-//  }
   
   override func viewDidLoad() {
     self.view.addSubview(displayView)
@@ -47,8 +43,6 @@ class DisplayVC: UIViewController {
     view.layoutIfNeeded()
     displayView.collection.collectionView.scrollToItem(at: model?.selectedCell ?? [], at: .centeredHorizontally, animated: false)
   }
-  
-  
   
   
   // MARK: - Buttons Target Functions
@@ -77,6 +71,8 @@ class DisplayVC: UIViewController {
     navigationController?.popViewController(animated: true)
   }
   
+  
+  
 }
 
 
@@ -100,6 +96,37 @@ extension DisplayVC: UICollectionViewDataSource {
                                   image: photo.imageName,
                                   video: photo.videoName,
                                   uuid: photo.photoUUID)
+    print("currentCellIndex: ", indexPath)
+    switch photo.type {
+    case "live":
+      if let photo = model?.tempPhotos[indexPath] {
+        if photo.0 {
+          cell.live = photo.1 as? PHLivePhoto
+        }
+      } else {
+        cell.model?.getLivePhoto(completion: { (live) in
+          cell.live = live
+        })
+      }
+    case "video":
+      if let photo = model?.tempPhotos[indexPath] {
+        if photo.0 {
+          cell.playItem = photo.1 as? AVPlayer
+        }
+      } else {
+        cell.playItem = cell.model?.getVideo()
+      }
+    case "image":
+      if let photo = model?.tempPhotos[indexPath] {
+        if photo.0 {
+          cell.image = photo.1 as? UIImage
+        }
+      } else {
+        cell.image = cell.model?.getImage()
+      }
+    default:
+      break
+    }
     
     return cell
   }
@@ -110,58 +137,19 @@ extension DisplayVC: UICollectionViewDataSource {
 extension DisplayVC: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
     if let cell = cell as? DisplayCollectionCell {
-      cell.decelerate = true
       cell.delegate = nil
       cell.stopPlay()
     }
   }
   
-  
   func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
     if let cell = cell as? DisplayCollectionCell {
       cell.backgroundColor  = !showState ? .black : .appColor(.appGreenColor)
-      cell.setImage()
       cell.delegate = self
       self.displayView.bottomView.muteBtn.isSelected = false
       self.displayView.bottomView.playBtn.isSelected = false
     }
-  }
-  
-  func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-    scrollingNotFinish()
-  }
-  
-  func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
-    scrollingNotFinish()
-  }
-  
-  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-    scrollingFinished()
-  }
-  
-  func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-    if decelerate {
-      return
-    }
-    else {
-      scrollingFinished()
-    }
-  }
-  
-  func scrollingNotFinish() {
-    let cells = displayView.collection.collectionView.visibleCells
-    cells.forEach { cell in
-      guard let cell = cell as? DisplayCollectionCell else { return }
-      cell.decelerate = true
-    }
-  }
-  
-  func scrollingFinished() {
-    let cells = displayView.collection.collectionView.visibleCells
-    cells.forEach { cell in
-      guard let cell = cell as? DisplayCollectionCell else { return }
-      cell.decelerate = false
-    }
+    model?.lastIndex = indexPath
   }
   
 }
@@ -172,25 +160,5 @@ extension DisplayVC: DisplayCollectionCellDelegate {
     showState ? displayView.hidePanel() : displayView.showPanel()
     showState.toggle()
     return !showState
-    
   }
-  
-  
-}
-
-extension DisplayVC: UICollectionViewDataSourcePrefetching {
-  func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-    print("in prefetch")
-    
-    indexPaths.forEach { index in
-      guard let cell = collectionView.cellForItem(at: index) as? DisplayCollectionCell, cell.model?.cellType == "live" else { return }
-      DispatchQueue.global(qos: .userInteractive).async {
-        cell.model?.getLivePhoto(completion: { (live) in
-          cell.livePhotoView.livePhoto = live
-        })
-      }
-    }
-  }
-  
-  
 }

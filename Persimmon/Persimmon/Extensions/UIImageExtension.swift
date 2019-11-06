@@ -7,8 +7,12 @@
 //
 
 import UIKit
+import Photos
+import AVKit
 
-extension UIImage {
+protocol TempPhoto {}
+
+extension UIImage: TempPhoto {
   func upOrientationImage() -> UIImage? {
     switch imageOrientation {
     case .up:
@@ -22,3 +26,8 @@ extension UIImage {
     }
   }
 }
+
+extension PHLivePhoto: TempPhoto {}
+extension AVPlayer: TempPhoto {}
+
+
