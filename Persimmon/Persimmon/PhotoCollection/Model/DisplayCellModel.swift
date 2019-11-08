@@ -25,6 +25,22 @@ class DisplayCellModel {
     self.photoUUID = uuid
   }
   
+  func getThumbnail(completion: @escaping (UIImage?) -> ()) {
+    
+    DispatchQueue.global(qos: .userInitiated).async {
+      guard let image = self.getImage() else { return }
+      let transform = CGAffineTransform(scaleX: 1, y: 1)
+      let size = image.size.applying(transform)
+      UIGraphicsBeginImageContext(size)
+      image.draw(in: CGRect(origin: .zero, size: size))
+      let resultImage = UIGraphicsGetImageFromCurrentImageContext()
+      UIGraphicsEndImageContext()
+      
+      completion(resultImage)
+    }
+    
+  }
+  
   func getImage() -> UIImage? {
     guard let uuid = photoUUID, let name = imageName, let imageData = try? Data(contentsOf: url.appendingPathComponent("\(uuid)/\(name)")) else { return nil }
    return UIImage(data: imageData)
@@ -44,7 +60,7 @@ class DisplayCellModel {
     let videoURL = url.appendingPathComponent("\(uuid)/\(video)")
     let imageURL = url.appendingPathComponent("\(uuid)/\(img)")
     
-    return PHLivePhoto.request(withResourceFileURLs: [videoURL, imageURL], placeholderImage: nil, targetSize: CGSize(width: 200, height: 300), contentMode: .aspectFit) { (livePhoto, info) in
+    return PHLivePhoto.request(withResourceFileURLs: [videoURL, imageURL], placeholderImage: nil, targetSize: .zero, contentMode: .aspectFit) { (livePhoto, info) in
       if let isDegraded = info[PHLivePhotoInfoIsDegradedKey] as? Bool, isDegraded {
         return
       }
