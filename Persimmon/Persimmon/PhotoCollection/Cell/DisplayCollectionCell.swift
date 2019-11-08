@@ -59,7 +59,7 @@ class DisplayCollectionCell: UICollectionViewCell {
     view.contentMode = .scaleAspectFit
     return view
   }()
-
+  
   var model: DisplayCellModel?
   
   var live: PHLivePhoto? = nil {

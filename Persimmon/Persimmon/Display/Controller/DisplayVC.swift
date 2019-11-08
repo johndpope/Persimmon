@@ -188,7 +188,7 @@ extension DisplayVC: UICollectionViewDelegate {
 
 extension DisplayVC: DisplayCollectionCellDelegate {
   func checkDuration(duration: String) {
-    <#code#>
+    ()
   }
   
   func checkCurrentMuteState() -> Bool {

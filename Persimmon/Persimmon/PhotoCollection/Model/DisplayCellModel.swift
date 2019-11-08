@@ -9,6 +9,7 @@
 import UIKit
 import Photos
 import AVKit
+import ImageIO
 
 class DisplayCellModel {
   private let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -43,6 +44,7 @@ class DisplayCellModel {
   
   func getImage() -> UIImage? {
     guard let uuid = photoUUID, let name = imageName, let imageData = try? Data(contentsOf: url.appendingPathComponent("\(uuid)/\(name)")) else { return nil }
+    
    return UIImage(data: imageData)
   }
   
