@@ -43,6 +43,7 @@ public class Photo: Object, PrimaryKeyAware {
   @objc dynamic var imageName: String = ""
   @objc dynamic var videoName: String = ""
   @objc dynamic var thumbnail: String = "thumbnail.png"
+  @objc dynamic var smallImg: String = "small.jpg"
   @objc dynamic var duration: String = "0"
   
   override public static func primaryKey() -> String? {

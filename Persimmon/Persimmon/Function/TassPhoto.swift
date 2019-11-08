@@ -71,7 +71,9 @@ class TassPhoto {
           videoName = $0.originalFilename
           videoURL = saveURL?.appendingPathComponent(videoName!)
           duration = timeFormatted(timeInterval: asset.duration)
-          PHAssetResourceManager.default().writeData(for: $0, toFile: videoURL!, options: option) { (err) in
+          PHAssetResourceManager.default().writeData(for: $0,
+                                                     toFile: videoURL!,
+                                                     options: option) { (err) in
             guard let err = err else { return }
             videoName = nil
             dump(err)
@@ -79,17 +81,34 @@ class TassPhoto {
         default:
           imageName = $0.originalFilename
           imageURL = saveURL?.appendingPathComponent(imageName!)
-          PHAssetResourceManager.default().writeData(for: $0, toFile: imageURL!, options: option) { (err) in
+          PHAssetResourceManager.default().writeData(for: $0,
+                                                     toFile: imageURL!,
+                                                     options: option) { (err) in
             guard let err = err else { return }
             imageName = nil
             dump(err)
           }
         }
       }
-      PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: 300, height: 300), contentMode: .aspectFill, options: options) { (image, info) in
+      PHImageManager.default().requestImage(for: asset,
+                                            targetSize: CGSize(width: 300, height: 300),
+                                            contentMode: .aspectFill,
+                                            options: options) { (image, info) in
         do {
           thumbURL = saveURL?.appendingPathComponent("thumbnail.png")
           let data = image?.pngData()
+          try data?.write(to: thumbURL!, options: .withoutOverwriting)
+        } catch(let err) {
+          dump(err)
+        }
+      }
+      PHImageManager.default().requestImage(for: asset,
+                                            targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight),
+                                            contentMode: .aspectFill,
+                                            options: options) { (image, info) in
+        do {
+          thumbURL = saveURL?.appendingPathComponent("small.jpg")
+          let data = image?.jpegData(compressionQuality: 0.8)
           try data?.write(to: thumbURL!, options: .withoutOverwriting)
         } catch(let err) {
           dump(err)

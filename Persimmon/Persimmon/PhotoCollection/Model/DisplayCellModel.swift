@@ -27,20 +27,29 @@ class DisplayCellModel {
   }
   
   func getThumbnail(completion: @escaping (UIImage?) -> ()) {
-    
     DispatchQueue.global(qos: .userInitiated).async {
-      guard let image = self.getImage() else { return }
-      let transform = CGAffineTransform(scaleX: 1, y: 1)
-      let size = image.size.applying(transform)
-      UIGraphicsBeginImageContext(size)
-      image.draw(in: CGRect(origin: .zero, size: size))
-      let resultImage = UIGraphicsGetImageFromCurrentImageContext()
-      UIGraphicsEndImageContext()
-      
-      completion(resultImage)
+      guard let uuid = self.photoUUID, let imageData = try? Data(contentsOf: self.url.appendingPathComponent("\(uuid)/small.jpg")) else { return }
+      print("in getThumbnail: ", imageData)
+      completion(UIImage(data: imageData))
     }
     
   }
+  
+//  func getThumbnail(completion: @escaping (UIImage?) -> ()) {
+//
+//    DispatchQueue.global(qos: .userInitiated).async {
+//      guard let image = self.getImage() else { return }
+//      let transform = CGAffineTransform(scaleX: 1, y: 1)
+//      let size = image.size.applying(transform)
+//      UIGraphicsBeginImageContext(size)
+//      image.draw(in: CGRect(origin: .zero, size: size))
+//      let resultImage = UIGraphicsGetImageFromCurrentImageContext()
+//      UIGraphicsEndImageContext()
+//
+//      completion(resultImage)
+//    }
+//
+//  }
   
   func getImage() -> UIImage? {
     guard let uuid = photoUUID, let name = imageName, let imageData = try? Data(contentsOf: url.appendingPathComponent("\(uuid)/\(name)")) else { return nil }

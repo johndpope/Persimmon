@@ -33,7 +33,7 @@ class DisplayModel {
   init(uuid: String, indexPath: IndexPath) {
     self.albumUUID = uuid
     self.selectedCell = indexPath
-    self.lastIndex = indexPath
+//    self.lastIndex = indexPath
     self.object = RealmSingleton.shared.takeSelectAlbum(albumUUID: uuid)
     firstInit = false
   }

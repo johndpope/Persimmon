@@ -62,6 +62,9 @@ class PassCodeVC: UIViewController {
             let okAction = UIAlertAction(title: "저장", style: .default) { (action) in
               self.prePassCode = self.text
               self.text = ""
+              self.stackView.arrangedSubviews.forEach { (view) in
+                view.alpha = 0.5
+              }
             }
             let reInput = UIAlertAction(title: "다시하기", style: .default) { (action) in
               self.text = ""
@@ -136,10 +139,7 @@ class PassCodeVC: UIViewController {
       print("delete")
     } else {
       text.removeLast()
-      
- 
     }
-    
   }
   
 }
