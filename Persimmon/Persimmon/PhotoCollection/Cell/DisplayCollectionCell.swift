@@ -58,10 +58,16 @@ class DisplayCollectionCell: UICollectionViewCell {
   var model: DisplayCellModel? {
     didSet {
       if model?.cellType == "live" {
-        guard let image = self.model?.getImage() else { return }
-        let imageView = UIImageView(image: image)
-        imageView.contentMode = .scaleAspectFit
-        self.backgroundView = imageView
+        self.model?.getThumbnail(completion: { (image) in
+          DispatchQueue.main.async {
+            let imageView = UIImageView(image: image)
+            imageView.contentMode = .scaleAspectFit
+            self.backgroundView = imageView
+          }
+          
+        })
+        //        guard let image = self.model?.getImage() else { return }
+        
       } else {
         self.backgroundView = nil
       }
@@ -157,8 +163,11 @@ class DisplayCollectionCell: UICollectionViewCell {
   func setImage() {
       switch self.model?.cellType {
       case "image":
-        guard let image = self.model?.getImage() else { return }
-        self.image = image
+        self.model?.getThumbnail(completion: { (image) in
+          DispatchQueue.main.async {
+            self.image = image
+          }
+        })
       case "video":
         guard let video = self.model?.getVideo() else { return }
         self.playItem = video
