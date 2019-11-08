@@ -26,6 +26,11 @@ class DisplayCellModel {
     self.photoUUID = uuid
   }
   
+  func getThumbnail() -> UIImage? {
+    guard let uuid = photoUUID, let imageData = try? Data(contentsOf: url.appendingPathComponent("\(uuid)/small.png")) else { return nil }
+    return UIImage(data: imageData)
+  }
+  
   func getThumbnail(completion: @escaping (UIImage?) -> ()) {
     
     DispatchQueue.global(qos: .userInitiated).async {

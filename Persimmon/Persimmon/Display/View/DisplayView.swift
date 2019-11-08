@@ -39,6 +39,8 @@ class DisplayView: UIView {
     label.backgroundColor = .clear
     label.textAlignment = .center
     label.font = UIFont.boldSystemFont(ofSize: 20)
+    label.textColor = .white
+    label.isHidden = true
     return label
   }()
   
@@ -50,6 +52,16 @@ class DisplayView: UIView {
   override func layoutSubviews() {
     super.layoutSubviews()
     setupSNP()
+  }
+  
+  func showSlider() {
+    self.slider.isHidden = false
+    self.duration.isHidden = false
+  }
+  
+  func hideSlider() {
+    self.slider.isHidden = true
+    self.duration.isHidden = true
   }
   
   func showPanel() {
@@ -64,6 +76,10 @@ class DisplayView: UIView {
     UIView.transition(with: slider, duration: 0.3, options: .curveEaseInOut, animations: {
       self.slider.alpha = 1
       self.slider.isHidden = false
+    }, completion: nil)
+    UIView.transition(with: duration, duration: 0.3, options: .curveEaseInOut, animations: {
+      self.duration.alpha = 1
+      self.duration.isHidden = false
     }, completion: nil)
   }
   
@@ -80,6 +96,10 @@ class DisplayView: UIView {
       self.slider.alpha = 0
       self.slider.isHidden = true
     }, completion: nil)
+    UIView.transition(with: duration, duration: 0.3, options: .curveEaseInOut, animations: {
+      self.duration.alpha = 0
+      self.duration.isHidden = true
+    }, completion: nil)
   }
   
   func hideSNP() {
@@ -93,11 +113,11 @@ class DisplayView: UIView {
       $0.height.equalToSuperview().multipliedBy(0)
     }
     
-    slider.snp.remakeConstraints {
-      $0.leading.trailing.equalToSuperview().inset(20)
-      $0.bottom.equalTo(bottomView.snp.top).offset(-5)
-      $0.height.equalToSuperview().multipliedBy(0)
-    }
+//    slider.snp.remakeConstraints {
+//      $0.leading.trailing.equalToSuperview().inset(20)
+//      $0.bottom.equalTo(bottomView.snp.top).offset(-5)
+//      $0.height.equalToSuperview().multipliedBy(0)
+//    }
   }
   
   func showSNP() {
@@ -111,11 +131,11 @@ class DisplayView: UIView {
       $0.height.equalToSuperview().multipliedBy(0.1)
     }
     
-    slider.snp.remakeConstraints {
-      $0.leading.trailing.equalToSuperview()
-      $0.bottom.equalTo(bottomView.snp.top).offset(-5)
-      $0.height.equalToSuperview().multipliedBy(0.05)
-    }
+//    slider.snp.remakeConstraints {
+//      $0.leading.trailing.equalToSuperview()
+//      $0.bottom.equalTo(bottomView.snp.top).offset(-5)
+//      $0.height.equalToSuperview().multipliedBy(0.05)
+//    }
   }
   
   func setupSNP() {
@@ -133,18 +153,21 @@ class DisplayView: UIView {
       $0.height.equalToSuperview().multipliedBy(0.1)
     }
     
+    duration.snp.makeConstraints {
+//          $0.leading.equalTo(slider).offset(20)
+          $0.trailing.equalToSuperview().offset(-20)
+          $0.height.equalToSuperview().multipliedBy(0.05)
+          $0.bottom.equalTo(slider)
+    //      $0.width.equalTo(20)
+        }
+    
     slider.snp.makeConstraints {
       $0.leading.equalToSuperview().offset(20)
       $0.bottom.equalTo(bottomView.snp.top).offset(-5)
       $0.height.equalToSuperview().multipliedBy(0.05)
+      $0.trailing.equalTo(duration.snp.leading).offset(-20)
     }
     
-    duration.snp.makeConstraints {
-      $0.leading.equalTo(slider).offset(20)
-      $0.trailing.equalToSuperview().offset(-20)
-      $0.height.equalToSuperview().multipliedBy(0.05)
-      $0.bottom.equalTo(slider)
-    }
   }
   
   func addSubviews() {

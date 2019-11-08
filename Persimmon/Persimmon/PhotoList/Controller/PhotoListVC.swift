@@ -247,7 +247,7 @@ extension PhotoListVC: TLPhotosPickerViewControllerDelegate {
   func dismissPhotoPicker(withPHAssets: [PHAsset]) {
     
     DispatchQueue(label: "tass",
-                  qos: .default,
+                  qos: .userInitiated,
                   attributes: .concurrent)
       .async { [weak self] in
         guard let `self` = self else { return }

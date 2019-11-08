@@ -15,11 +15,15 @@ class DisplayVC: UIViewController {
   var showState: Bool = true
   var model: DisplayModel? {
     didSet {
-      model?.asyncPrefetchTempPhotos()
-      displayView.collection.collectionView.delegate = self
-      displayView.collection.collectionView.dataSource = self
+//      model?.asyncPrefetchTempPhotos()
+      collection.delegate = self
+      collection.dataSource = self
 //      displayView.collection.collectionView.prefetchDataSource = self
     }
+  }
+  
+  var collection: UICollectionView {
+    return displayView.collection.collectionView
   }
   
   lazy var displayView: DisplayView = {
@@ -43,7 +47,7 @@ class DisplayVC: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     view.layoutIfNeeded()
-    displayView.collection.collectionView.scrollToItem(at: model?.selectedCell ?? [], at: .centeredHorizontally, animated: false)
+    collection.scrollToItem(at: model?.selectedCell ?? [], at: .centeredHorizontally, animated: false)
   }
   
   
@@ -57,13 +61,13 @@ class DisplayVC: UIViewController {
   }
   
   @objc func didTapPlayBtn(_ sender: UIButton) {
-    guard let cell = displayView.collection.collectionView.visibleCells.first as? DisplayCollectionCell else { return }
+    guard let cell = collection.visibleCells.first as? DisplayCollectionCell else { return }
     cell.togglePlay(state: sender.isSelected)
     sender.isSelected.toggle()
   }
   
   @objc func didTapMuteBtn(_ sender: UIButton) {
-    guard let cell = displayView.collection.collectionView.visibleCells.first as? DisplayCollectionCell else { return }
+    guard let cell = collection.visibleCells.first as? DisplayCollectionCell else { return }
     if cell.livePhotoView.livePhoto != nil {
       cell.livePhotoView.isMuted.toggle()
       sender.isSelected.toggle()
@@ -77,9 +81,10 @@ class DisplayVC: UIViewController {
   @objc func didTapBackBtn(_ sender: UIButton) {
     navigationController?.popViewController(animated: true)
   }
+  
   @objc private func progressSliderValueChanged(_ sender: UISlider) {
     guard !sender.isHidden else { return }
-    guard let cell = self.displayView.collection.collectionView.visibleCells.first as? DisplayCollectionCell else { return }
+    guard let cell = self.collection.visibleCells.first as? DisplayCollectionCell else { return }
     guard let duration = cell.playerView.player?.currentItem?.duration else { return }
     let value = Float64(sender.value) * CMTimeGetSeconds(duration)
     guard !value.isNaN else { return }
@@ -99,6 +104,7 @@ extension DisplayVC: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DisplayCollectionCell.identifier, for: indexPath) as! DisplayCollectionCell
     guard let object = model?.object else { return cell }
+    self.displayView.hideSlider()
     cell.playerView.isHidden = true
     cell.livePhotoView.isHidden = true
     cell.imageView.isHidden = true
@@ -107,37 +113,37 @@ extension DisplayVC: UICollectionViewDataSource {
                                   image: photo.imageName,
                                   video: photo.videoName,
                                   uuid: photo.photoUUID)
-    print("currentCellIndex: ", indexPath)
-    switch photo.type {
-    case "live":
-      if let photo = model?.tempPhotos[indexPath] {
-        if photo.0 {
-          cell.live = photo.1 as? PHLivePhoto
-        }
-      } else {
-        cell.model?.getLivePhoto(completion: { (live) in
-          cell.live = live
-        })
-      }
-    case "video":
-      if let photo = model?.tempPhotos[indexPath] {
-        if photo.0 {
-          cell.playItem = photo.1 as? AVPlayer
-        }
-      } else {
-        cell.playItem = cell.model?.getVideo()
-      }
-    case "image":
-      if let photo = model?.tempPhotos[indexPath] {
-        if photo.0 {
-          cell.image = photo.1 as? UIImage
-        }
-      } else {
-        cell.image = cell.model?.getImage()
-      }
-    default:
-      break
-    }
+    
+//    switch photo.type {
+//    case "live":
+//      if let photo = model?.tempPhotos[indexPath] {
+//        if photo.0 {
+//          cell.live = photo.1 as? PHLivePhoto
+//        }
+//      } else {
+//        cell.model?.getLivePhoto(completion: { (live) in
+//          cell.live = live
+//        })
+//      }
+//    case "video":
+//      if let photo = model?.tempPhotos[indexPath] {
+//        if photo.0 {
+//          cell.playItem = photo.1 as? AVPlayer
+//        }
+//      } else {
+//        cell.playItem = cell.model?.getVideo()
+//      }
+//    case "image":
+//      if let photo = model?.tempPhotos[indexPath] {
+//        if photo.0 {
+//          cell.image = photo.1 as? UIImage
+//        }
+//      } else {
+//        cell.image = cell.model?.getImage()
+//      }
+//    default:
+//      break
+//    }
     
     cell.setImage()
     return cell
@@ -151,7 +157,7 @@ extension DisplayVC: UICollectionViewDelegate {
     if let cell = cell as? DisplayCollectionCell {
       DispatchQueue.main.async {
         cell.decelerate = true
-        cell.delegate = nil
+//        cell.delegate = nil
         cell.stopPlay()
       }
       
@@ -166,16 +172,67 @@ extension DisplayVC: UICollectionViewDelegate {
       cell.playerView.player?.isMuted = true
       self.displayView.bottomView.muteBtn.isSelected = false
       self.displayView.bottomView.playBtn.isSelected = false
+      if cell.model?.cellType == "video" {
+        let photo = model?.object?.photos[indexPath.row]
+        self.displayView.duration.text = photo?.duration
+        self.displayView.showSlider()
+        cell.addDurationObserver()
+      }
     }
-    model?.lastIndex = indexPath
+//    model?.lastIndex = indexPath
+  }
+  
+  func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    scrollingNotFinish()
+  }
+  
+  func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
+    scrollingNotFinish()
+  }
+  
+  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    scrollingFinished()
+  }
+  
+  func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    if decelerate {
+      return
+    }
+    else {
+      scrollingFinished()
+    }
+  }
+  
+  func scrollingNotFinish() {
+    let cells = collection.visibleCells
+    cells.forEach { cell in
+      guard let cell = cell as? DisplayCollectionCell else { return }
+      cell.decelerate = true
+      cell.delegate = nil
+    }
+  }
+  
+  func scrollingFinished() {
+    guard let cell = collection.visibleCells.first as? DisplayCollectionCell else { return }
+    cell.decelerate = false
+    cell.delegate = self
+//    let cells = collection.visibleCells
+//    cells.forEach { cell in
+//      guard let cell = cell as? DisplayCollectionCell else { return }
+//      cell.decelerate = false
+//    }
   }
   
 }
 
 
 extension DisplayVC: DisplayCollectionCellDelegate {
-  func checkDuration(duration: String) {
-    ()
+  func updateSlider(value: Float) {
+    self.displayView.slider.value = value
+  }
+  
+  func updateDuration(duration: String) {
+    self.displayView.duration.text = duration
   }
   
   func checkCurrentMuteState() -> Bool {

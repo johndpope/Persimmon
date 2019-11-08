@@ -1,3 +1,4 @@
+
 //
 //  DisplayCollectionCell.swift
 //  Persimmon
@@ -15,7 +16,8 @@ protocol DisplayCollectionCellDelegate: class {
   func didTapShort() -> Bool
   func endPlayVideo()
   func checkCurrentMuteState() -> Bool
-  func checkDuration(duration: String)
+  func updateSlider(value: Float)
+  func updateDuration(duration: String)
 }
 
 class DisplayCollectionCell: UICollectionViewCell {
@@ -25,7 +27,7 @@ class DisplayCollectionCell: UICollectionViewCell {
   var timer: Timer?
   var time = 0
   private var endPlayObserver: NSObjectProtocol?
-  private var durationObserver: NSObjectProtocol?
+  private var durationObserver: Any?
   var requestID: PHLivePhotoRequestID?
   
   var decelerate: Bool = true {
@@ -77,24 +79,25 @@ class DisplayCollectionCell: UICollectionViewCell {
   
   var image: UIImage? = nil {
     didSet {
-        if self.image == nil {
-          self.imageView.image = nil
-          self.imageView.isHidden = true
-        } else {
-          self.imageView.image = self.image
-          self.imageView.isHidden = false
-        }
-      
+      if self.image == nil {
+        self.imageView.image = nil
+        self.imageView.isHidden = true
+      } else {
+        self.imageView.image = self.image
+        self.imageView.isHidden = false
+      }
     }
   }
   
   var playItem: AVPlayer? = nil {
     didSet {
         if self.playItem == nil {
-          guard let observer = self.endPlayObserver else { return }
-          NotificationCenter.default.removeObserver(observer)
+          
           self.playerView.playerLayer.player = nil
           self.playerView.isHidden = true
+          guard let observer = self.endPlayObserver else { return }
+          NotificationCenter.default.removeObserver(observer)
+          self.playerView.player?.removeTimeObserver(self.durationObserver as Any)
         } else {
           self.playerView.isHidden = false
           self.playerView.playerLayer.videoGravity = .resizeAspect
@@ -107,11 +110,45 @@ class DisplayCollectionCell: UICollectionViewCell {
             self.playItem?.pause()
             self.delegate?.endPlayVideo()
           })
-          
-          
       }
+    }
+  }
+  
+  func addDurationObserver() {
+    let interval = CMTime(seconds: 0.01, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+    
+    self.durationObserver = playerView.player?.addPeriodicTimeObserver(forInterval: interval, queue: .main, using: { (time) in
+      self.updateVideoPlayerSlider()
+    })
+  }
+  
+  private func updateVideoPlayerSlider() {
+    guard let currentTime = playerView.player?.currentTime() else { return }
+    let currentTimeInSeconds = CMTimeGetSeconds(currentTime)
+//    playerView.progressSliderValue = Float(currentTimeInSeconds)
+    delegate?.updateSlider(value: Float(currentTimeInSeconds))
+    if let currentItem = playerView.player?.currentItem {
+      let duration = currentItem.duration
+      if CMTIME_IS_INVALID(duration) {
+        return
+      }
+      let currentTime = currentItem.currentTime()
+//      playerView.progressSliderValue = Float(CMTimeGetSeconds(currentTime) / CMTimeGetSeconds(duration))
+      delegate?.updateSlider(value: Float(CMTimeGetSeconds(currentTime) / CMTimeGetSeconds(duration)))
+      // Update time remaining Label
+      let totalTimeInSeconds = CMTimeGetSeconds(duration)
+      let remainingTimeInSeconds = totalTimeInSeconds - currentTimeInSeconds
       
+      let mins = remainingTimeInSeconds / 60
+      let secs = remainingTimeInSeconds.truncatingRemainder(dividingBy: 60)
+      let timeFormatter = NumberFormatter()
       
+      timeFormatter.minimumIntegerDigits = 2
+      timeFormatter.minimumFractionDigits = 0
+      timeFormatter.roundingMode = .down
+      guard let minsString = timeFormatter.string(from: NSNumber(value: mins)), let secsString = timeFormatter.string(from: NSNumber(value: secs)) else { return }
+//      playerView.timeLabelText = "\(minsString):\(secsString)"
+      delegate?.updateDuration(duration: "\(minsString):\(secsString)")
     }
   }
   
@@ -205,6 +242,12 @@ class DisplayCollectionCell: UICollectionViewCell {
     }
   }
   
+  func endDisplay() {
+    if let id = requestID {
+      PHLivePhoto.cancelRequest(withRequestID: id)
+    }
+  }
+  
   func stopPlay() {
     if let palyItem = self.playItem {
       palyItem.pause()
@@ -223,6 +266,7 @@ class DisplayCollectionCell: UICollectionViewCell {
     self.live = nil
     self.playItem = nil
     self.image = nil
+    self.delegate = nil
   }
   
   deinit {
