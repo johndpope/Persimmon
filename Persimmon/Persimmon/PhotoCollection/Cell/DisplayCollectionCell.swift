@@ -24,7 +24,6 @@ class DisplayCollectionCell: UICollectionViewCell {
   weak var delegate: DisplayCollectionCellDelegate?
   var timer: Timer?
   var time = 0
-  
   private var endPlayObserver: NSObjectProtocol?
   private var durationObserver: NSObjectProtocol?
   var requestID: PHLivePhotoRequestID?
@@ -73,7 +72,6 @@ class DisplayCollectionCell: UICollectionViewCell {
           self.livePhotoView.livePhoto = self.live
 //          self.livePhotoView.startPlayback(with: .hint)
         }
-      
     }
   }
   
@@ -200,12 +198,6 @@ class DisplayCollectionCell: UICollectionViewCell {
     self.time -= 1
   }
   
-  func endDisplay() {
-    if let id = requestID {
-      PHLivePhoto.cancelRequest(withRequestID: id)
-    }
-  }
-  
   func togglePlay(state: Bool) {
     if let palyItem = self.playerView.player {
       state ? palyItem.pause() : palyItem.play()
@@ -236,11 +228,9 @@ class DisplayCollectionCell: UICollectionViewCell {
   deinit {
     print("deinit displayCollectionCell@@@")
     stopPlay()
-    endDisplay()
     live = nil
     playItem = nil
     image = nil
-    model = nil
   }
   
 }
