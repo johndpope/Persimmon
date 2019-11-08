@@ -30,7 +30,7 @@ class DisplayCellModel {
     
     DispatchQueue.global(qos: .userInitiated).async {
       guard let image = self.getImage() else { return }
-      let transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+      let transform = CGAffineTransform(scaleX: 1, y: 1)
       let size = image.size.applying(transform)
       UIGraphicsBeginImageContext(size)
       image.draw(in: CGRect(origin: .zero, size: size))

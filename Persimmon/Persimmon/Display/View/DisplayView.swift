@@ -34,6 +34,14 @@ class DisplayView: UIView {
     return slider
   }()
   
+  let duration: UILabel = {
+    let label = UILabel()
+    label.backgroundColor = .clear
+    label.textAlignment = .center
+    label.font = UIFont.boldSystemFont(ofSize: 20)
+    return label
+  }()
+  
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
     addSubviews()
@@ -86,7 +94,7 @@ class DisplayView: UIView {
     }
     
     slider.snp.remakeConstraints {
-      $0.leading.trailing.equalToSuperview()
+      $0.leading.trailing.equalToSuperview().inset(20)
       $0.bottom.equalTo(bottomView.snp.top).offset(-5)
       $0.height.equalToSuperview().multipliedBy(0)
     }
@@ -126,14 +134,21 @@ class DisplayView: UIView {
     }
     
     slider.snp.makeConstraints {
-      $0.leading.trailing.equalToSuperview()
+      $0.leading.equalToSuperview().offset(20)
       $0.bottom.equalTo(bottomView.snp.top).offset(-5)
       $0.height.equalToSuperview().multipliedBy(0.05)
+    }
+    
+    duration.snp.makeConstraints {
+      $0.leading.equalTo(slider).offset(20)
+      $0.trailing.equalToSuperview().offset(-20)
+      $0.height.equalToSuperview().multipliedBy(0.05)
+      $0.bottom.equalTo(slider)
     }
   }
   
   func addSubviews() {
-    [collection, topView, bottomView, slider].forEach {
+    [collection, topView, bottomView, slider, duration].forEach {
       self.addSubview($0)
     }
   }
