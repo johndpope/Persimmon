@@ -32,12 +32,27 @@ class DisplayCollectionCell: UICollectionViewCell {
   
   var decelerate: Bool = true {
     didSet {
-//      guard !decelerate,
-//        model?.cellType == "live",
-//        livePhotoView.livePhoto == nil else { return }
-//      self.requestID = self.model?.getLivePhoto(completion: { (live) in
-//        self.live = live
-//      })
+      guard !decelerate else { return }
+      switch self.model?.cellType {
+      case "image":
+        DispatchQueue.global(qos: .userInitiated).async {
+          guard let image = self.model?.getImage() else { return }
+          DispatchQueue.main.async {
+            self.image = image
+          }
+        }
+      case "live":
+        DispatchQueue.global(qos: .userInitiated).async {
+          self.model?.getLivePhoto(completion: { (live) in
+            DispatchQueue.main.async {
+              self.live = live
+              self.imageView.isHidden = true
+            }
+          })
+        }
+      default:
+        break
+      }
     }
   }
   
@@ -61,7 +76,21 @@ class DisplayCollectionCell: UICollectionViewCell {
     return view
   }()
   
-  var model: DisplayCellModel?
+  var model: DisplayCellModel? {
+    didSet {
+      switch self.model?.cellType {
+      case "video":
+          guard let video = self.model?.getVideo() else { return }
+            self.playItem = video
+      default:
+        self.model?.getThumbnail(completion: { (image) in
+          DispatchQueue.main.async {
+            self.image = image
+          }
+        })
+      }
+    }
+  }
   
   var live: PHLivePhoto? = nil {
     didSet {
@@ -92,7 +121,6 @@ class DisplayCollectionCell: UICollectionViewCell {
   var playItem: AVPlayer? = nil {
     didSet {
         if self.playItem == nil {
-          
           self.playerView.playerLayer.player = nil
           self.playerView.isHidden = true
           guard let observer = self.endPlayObserver else { return }
@@ -186,18 +214,8 @@ class DisplayCollectionCell: UICollectionViewCell {
     
   }
   
-  func setImage() {
+  func setPlayer() {
       switch self.model?.cellType {
-      case "image":
-        self.model?.getThumbnail(completion: { (image) in
-          DispatchQueue.main.async {
-            self.image = image
-          }
-        })
-      case "live":
-        self.requestID = self.model?.getLivePhoto(completion: { (live) in
-          self.live = live
-        })
       case "video":
         DispatchQueue.main.async {
           guard let video = self.model?.getVideo() else { return }

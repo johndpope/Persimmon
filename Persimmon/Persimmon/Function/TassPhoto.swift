@@ -103,12 +103,12 @@ class TassPhoto {
         }
       }
       PHImageManager.default().requestImage(for: asset,
-                                            targetSize: CGSize(width: asset.pixelWidth/3, height: asset.pixelHeight/3),
+                                            targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight),
                                             contentMode: .aspectFill,
                                             options: options) { (image, info) in
         do {
-          thumbURL = saveURL?.appendingPathComponent("small.png")
-          let data = image?.pngData()
+          thumbURL = saveURL?.appendingPathComponent("small.jpg")
+          let data = image?.jpegData(compressionQuality: 0.8)
           try data?.write(to: thumbURL!, options: .withoutOverwriting)
         } catch(let err) {
           dump(err)

@@ -145,7 +145,7 @@ extension DisplayVC: UICollectionViewDataSource {
 //      break
 //    }
     
-    cell.setImage()
+//    cell.setImage()
     return cell
   }
   
@@ -157,7 +157,7 @@ extension DisplayVC: UICollectionViewDelegate {
     if let cell = cell as? DisplayCollectionCell {
       DispatchQueue.main.async {
         cell.decelerate = true
-//        cell.delegate = nil
+        cell.delegate = nil
         cell.stopPlay()
       }
       
@@ -166,18 +166,13 @@ extension DisplayVC: UICollectionViewDelegate {
   
   func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
     if let cell = cell as? DisplayCollectionCell {
-      cell.setImage()
-      cell.delegate = self
+      cell.setPlayer()
+//      cell.delegate = self
       cell.livePhotoView.isMuted = true
       cell.playerView.player?.isMuted = true
       self.displayView.bottomView.muteBtn.isSelected = false
       self.displayView.bottomView.playBtn.isSelected = false
-      if cell.model?.cellType == "video" {
-        let photo = model?.object?.photos[indexPath.row]
-        self.displayView.duration.text = photo?.duration
-        self.displayView.showSlider()
-        cell.addDurationObserver()
-      }
+      self.displayView.slider.setValue(0, animated: false)
     }
 //    model?.lastIndex = indexPath
   }
@@ -208,7 +203,7 @@ extension DisplayVC: UICollectionViewDelegate {
     cells.forEach { cell in
       guard let cell = cell as? DisplayCollectionCell else { return }
       cell.decelerate = true
-      cell.delegate = nil
+//      cell.delegate = nil
     }
   }
   
@@ -216,11 +211,13 @@ extension DisplayVC: UICollectionViewDelegate {
     guard let cell = collection.visibleCells.first as? DisplayCollectionCell else { return }
     cell.decelerate = false
     cell.delegate = self
-//    let cells = collection.visibleCells
-//    cells.forEach { cell in
-//      guard let cell = cell as? DisplayCollectionCell else { return }
-//      cell.decelerate = false
-//    }
+    if cell.model?.cellType == "video" {
+      guard let index = collection.indexPath(for: cell) else { return }
+      let photo = model?.object?.photos[index.row]
+      self.displayView.duration.text = photo?.duration
+      self.displayView.showSlider()
+      cell.addDurationObserver()
+    }
   }
   
 }
