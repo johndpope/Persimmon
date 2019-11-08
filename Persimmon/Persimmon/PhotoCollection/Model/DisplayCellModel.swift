@@ -9,6 +9,7 @@
 import UIKit
 import Photos
 import AVKit
+import ImageIO
 
 class DisplayCellModel {
   private let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -25,8 +26,25 @@ class DisplayCellModel {
     self.photoUUID = uuid
   }
   
+  func getThumbnail(completion: @escaping (UIImage?) -> ()) {
+    
+    DispatchQueue.global(qos: .userInitiated).async {
+      guard let image = self.getImage() else { return }
+      let transform = CGAffineTransform(scaleX: 1, y: 1)
+      let size = image.size.applying(transform)
+      UIGraphicsBeginImageContext(size)
+      image.draw(in: CGRect(origin: .zero, size: size))
+      let resultImage = UIGraphicsGetImageFromCurrentImageContext()
+      UIGraphicsEndImageContext()
+      
+      completion(resultImage)
+    }
+    
+  }
+  
   func getImage() -> UIImage? {
     guard let uuid = photoUUID, let name = imageName, let imageData = try? Data(contentsOf: url.appendingPathComponent("\(uuid)/\(name)")) else { return nil }
+    
    return UIImage(data: imageData)
   }
   

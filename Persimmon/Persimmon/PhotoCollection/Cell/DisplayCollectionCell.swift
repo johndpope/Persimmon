@@ -11,7 +11,11 @@ import AVKit
 import PhotosUI
 
 protocol DisplayCollectionCellDelegate: class {
+  @discardableResult
   func didTapShort() -> Bool
+  func endPlayVideo()
+  func checkCurrentMuteState() -> Bool
+  func checkDuration(duration: String)
 }
 
 class DisplayCollectionCell: UICollectionViewCell {
@@ -20,8 +24,20 @@ class DisplayCollectionCell: UICollectionViewCell {
   weak var delegate: DisplayCollectionCellDelegate?
   var timer: Timer?
   var time = 0
+  private var endPlayObserver: NSObjectProtocol?
+  private var durationObserver: NSObjectProtocol?
+  var requestID: PHLivePhotoRequestID?
   
-  private var observer: NSObjectProtocol?
+  var decelerate: Bool = true {
+    didSet {
+//      guard !decelerate,
+//        model?.cellType == "live",
+//        livePhotoView.livePhoto == nil else { return }
+//      self.requestID = self.model?.getLivePhoto(completion: { (live) in
+//        self.live = live
+//      })
+    }
+  }
   
   var imageView: UIImageView = {
     let view = UIImageView()
@@ -32,7 +48,7 @@ class DisplayCollectionCell: UICollectionViewCell {
   var livePhotoView: PHLivePhotoView = {
     let view = PHLivePhotoView()
     view.contentMode = .scaleAspectFit
-    view.startPlayback(with: .hint)
+//    view.startPlayback(with: .hint)
     view.isMuted = true
     return view
   }()
@@ -42,7 +58,7 @@ class DisplayCollectionCell: UICollectionViewCell {
     view.contentMode = .scaleAspectFit
     return view
   }()
-
+  
   var model: DisplayCellModel?
   
   var live: PHLivePhoto? = nil {
@@ -54,7 +70,7 @@ class DisplayCollectionCell: UICollectionViewCell {
         } else {
           self.livePhotoView.isHidden = false
           self.livePhotoView.livePhoto = self.live
-          self.livePhotoView.startPlayback(with: .hint)
+//          self.livePhotoView.startPlayback(with: .hint)
         }
     }
   }
@@ -75,7 +91,7 @@ class DisplayCollectionCell: UICollectionViewCell {
   var playItem: AVPlayer? = nil {
     didSet {
         if self.playItem == nil {
-          guard let observer = self.observer else { return }
+          guard let observer = self.endPlayObserver else { return }
           NotificationCenter.default.removeObserver(observer)
           self.playerView.playerLayer.player = nil
           self.playerView.isHidden = true
@@ -84,12 +100,15 @@ class DisplayCollectionCell: UICollectionViewCell {
           self.playerView.playerLayer.videoGravity = .resizeAspect
           self.playerView.playerLayer.player = self.playItem
           
-          self.observer = NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: self.playItem?.currentItem, queue: nil, using: { [weak self] (_) in
+          self.endPlayObserver = NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: self.playItem?.currentItem, queue: nil, using: { [weak self] (_) in
             guard let `self` = self else { return }
             self.playItem?.seek(to: CMTime.zero)
             self.playItem?.isMuted = true
             self.playItem?.pause()
+            self.delegate?.endPlayVideo()
           })
+          
+          
       }
       
       
@@ -103,7 +122,7 @@ class DisplayCollectionCell: UICollectionViewCell {
   
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
-    self.backgroundColor = .appColor(.appGreenColor)
+    self.backgroundColor = .black
     [imageView, livePhotoView, playerView].forEach {
       self.contentView.addSubview($0)
     }
@@ -130,7 +149,30 @@ class DisplayCollectionCell: UICollectionViewCell {
     
   }
   
+  func setImage() {
+      switch self.model?.cellType {
+      case "image":
+        self.model?.getThumbnail(completion: { (image) in
+          DispatchQueue.main.async {
+            self.image = image
+          }
+        })
+      case "live":
+        self.requestID = self.model?.getLivePhoto(completion: { (live) in
+          self.live = live
+        })
+      case "video":
+        DispatchQueue.main.async {
+          guard let video = self.model?.getVideo() else { return }
+          self.playItem = video
+        }
+      default:
+        break
+      }
+  }
+  
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    self.livePhotoView.stopPlayback()
     if let timer = timer {
       if !timer.isValid {
         self.timer  = Timer.scheduledTimer(timeInterval: -1, target: self, selector: #selector(discount), userInfo: nil, repeats: true)
@@ -144,9 +186,7 @@ class DisplayCollectionCell: UICollectionViewCell {
     if let timer = timer {
       if(timer.isValid){
         if time >= 0 {
-          if let dele = delegate {
-            self.backgroundColor = dele.didTapShort() ? .black : .appColor(.appGreenColor)
-          }
+          delegate?.didTapShort()
         }
         time = 1
         self.timer?.invalidate()
@@ -159,8 +199,9 @@ class DisplayCollectionCell: UICollectionViewCell {
   }
   
   func togglePlay(state: Bool) {
-    if let palyItem = self.playItem {
+    if let palyItem = self.playerView.player {
       state ? palyItem.pause() : palyItem.play()
+      self.playerView.player?.isMuted = delegate?.checkCurrentMuteState() ?? true ? false : true
     }
   }
   
@@ -174,10 +215,14 @@ class DisplayCollectionCell: UICollectionViewCell {
   
   override func prepareForReuse() {
     super.prepareForReuse()
-    stopPlay()
-    live = nil
-    playItem = nil
-    image = nil
+    DispatchQueue.main.async {
+      self.stopPlay()
+      self.endDisplay()
+      
+    }
+    self.live = nil
+    self.playItem = nil
+    self.image = nil
   }
   
   deinit {
