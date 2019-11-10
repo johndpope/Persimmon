@@ -119,9 +119,11 @@ class PhotoListVC: UIViewController {
   }
   
   @objc func didTapSelectBtn(_ sender: UIButton) {
+    photoListView.topView.moveImageView()
+    
     popUpView.snp.remakeConstraints {
       $0.top.height.equalTo(photoListView.topView.selectBtn)
-      $0.trailing.equalToSuperview().offset(-5)
+      $0.trailing.equalToSuperview().offset(-20)
       $0.width.equalToSuperview().multipliedBy(0.3)
     }
     
@@ -160,6 +162,8 @@ class PhotoListVC: UIViewController {
   }
   
   private func hiddenPopUpView() {
+    photoListView.topView.revertImageView()
+    
     self.popUpView.snp.remakeConstraints {
       $0.top.equalToSuperview()
       $0.height.equalTo(50)

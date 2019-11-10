@@ -70,11 +70,13 @@ class PhotoGraveVC: UIViewController {
   }
   
   @objc func didTapSelectBtn(_ sender: UIButton) {
+    photoGraveView.countView.moveCountLabel()
+    
     self.popUpView.snp.remakeConstraints {
       $0.top.equalToSuperview()
       $0.height.equalToSuperview()
       $0.trailing.equalToSuperview().offset(-5)
-      $0.width.equalToSuperview().multipliedBy(0.25)
+      $0.width.equalToSuperview().multipliedBy(0.3)
     }
     photoGraveView.countView.selectBtn.isHidden.toggle()
     photoGraveView.countView.selectBtn.isEnabled.toggle()
@@ -107,6 +109,8 @@ class PhotoGraveVC: UIViewController {
   }
   
   private func hiddenPopUpView() {
+    photoGraveView.countView.revertCountLabel()
+    
     self.popUpView.snp.remakeConstraints {
       $0.top.equalToSuperview()
       $0.height.equalToSuperview()

@@ -40,10 +40,23 @@ class CountView: UIView {
       .forEach { self.addSubview($0) }
   }
   
+  func moveCountLabel() {
+    listNumberLabel.snp.remakeConstraints {
+      $0.centerY.equalTo(self)
+//      $0.centerX.equalTo(self).multipliedBy(0.75)
+      $0.leading.equalTo(self).offset(20)
+    }
+  }
+  
+  func revertCountLabel() {
+    listNumberLabel.snp.remakeConstraints {
+      $0.centerX.centerY.equalTo(self)
+    }
+  }
+  
   private func setupSNP() {
     listNumberLabel.snp.makeConstraints {
       $0.centerX.centerY.equalTo(self)
-      
     }
     
     selectBtn.snp.makeConstraints {
