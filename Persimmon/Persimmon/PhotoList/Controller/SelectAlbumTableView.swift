@@ -15,7 +15,8 @@ class SelectAlbumTableView: UIView {
   
   let tableView: UITableView = {
     let view = UITableView()
-    view.register(AlbumListTableCell.self, forCellReuseIdentifier: AlbumListTableCell.identifier)
+//    view.register(UITableViewCell(style: .subtitle, reuseIdentifier: "selectCell"))
+    view.separatorStyle = .singleLine
     return view
   }()
   
@@ -43,23 +44,26 @@ extension SelectAlbumTableView: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: AlbumListTableCell.identifier, for: indexPath) as! AlbumListTableCell
+    let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "selectCell")
     
-    cell.selectionStyle = .none
-    cell.titleLabel.text = albums[indexPath.row].title
-    cell.subTitleLabel.text = "[ \(albums[indexPath.row].photos.count.description) ]"
-    cell.albumImageView.contentMode = .scaleAspectFill
-    cell.albumUUID = albums[indexPath.row].albumUUID
+//    cell.selectionStyle = .none
+//    cell.titleLabel.text = albums[indexPath.row].title
+//    cell.subTitleLabel.text = "[ \(albums[indexPath.row].photos.count.description) ]"
+//    cell.albumImageView.contentMode = .scaleAspectFill
+//    cell.albumUUID = albums[indexPath.row].albumUUID
+    cell.textLabel?.text = albums[indexPath.row].title
+    cell.detailTextLabel?.text = "[ \(albums[indexPath.row].photos.count.description) ]"
+//    cell.imageView?.image =
     
     guard let lastPhoto = albums[indexPath.row].photos.last,
       let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
       let imageData = try? Data(contentsOf: url.appendingPathComponent("\(lastPhoto.photoUUID)/\(lastPhoto.thumbnail)")) else {
-        cell.albumImageView.image = UIImage(named: "persimmonIcon")
+        cell.imageView?.image = UIImage(named: "persimmonIcon")
         return cell
-        
+
     }
     
-    cell.albumImageView.image = UIImage(data: imageData)
+    cell.imageView?.image = UIImage(data: imageData)
     return cell
   }
   

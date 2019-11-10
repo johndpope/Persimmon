@@ -72,6 +72,23 @@ class TopView: UIView {
     //      .forEach { containerView.addSubview($0) }
   }
   
+  func moveImageView() {
+    profileImageView.snp.remakeConstraints {
+      $0.top.equalTo(self.snp.topMargin).offset(10)
+      $0.width.height.equalTo(self.snp.height).multipliedBy(0.55)
+      $0.centerX.equalToSuperview().offset(-50)
+    }
+  }
+  
+  func revertImageView() {
+    profileImageView.snp.remakeConstraints {
+      $0.top.equalTo(self.snp.topMargin).offset(10)
+      $0.centerX.equalToSuperview()
+      $0.width.height.equalTo(self.snp.height).multipliedBy(0.55)
+      
+    }
+  }
+  
   private func setupSNP() {
     backBtn.snp.makeConstraints {
       $0.top.equalTo(self.snp.topMargin).offset(10)
@@ -94,13 +111,13 @@ class TopView: UIView {
     
     albumTitle.snp.makeConstraints {
       $0.bottom.equalTo(listNumberLabel.snp.top).offset(-10)
-      $0.centerX.equalToSuperview()
+      $0.centerX.equalTo(profileImageView)
       
     }
     
     listNumberLabel.snp.makeConstraints {
       $0.bottom.equalToSuperview().offset(-5)
-      $0.centerX.equalToSuperview()
+      $0.centerX.equalTo(profileImageView)
       
     }
   }

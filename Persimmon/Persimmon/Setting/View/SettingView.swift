@@ -15,8 +15,8 @@ class SettingView: UIView {
   
   var delegate: SettingViewDelegate?
   
-  private let passCodeData = [" 비밀번호 설정", " 사진 크기"]
-  private let donationData = [" 기부하기"]
+  private let passCodeData = [" 비밀번호 설정"]
+  private let donationData = [" 사진 크기"]
   
   let topView: UIView = {
     let topView = UIView()
@@ -71,8 +71,8 @@ class SettingView: UIView {
   
   let scaleBtn: UIButton = {
     let button = UIButton(type: .custom)
-    button.setImage(UIImage(named: "PersimmonIconFalse"), for: .selected)
-    button.setImage(UIImage(named: "PersimmonIconTrue"), for: .normal)
+    button.setImage(UIImage(named: "PersimmonIconTrue"), for: .selected)
+    button.setImage(UIImage(named: "PersimmonIconFalse"), for: .normal)
     let scale = UserDefaults.standard.bool(forKey: "scale")
     button.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
     button.isSelected = scale
@@ -160,7 +160,7 @@ extension SettingView: UITableViewDataSource {
     
     switch section {
     case 0:
-      return 1
+      return 0
     case 1:
       return passCodeData.count
     case 2:
@@ -209,15 +209,15 @@ extension SettingView: UITableViewDataSource {
         cell.textLabel?.text = passCodeData[indexPath.row]
         cell.textLabel?.textColor = UIColor.appColor(.appGreenColor)
         cell.selectionStyle = .none
-      case 1:
-        cell.imageView?.image = UIImage(named: "photoSize")
-        cell.imageView?.tintColor = UIColor.appColor(.appGreenColor)
-        cell.accessoryType = .disclosureIndicator
-        cell.textLabel?.font = UIFont(name: "NanumPen", size: 20)
-        cell.textLabel?.text = passCodeData[indexPath.row]
-        cell.textLabel?.textColor = UIColor.appColor(.appGreenColor)
-        cell.accessoryView = scaleBtn
-        cell.selectionStyle = .none
+//      case 1:
+//        cell.imageView?.image = UIImage(named: "photoSize")
+//        cell.imageView?.tintColor = UIColor.appColor(.appGreenColor)
+//        cell.accessoryType = .disclosureIndicator
+//        cell.textLabel?.font = UIFont(name: "NanumPen", size: 20)
+//        cell.textLabel?.text = passCodeData[indexPath.row]
+//        cell.textLabel?.textColor = UIColor.appColor(.appGreenColor)
+//        cell.accessoryView = scaleBtn
+//        cell.selectionStyle = .none
       default:
         break
       }
@@ -234,13 +234,21 @@ extension SettingView: UITableViewDataSource {
     case 2:
       
       if indexPath.row == 0 {
-        cell.imageView?.image = UIImage(named: "donation")
+        cell.imageView?.image = UIImage(named: "photoSize")
         cell.imageView?.tintColor = UIColor.appColor(.appGreenColor)
         cell.accessoryType = .disclosureIndicator
-        cell.textLabel?.text = donationData[indexPath.row]
         cell.textLabel?.font = UIFont(name: "NanumPen", size: 20)
+        cell.textLabel?.text = passCodeData[indexPath.row]
         cell.textLabel?.textColor = UIColor.appColor(.appGreenColor)
+        cell.accessoryView = scaleBtn
         cell.selectionStyle = .none
+//        cell.imageView?.image = UIImage(named: "donation")
+//        cell.imageView?.tintColor = UIColor.appColor(.appGreenColor)
+//        cell.accessoryType = .disclosureIndicator
+//        cell.textLabel?.text = donationData[indexPath.row]
+//        cell.textLabel?.font = UIFont(name: "NanumPen", size: 20)
+//        cell.textLabel?.textColor = UIColor.appColor(.appGreenColor)
+//        cell.selectionStyle = .none
       }
       //    case 3:
       //      cell.textLabel?.text = ""
