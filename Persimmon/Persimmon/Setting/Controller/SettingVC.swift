@@ -39,9 +39,9 @@ extension SettingVC: SettingViewDelegate {
     case IndexPath(row: 0, section: 1):
       let passCodeSetVC = ChangePassCodeVC()
       navigationController?.pushViewController(passCodeSetVC, animated: true)
-//    case IndexPath(row: 0, section: 2):
-//      let donationVC = DonationVC()
-//      navigationController?.pushViewController(donationVC, animated: true)
+    case IndexPath(row: 0, section: 2):
+      let donationVC = DonationVC()
+      navigationController?.pushViewController(donationVC, animated: true)
     default:
       break
     }
