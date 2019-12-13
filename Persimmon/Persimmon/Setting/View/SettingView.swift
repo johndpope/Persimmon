@@ -15,8 +15,8 @@ class SettingView: UIView {
   
   var delegate: SettingViewDelegate?
   
-  private let passCodeData = [" 비밀번호 설정"]
-  private let donationData = [" 사진 크기"]
+  private let passCodeData = [" 사진 크기"]
+  private let donationData = [" 비밀번호 설정"]
   
   let topView: UIView = {
     let topView = UIView()
@@ -165,8 +165,8 @@ extension SettingView: UITableViewDataSource {
       return passCodeData.count
     case 2:
       return donationData.count
-//    case 3:
-//      return 1
+    case 3:
+      return 1
     default:
       return 0
     }
@@ -222,15 +222,15 @@ extension SettingView: UITableViewDataSource {
         break
       }
       
-//      if indexPath.row == 0 {
-//        cell.imageView?.image = UIImage(named: "login")
-//        cell.imageView?.tintColor = UIColor.appColor(.appGreenColor)
-//        cell.accessoryType = .disclosureIndicator
-//        cell.textLabel?.font = UIFont(name: "NanumPen", size: 20)
-//        cell.textLabel?.text = " 비밀번호 변경"
-//        cell.textLabel?.textColor = UIColor.appColor(.appGreenColor)
-//        cell.selectionStyle = .none
-//      }
+      if indexPath.row == 0 {
+        cell.imageView?.image = UIImage(named: "login")
+        cell.imageView?.tintColor = UIColor.appColor(.appGreenColor)
+        cell.accessoryType = .disclosureIndicator
+        cell.textLabel?.font = UIFont(name: "NanumPen", size: 20)
+        cell.textLabel?.text = " 비밀번호 변경"
+        cell.textLabel?.textColor = UIColor.appColor(.appGreenColor)
+        cell.selectionStyle = .none
+      }
     case 2:
       
       if indexPath.row == 0 {
