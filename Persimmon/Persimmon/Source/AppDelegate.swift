@@ -9,6 +9,8 @@
 import UIKit
 import RealmSwift
 
+// restart on 2020/06/13 - tass
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
   
