@@ -1,14 +1,14 @@
 PODS:
-  - Kingfisher (5.8.3):
-    - Kingfisher/Core (= 5.8.3)
-  - Kingfisher/Core (5.8.3)
-  - Realm (3.20.0):
-    - Realm/Headers (= 3.20.0)
-  - Realm/Headers (3.20.0)
-  - RealmSwift (3.20.0):
-    - Realm (= 3.20.0)
+  - Kingfisher (5.14.0):
+    - Kingfisher/Core (= 5.14.0)
+  - Kingfisher/Core (5.14.0)
+  - Realm (5.0.3):
+    - Realm/Headers (= 5.0.3)
+  - Realm/Headers (5.0.3)
+  - RealmSwift (5.0.3):
+    - Realm (= 5.0.3)
   - SnapKit (5.0.1)
-  - TLPhotoPicker (2.0.4)
+  - TLPhotoPicker (2.0.11)
 
 DEPENDENCIES:
   - Kingfisher
@@ -25,11 +25,11 @@ SPEC REPOS:
     - TLPhotoPicker
 
 SPEC CHECKSUMS:
-  Kingfisher: b7e4cb65ff24c264bd2a1284b75b974d907afd94
-  Realm: 8b2ca5bc6479a91f379b6b42b5922e396cd5ba5a
-  RealmSwift: 1949ef26a279e1845bd51d591b9103adfcd121df
+  Kingfisher: 7b64389a43139c903ec434788344c288217c792d
+  Realm: bfca1699b61b0b17c3a69ae0e648314eae91fbdb
+  RealmSwift: 493c9f089cd3893b3959007973c0e4f640906ba0
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  TLPhotoPicker: 3b948586892849998d38332e632a89baba32b011
+  TLPhotoPicker: a5c339732b8326bb16cbb4e00ed01a86f2bfbbb3
 
 PODFILE CHECKSUM: 55653d9e049a09ce13563ef3866c6d4a30e956e2
 
