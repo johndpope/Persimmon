@@ -29,6 +29,7 @@ TLPhotoPicker enables application to pick images and videos from multiple smart 
 - custom display and selection rules
 - reload of changes that occur in the Photos library.
 - support iCloud Photo Library
+- adds long press preview to images. ( to @smeshko ) [Preview](https://github.com/tilltue/TLPhotoPicker/pull/252#issue-362005178)
 
 | Smart album collection | LivePhotoCell | VideoPhotoCell  | PhotoCell | CustomCell(instagram) |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
@@ -88,9 +89,10 @@ class ViewController: UIViewController,TLPhotosPickerViewControllerDelegate {
         self.present(viewController, animated: true, completion: nil)
     }
     //TLPhotosPickerViewControllerDelegate
-    func dismissPhotoPicker(withTLPHAssets: [TLPHAsset]) {
+    func shouldDismissPhotoPicker(withTLPHAssets: [TLPHAsset]) -> Bool {
         // use selected order, fullresolution image
         self.selectedAssets = withTLPHAssets
+	return true
     }
     func dismissPhotoPicker(withPHAssets: [PHAsset]) {
         // if you want to used phasset. 
@@ -242,7 +244,13 @@ public struct TLPHAsset {
     // parmeter : convertLivePhotosToJPG
     // false : If you want mov file at live photos
     // true  : If you want png file at live photos ( HEIC )
-    public func tempCopyMediaFile(videoRequestOptions: PHVideoRequestOptions? = nil, imageRequestOptions: PHImageRequestOptions? = nil, exportPreset: String = AVAssetExportPresetHighestQuality, convertLivePhotosToJPG: Bool = false, progressBlock:((Double) -> Void)? = nil, completionBlock:@escaping ((URL,String) -> Void)) -> PHImageRequestID?
+    public func tempCopyMediaFile(videoRequestOptions: PHVideoRequestOptions? = nil, 
+                                  imageRequestOptions: PHImageRequestOptions? = nil,
+                                  livePhotoRequestOptions: PHLivePhotoRequestOptions? = nil,
+                                  exportPreset: String = AVAssetExportPresetHighestQuality, 
+                                  convertLivePhotosToJPG: Bool = false, 
+                                  progressBlock:((Double) -> Void)? = nil, 
+                                  completionBlock:@escaping ((URL,String) -> Void)) -> PHImageRequestID?
     //Apparently, This is not the only way to export video.
     //There is many way that export a video.
     //This method was one of them.
@@ -275,6 +283,7 @@ public struct TLPhotosPickerConfigure {
     public var emptyImage: UIImage? = nil
     public var usedCameraButton = true
     public var usedPrefetch = false
+    public var previewAtForceTouch = false
     public var allowedLivePhotos = true
     public var allowedVideo = true
     public var allowedAlbumCloudShared = false
