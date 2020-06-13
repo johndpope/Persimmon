@@ -116,6 +116,22 @@ class PassCodeVC: UIViewController {
       if authContext.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &authorizationError) {
         authContext.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, localizedReason: "생체인증 기능을 사용해요.") { (success, err) in
           if success {
+            let new = authContext.evaluatedPolicyDomainState
+            let current = self.userDefaults.data(forKey: "bioData")
+              
+            guard current == nil || current == new else {
+              DispatchQueue.main.async {
+                Isaac.toast("changed DomainState at system!!!")
+                self.userDefaults.set(1, forKey: "bio")
+                self.goNext()
+              }
+              return
+            }
+            
+            if current == nil {
+              self.userDefaults.setValue(authContext.evaluatedPolicyDomainState, forKey: "bioData")
+            }
+            
             DispatchQueue.main.async {
               self.userDefaults.set(1, forKey: "bio")
               self.goNext()
