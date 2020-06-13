@@ -9,12 +9,14 @@ PODS:
     - Realm (= 5.0.3)
   - SnapKit (5.0.1)
   - TLPhotoPicker (2.0.11)
+  - Toast-Swift (5.0.1)
 
 DEPENDENCIES:
   - Kingfisher
   - RealmSwift
   - SnapKit
   - TLPhotoPicker
+  - Toast-Swift (~> 5.0.0)
 
 SPEC REPOS:
   trunk:
@@ -23,6 +25,7 @@ SPEC REPOS:
     - RealmSwift
     - SnapKit
     - TLPhotoPicker
+    - Toast-Swift
 
 SPEC CHECKSUMS:
   Kingfisher: 7b64389a43139c903ec434788344c288217c792d
@@ -30,7 +33,8 @@ SPEC CHECKSUMS:
   RealmSwift: 493c9f089cd3893b3959007973c0e4f640906ba0
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   TLPhotoPicker: a5c339732b8326bb16cbb4e00ed01a86f2bfbbb3
+  Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
 
-PODFILE CHECKSUM: 55653d9e049a09ce13563ef3866c6d4a30e956e2
+PODFILE CHECKSUM: 4d8d45f99ff6b30a6f81d6912497c7f32647b435
 
 COCOAPODS: 1.8.4

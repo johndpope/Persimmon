@@ -43,23 +43,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
   
   func sceneDidDisconnect(_ scene: UIScene) {
-    print("\n-------------[sceneDidDisconnect]-------------\n")
   }
   
   func sceneDidBecomeActive(_ scene: UIScene) {
-    print("\n-------------[sceneDidBecomeActive]-------------\n")
   }
   
   func sceneWillResignActive(_ scene: UIScene) {
-    print("\n-------------[sceneWillResignActive]-------------\n")
   }
   
   func sceneWillEnterForeground(_ scene: UIScene) {
-    print("\n-------------[sceneWillEnterForeground]-------------\n")
   }
   
   func sceneDidEnterBackground(_ scene: UIScene) {
-    print("\n-------------[sceneDidEnterBackground]-------------\n")
     let rootView = PassCodeVC()
     window?.rootViewController = rootView
     window?.makeKeyAndVisible()

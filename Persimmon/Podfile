@@ -9,6 +9,7 @@ target 'Persimmon' do
   pod 'SnapKit'
   pod 'Kingfisher'
   pod 'TLPhotoPicker'
+  pod 'Toast-Swift', '~> 5.0.0’
 
   # Pods for Persimmon
 
