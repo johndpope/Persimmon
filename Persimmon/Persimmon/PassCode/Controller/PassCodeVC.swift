@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import LocalAuthentication
 
 
 class PassCodeVC: UIViewController {
@@ -15,6 +16,8 @@ class PassCodeVC: UIViewController {
   let launchPassCodeView = LaunchPassCodeView()
   
   let userDefaults = UserDefaults.standard
+  
+  var authorizationError: NSError?
   
   var prePassCode: String = ""
   var stackView: UIStackView {
@@ -34,14 +37,7 @@ class PassCodeVC: UIViewController {
         if let saveCode = userDefaults.string(forKey: "pw") {
           if text == saveCode {
             // 넘어가기
-            let vc = MainTabBarController()
-            let navi = UINavigationController(rootViewController: vc)
-            navi.modalPresentationStyle = .fullScreen
-            navi.modalTransitionStyle = .crossDissolve
-            navi.navigationBar.isHidden = true
-            self.present(navi, animated: true)
-            
-            print("넘어가라")
+            setupBiometric()
           } else {
             
             let alert = UIAlertController(title: "", message: "비밀번호가 틀립니다.", preferredStyle: .alert)
@@ -80,13 +76,8 @@ class PassCodeVC: UIViewController {
             if prePassCode == text {
               // userdefaults 저장 -> 넘어가기
               userDefaults.setValue(text, forKey: "pw")
-              let vc = MainTabBarController()
-              let navi = UINavigationController(rootViewController: vc)
-              navi.modalPresentationStyle = .fullScreen
-              navi.modalTransitionStyle = .crossDissolve
-              navi.navigationBar.isHidden = true
-              self.present(navi, animated: true)
               
+              setupBiometric(isRegi: true)
               
               print("이제 저장 후 넘어가기 해야함")
             } else {
@@ -111,6 +102,89 @@ class PassCodeVC: UIViewController {
       
     }
     
+  }
+  
+  private func setupBiometric(isRegi: Bool = false) {
+//      guard self.model.viewState == .enter || self.model.viewState == .register2 else { return }
+      
+//      if self.model.viewState == .enter {
+//        guard UserDefaults.standard.isBiometric else { return }
+//      }
+      
+      let authContext = LAContext()
+      
+      if authContext.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &authorizationError) {
+        authContext.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, localizedReason: "생체인증 기능을 사용해요.") { (success, err) in
+          if success {
+            DispatchQueue.main.async {
+              self.userDefaults.set(1, forKey: "bio")
+              self.goNext()
+            }
+          } else {
+            if let errorObj = err {
+              let messageToDisplay = self.getErrorDescription(errorCode: errorObj._code)
+              print("fail: ", messageToDisplay, errorObj._code)
+              if errorObj._code == -6 && isRegi {
+                DispatchQueue.main.async {
+                  self.userDefaults.set(2, forKey: "bio")
+                  self.goNext()
+                }
+              } else {
+                print("when here?")
+                let alert = UIAlertController(title: "", message: "생체인증 오류, 처음부터 다시하세요.", preferredStyle: .alert)
+                
+                let reInput = UIAlertAction(title: "확인", style: .default) { (action) in
+                  if isRegi {
+                    self.userDefaults.removeObject(forKey: "pw")
+                  }
+                  self.text = ""
+                  self.prePassCode = ""
+                  self.stackView.arrangedSubviews.forEach { (view) in
+                    view.alpha = 0.5
+                  }
+                }
+                alert.addAction(reInput)
+                DispatchQueue.main.async {
+                  self.present(alert, animated: true)
+                }
+              }
+            }
+          }
+        }
+      } else {
+        print("when? here???")
+        if isRegi {
+          DispatchQueue.main.async {
+            self.userDefaults.set(2, forKey: "bio")
+            self.goNext()
+          }
+        } else {
+          let bio = self.userDefaults.integer(forKey: "bio")
+          guard bio != 1 else {
+            DispatchQueue.main.async {
+              Isaac.toast("앱 설정에서 페이스아이디를 사용해야해요.")
+              self.text = ""
+              self.prePassCode = ""
+              self.stackView.arrangedSubviews.forEach { (view) in
+                view.alpha = 0.5
+              }
+            }
+            return }
+          DispatchQueue.main.async {
+            self.userDefaults.set(2, forKey: "bio")
+            self.goNext()
+          }
+        }
+    }
+    }
+  
+  private func goNext() {
+    let vc = MainTabBarController()
+    let navi = UINavigationController(rootViewController: vc)
+    navi.modalPresentationStyle = .fullScreen
+    navi.modalTransitionStyle = .crossDissolve
+    navi.navigationBar.isHidden = true
+    self.present(navi, animated: true)
   }
   
   
@@ -140,6 +214,40 @@ class PassCodeVC: UIViewController {
     } else {
       text.removeLast()
     }
+  }
+  
+  private func getErrorDescription(errorCode: Int) -> String {
+  
+     switch errorCode {
+         
+     case LAError.authenticationFailed.rawValue:
+         return "Authentication was not successful, because user failed to provide valid credentials."
+         
+     case LAError.appCancel.rawValue:
+         return "Authentication was canceled by application (e.g. invalidate was called while authentication was in progress)."
+         
+     case LAError.invalidContext.rawValue:
+         return "LAContext passed to this call has been previously invalidated."
+         
+     case LAError.notInteractive.rawValue:
+         return "Authentication failed, because it would require showing UI which has been forbidden by using interactionNotAllowed property."
+         
+     case LAError.passcodeNotSet.rawValue:
+         return "Authentication could not start, because passcode is not set on the device."
+         
+     case LAError.systemCancel.rawValue:
+         return "Authentication was canceled by system (e.g. another application went to foreground)."
+         
+     case LAError.userCancel.rawValue:
+         return "Authentication was canceled by user (e.g. tapped Cancel button)."
+         
+     case LAError.userFallback.rawValue:
+         return "Authentication was canceled, because the user tapped the fallback button (Enter Password)."
+         
+     default:
+         return "Error code \(errorCode) not found"
+     }
+     
   }
   
 }
