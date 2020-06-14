@@ -28,8 +28,10 @@ final class Isaac { // 여기서 토스트 작업 하면 됨
   }
   
   class func toast(_ text: String, view: UIView? = nil) {
-    guard let view = windows else { return }
-    view.makeToast(" " + text + " ")
+    DispatchQueue.main.async {
+      guard let view = windows else { return }
+      view.makeToast(" " + text + " ")
+    }
 //    if let view = view {
 //
 //      view.makeToast(" " + text + " ")
