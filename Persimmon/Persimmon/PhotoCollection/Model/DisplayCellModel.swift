@@ -79,5 +79,36 @@ class DisplayCellModel {
     }
   }
   
+  func saveToLibrary(completion: @escaping (Bool) -> Void) {
+    
+    PHPhotoLibrary.shared().performChanges({
+      let creationRequest = PHAssetCreationRequest.forAsset()
+      let options = PHAssetResourceCreationOptions()
+      switch self.cellType {
+      case "live":
+        guard let uuid = self.photoUUID, let img = self.imageName, let video = self.videoName else { return }
+        let videoURL = self.url.appendingPathComponent("\(uuid)/\(video)")
+        let imageURL = self.url.appendingPathComponent("\(uuid)/\(img)")
+        creationRequest.addResource(with: PHAssetResourceType.pairedVideo, fileURL: videoURL, options: options)
+        creationRequest.addResource(with: PHAssetResourceType.photo, fileURL: imageURL, options: options)
+      case "video":
+        guard let uuid = self.photoUUID, let name = self.videoName else { return }
+        let videoURL = self.url.appendingPathComponent("\(uuid)/\(name)")
+        creationRequest.addResource(with: PHAssetResourceType.video, fileURL: videoURL, options: options)
+      case "image":
+        guard let uuid = self.photoUUID, let name = self.imageName else { return }
+        let imageURL = self.url.appendingPathComponent("\(uuid)/\(name)")
+        creationRequest.addResource(with: PHAssetResourceType.photo, fileURL: imageURL, options: options)
+      default:
+        break
+      }
+    }, completionHandler: { (success, error) in
+      if error != nil {
+        print(error as Any)
+      }
+      completion(success)
+    })
+  }
+  
 }
 

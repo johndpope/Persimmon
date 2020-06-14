@@ -30,7 +30,7 @@ class TopDisplayView: UIView {
   var sharedBtn: UIButton = {
     let button = UIButton(type: .custom)
     button.setTitleColor(.appColor(.appFontColor), for: .normal)
-    button.setTitle("공유", for: .normal)
+    button.setTitle("앨범으로", for: .normal)
     button.titleLabel?.font = UIFont(name: "NanumPen", size: 40)
     return button
   }()

@@ -91,7 +91,10 @@ class DisplayVC: UIViewController {
   }
   
   @objc func didTapSharedBtn(_ sender: UIButton) {
-    
+    guard let cell = collection.visibleCells.first as? DisplayCollectionCell else { return }
+    cell.model?.saveToLibrary {
+      print($0)
+    }
   }
   
   @objc func didTapPlayBtn(_ sender: UIButton) {
