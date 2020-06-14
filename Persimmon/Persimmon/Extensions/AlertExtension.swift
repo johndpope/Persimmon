@@ -85,6 +85,10 @@ extension UIAlertController {
     let alrController = UIAlertController(title: "\n\n\n\n\n\n\n\n\n\n\n\n", message: nil, preferredStyle: .alert)
     
     let tableView = SelectAlbumTableView()
+    if let listVC = vc as? PhotoListVC {
+      tableView.tableView.delegate = listVC
+    }
+    
     
     alrController.view.addSubview(tableView)
     tableView.snp.makeConstraints {
@@ -98,8 +102,7 @@ extension UIAlertController {
       completion(false)
     }
     let selectAction = UIAlertAction(title: actionTitle, style: .default) { (_) -> Void in
-
-      completion(false)
+      completion(true)
     }
     
     alrController.addAction(cancelAction)

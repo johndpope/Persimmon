@@ -23,6 +23,7 @@ class PhotoListVC: UIViewController {
   var notificationToken: NotificationToken? = nil
   var selectedPhotos = [SelectedPhoto]()
   let popUpView = PopUpView(frame: .zero, modify: "이동")
+  var selectedAlbulRow: Int = -1
   
   var object: Album? {
     return RealmSingleton.shared.takeSelectAlbum(albumUUID: albumUUID)
@@ -143,11 +144,75 @@ class PhotoListVC: UIViewController {
   }
   
   @objc func didTapModifyBtn(_ sender: UIButton) {
-    UIAlertController().makeTableViewAlert(title: nil, mesage: "", actionTitle: "선택", vc: self) { (_) in
+    selectedAlbulRow = -1
+    UIAlertController().makeTableViewAlert(title: nil, mesage: "", actionTitle: "선택", vc: self) {
+      guard $0, self.selectedAlbulRow != -1 else {
+        self.hiddenPopUpView()
+        return }
+      let totalAlbums = RealmSingleton.shared.albums
+      let tempPhotos = self.selectedPhotos
+      
+      guard (totalAlbums.count) != self.selectedAlbulRow else {
+        
+        let photoArr = tempPhotos.compactMap{self.object?.photos[$0.index.row]}.map{($0.type, $0.photoUUID, $0.imageName, $0.videoName)}
+        
+          self.saveToLibrary(photos: photoArr) {
+            Isaac.toast("\(photoArr.count)개 중 \($0)개 성공")
+          }
+        
+        self.hiddenPopUpView()
+        return }
+      
+      let photoIdxArr = tempPhotos.map{$0.index.row}
+      let toUUID = totalAlbums[self.selectedAlbulRow].albumUUID
+      RealmSingleton.shared.moveToOther(from: self.albumUUID, to: toUUID, arr: photoIdxArr)
+      
       self.hiddenPopUpView()
     }
     
 
+  }
+  
+  func saveToLibrary(photos: [(String, String, String, String)], completion: @escaping (Int) -> Void) {
+    let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let group = DispatchGroup()
+    var processCount: Int = 0
+    
+    photos.forEach { (photo) in
+      group.enter()
+      PHPhotoLibrary.shared().performChanges({
+        let creationRequest = PHAssetCreationRequest.forAsset()
+        let options = PHAssetResourceCreationOptions()
+        switch photo.0 {
+        case "live":
+          guard photo.1 != "", photo.2 != "", photo.3 != "" else { return }
+          let videoURL = url.appendingPathComponent("\(photo.1)/\(photo.3)")
+          let imageURL = url.appendingPathComponent("\(photo.1)/\(photo.2)")
+          creationRequest.addResource(with: PHAssetResourceType.pairedVideo, fileURL: videoURL, options: options)
+          creationRequest.addResource(with: PHAssetResourceType.photo, fileURL: imageURL, options: options)
+        case "video":
+          guard photo.1 != "", photo.3 != "" else { return }
+          let videoURL = url.appendingPathComponent("\(photo.1)/\(photo.3)")
+          creationRequest.addResource(with: PHAssetResourceType.video, fileURL: videoURL, options: options)
+        case "image":
+          guard photo.1 != "", photo.2 != "" else { return }
+          let imageURL = url.appendingPathComponent("\(photo.1)/\(photo.2)")
+          creationRequest.addResource(with: PHAssetResourceType.photo, fileURL: imageURL, options: options)
+        default:
+          break
+        }
+      }, completionHandler: { (success, error) in
+        if error != nil {
+          print(error as Any)
+        }
+        processCount += success ? 1 : 0
+        group.leave()
+      })
+    }
+    
+    group.notify(queue: .main) {
+      completion(processCount)
+    }
   }
   
   @objc func didTapDeleteBtn(_ sender: UIButton) {
@@ -175,6 +240,7 @@ class PhotoListVC: UIViewController {
     photoListView.topView.selectBtn.isSelected.toggle()
     popUpView.isHidden = true
     selectedPhotos = []
+    self.collectionView.reloadData()
   }
   
   // MARK: - add버튼 눌렀을때 alert띄우기
@@ -408,7 +474,11 @@ extension PhotoListVC: UICollectionViewDelegate {
   
 }
 
-
+extension PhotoListVC: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    selectedAlbulRow = indexPath.row
+  }
+}
 
 
 
