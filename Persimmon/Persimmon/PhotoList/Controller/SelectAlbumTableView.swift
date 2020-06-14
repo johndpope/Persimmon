@@ -41,7 +41,7 @@ class SelectAlbumTableView: UIView {
 
 extension SelectAlbumTableView: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return albums.count
+    return albums.count + 1
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -52,6 +52,11 @@ extension SelectAlbumTableView: UITableViewDataSource {
 //    cell.subTitleLabel.text = "[ \(albums[indexPath.row].photos.count.description) ]"
 //    cell.albumImageView.contentMode = .scaleAspectFill
 //    cell.albumUUID = albums[indexPath.row].albumUUID
+    guard albums.indices.contains(indexPath.row) else {
+      cell.textLabel?.text = "아이폰 앨범으로"
+      cell.detailTextLabel?.text = ""
+      cell.imageView?.image = nil
+      return cell }
     cell.textLabel?.text = albums[indexPath.row].title
     cell.detailTextLabel?.text = "[ \(albums[indexPath.row].photos.count.description) ]"
 //    cell.imageView?.image =
