@@ -50,6 +50,26 @@ class DisplayVC: UIViewController {
     collection.scrollToItem(at: model?.selectedCell ?? [], at: .centeredHorizontally, animated: false)
   }
   
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    guard let object = model?.object else { return }
+    let photo = object.photos[model?.selectedCell.row ?? 0]
+    print(photo.type)
+    let state = photo.type == "video"
+    
+    if state {
+      guard let cell = collection.visibleCells.first as? DisplayCollectionCell else { return }
+      cell.decelerate = false
+      cell.delegate = self
+      guard let index = collection.indexPath(for: cell) else { return }
+      let photo = model?.object?.photos[index.row]
+      self.displayView.duration.text = photo?.duration
+      cell.addDurationObserver()
+    }
+    
+    displayView.isVideo = state
+  }
+  
   
   // MARK: - Buttons Target Functions
   @objc func didTapGraveBtn(_ sender: UIButton) {
@@ -104,7 +124,7 @@ extension DisplayVC: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DisplayCollectionCell.identifier, for: indexPath) as! DisplayCollectionCell
     guard let object = model?.object else { return cell }
-    self.displayView.hideSlider()
+//    self.displayView.hideSlider()
     cell.playerView.isHidden = true
     cell.livePhotoView.isHidden = true
     cell.imageView.isHidden = true
@@ -208,15 +228,20 @@ extension DisplayVC: UICollectionViewDelegate {
   }
   
   func scrollingFinished() {
+    
     guard let cell = collection.visibleCells.first as? DisplayCollectionCell else { return }
     cell.decelerate = false
     cell.delegate = self
     if cell.model?.cellType == "video" {
+      displayView.isVideo = true
       guard let index = collection.indexPath(for: cell) else { return }
       let photo = model?.object?.photos[index.row]
       self.displayView.duration.text = photo?.duration
       self.displayView.showSlider()
       cell.addDurationObserver()
+    } else {
+      displayView.isVideo = false
+      cell.removeDurationObserver()
     }
   }
   
