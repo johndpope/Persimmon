@@ -47,6 +47,7 @@ class DisplayCollectionCell: UICollectionViewCell {
             DispatchQueue.main.async {
               self.live = live
               self.imageView.isHidden = true
+              
             }
           })
         }
@@ -68,6 +69,15 @@ class DisplayCollectionCell: UICollectionViewCell {
 //    view.startPlayback(with: .hint)
     view.isMuted = true
     return view
+  }()
+  
+  let livePhotoBadgeView: UIImageView = {
+    let option = PHLivePhotoBadgeOptions.overContent
+    let badge = PHLivePhotoView.livePhotoBadgeImage(options: option)
+    let iv = UIImageView(image: badge)
+    iv.contentMode = .scaleAspectFit
+    iv.clipsToBounds = true
+    return iv
   }()
   
   var playerView: PlayerView = {
@@ -150,6 +160,10 @@ class DisplayCollectionCell: UICollectionViewCell {
     })
   }
   
+  func removeDurationObserver() {
+    self.durationObserver = nil
+  }
+  
   private func updateVideoPlayerSlider() {
     guard let currentTime = playerView.player?.currentTime() else { return }
     let currentTimeInSeconds = CMTimeGetSeconds(currentTime)
@@ -191,7 +205,9 @@ class DisplayCollectionCell: UICollectionViewCell {
     [imageView, livePhotoView, playerView].forEach {
       self.contentView.addSubview($0)
     }
+    livePhotoView.addSubview(livePhotoBadgeView)
     self.livePhotoView.startPlayback(with: .hint)
+    self.livePhotoView.delegate = self
     if #available(iOS 11.0, *) {
       self.imageView.accessibilityIgnoresInvertColors = true
       self.playerView.accessibilityIgnoresInvertColors = true
@@ -210,6 +226,12 @@ class DisplayCollectionCell: UICollectionViewCell {
 
     playerView.snp.makeConstraints {
       $0.leading.trailing.top.bottom.equalToSuperview()
+    }
+    
+    livePhotoBadgeView.snp.makeConstraints {
+      $0.width.height.equalTo(28.i)
+      $0.top.equalToSuperview().offset((UIScreen.main.bounds.height / 15))
+      $0.trailing.equalToSuperview().offset(-10.i)
     }
     
   }
@@ -295,4 +317,14 @@ class DisplayCollectionCell: UICollectionViewCell {
     image = nil
   }
   
+}
+
+extension DisplayCollectionCell: PHLivePhotoViewDelegate {
+  func livePhotoView(_ livePhotoView: PHLivePhotoView, didEndPlaybackWith playbackStyle: PHLivePhotoViewPlaybackStyle) {
+    livePhotoBadgeView.alpha = 1
+  }
+  
+  func livePhotoView(_ livePhotoView: PHLivePhotoView, willBeginPlaybackWith playbackStyle: PHLivePhotoViewPlaybackStyle) {
+    livePhotoBadgeView.alpha = 0
+  }
 }

@@ -11,6 +11,13 @@ import SnapKit
 
 class DisplayView: UIView {
   
+  var isVideo: Bool = false {
+    willSet(new) {
+      new ? showSlider() : hideSlider()
+      layoutIfNeeded()
+    }
+  }
+  
   let collection: DisplayCollectionView = {
     let view = DisplayCollectionView()
     return view
@@ -74,12 +81,12 @@ class DisplayView: UIView {
       self.bottomView.isHidden = false
     }, completion: nil)
     UIView.transition(with: slider, duration: 0.3, options: .curveEaseInOut, animations: {
-      self.slider.alpha = 1
-      self.slider.isHidden = false
+      self.slider.alpha = self.isVideo ? 1 : 0
+      self.slider.isHidden = !self.isVideo
     }, completion: nil)
     UIView.transition(with: duration, duration: 0.3, options: .curveEaseInOut, animations: {
-      self.duration.alpha = 1
-      self.duration.isHidden = false
+      self.duration.alpha = self.isVideo ? 1 : 0
+      self.duration.isHidden = !self.isVideo
     }, completion: nil)
   }
   
