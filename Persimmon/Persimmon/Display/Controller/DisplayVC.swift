@@ -73,6 +73,20 @@ class DisplayVC: UIViewController {
   
   // MARK: - Buttons Target Functions
   @objc func didTapGraveBtn(_ sender: UIButton) {
+    guard let object = model?.object else { return }
+    guard let uuid = self.model?.albumUUID else { return }
+    guard let idx = collection.indexPathsForVisibleItems.first else { return }
+    let photos = object.photos
+    if photos.indices.contains(idx.row - 1) {
+      collection.scrollToItem(at: [0, idx.row - 1], at: .centeredHorizontally, animated: false)
+      RealmSingleton.shared.moveToOther(from: uuid, arr: [idx.row])
+    } else if photos.indices.contains(idx.row + 1) {
+      collection.scrollToItem(at: [0, idx.row + 1], at: .centeredHorizontally, animated: false)
+      RealmSingleton.shared.moveToOther(from: uuid, arr: [idx.row])
+    } else {
+      RealmSingleton.shared.moveToOther(from: uuid, arr: [idx.row])
+      self.navigationController?.popViewController(animated: true)
+    }
     
   }
   
